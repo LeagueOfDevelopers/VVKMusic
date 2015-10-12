@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-interface IDownload
+namespace Download
 {
-    int DownloadSong(Song[] SongMas);
+    interface IDownload
+    {
+        int DownloadSong(Song[] SongMas);
+    }
 }

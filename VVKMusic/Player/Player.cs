@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-interface IPlayer
+namespace Player
 {
-    int Play(string LinkToSong);
-    int AdjustSound(SoundSettings Settings);
+    interface IPlayer
+    {
+        int Play(string LinkToSong);
+        int AdjustSound(SoundSettings Settings);
+    }
 }
