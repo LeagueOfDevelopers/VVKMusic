@@ -11,7 +11,7 @@ namespace UserManager
         int AddUser(string Name);
         int ChangeUser(string Name);
         int RemoveUser(string Name);
-        int UpdateList(Song[] SongMas, string Name);
+        //int UpdateList(Song[] SongMas, string Name);
         int GetList(string Name);
         int UpdateSettings(string Name);
         String[] GetListOfUsers();

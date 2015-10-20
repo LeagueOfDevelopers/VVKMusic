@@ -9,7 +9,7 @@ namespace VKAPI
     interface IVKAPI
     {
         int Auth(string Login, string Password);
-        Song[] GetSong(string Link);
+        //Song[] GetSong(string Link);
         int CheckConnection();
     }
 }
