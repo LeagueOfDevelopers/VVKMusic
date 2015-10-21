@@ -8,7 +8,7 @@ namespace Player
 {
     interface IPlayer
     {
-        int Play(string LinkToSong);
-        //int AdjustSound(SoundSettings Settings);
+        int Play(string linkToSong);
+        // int AdjustSound(SoundSettings settings);
     }
 }

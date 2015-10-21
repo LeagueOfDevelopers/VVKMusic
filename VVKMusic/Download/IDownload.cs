@@ -8,6 +8,6 @@ namespace Download
 {
     interface IDownload
     {
-        //int DownloadSong(Song[] SongMas);
+        // int DownloadSong(Song[] songMas);
     }
 }

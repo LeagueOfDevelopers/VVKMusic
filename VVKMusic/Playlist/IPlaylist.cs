@@ -8,11 +8,11 @@ namespace Playlist
 {
     interface IPlaylist
     {
-        //int MoveSong(Song Song, int position);
-        //int UpdateList(Song[] SongMas);
-        //int AddToList(Song[] SongMas, int position);
+        // int MoveSong(Song song, int position);
+        // int UpdateList(Song[] songMas);
+        // int AddToList(Song[] songMas, int position);
         void MixPlaylist();
         int SearchSong(string pattern);
-        //Song[] GetList();
+        // Song[] GetList();
     }
 }

@@ -8,8 +8,8 @@ namespace VKAPI
 {
     interface IVKAPI
     {
-        int Auth(string Login, string Password);
-        //Song[] GetSong(string Link);
+        int Auth(string login, string password);
+        // Song[] GetSong(string linkToSong);
         int CheckConnection();
     }
 }
