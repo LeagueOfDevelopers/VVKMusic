@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure;
 
-namespace Downloader
+namespace Infrastructure
 {
-    interface IDownloader
+    class Song
     {
-        int DownloadSong(Song[] songMas);
+
     }
 }
