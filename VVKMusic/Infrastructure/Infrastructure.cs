@@ -12,8 +12,11 @@ namespace Infrastructure
         {
             OK = 0
         };
-        public static int CheckConnection();
-        Song[] SongArr;
+        public static int CheckConnection()
+        {
+            return 0;
+        }
+        public Song[] SongArr;
 
     }
 }

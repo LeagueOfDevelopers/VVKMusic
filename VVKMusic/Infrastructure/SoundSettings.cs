@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure
 {
-    class SoundSettings
+    public class SoundSettings
     {
     }
 }
