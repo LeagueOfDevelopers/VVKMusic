@@ -21,8 +21,9 @@ namespace ConsoleApplication1
                 //Auth.Url = new Uri(VkApiModule.Logout());
                 Auth.Anchor = AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left;
                 AuthForm.ShowDialog();
-
             }
+            VkApiModule.Get_audio();
+            Console.ReadLine();
         }
         static public void Getting_token(object sender, EventArgs e)
         {
