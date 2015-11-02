@@ -12,29 +12,39 @@ namespace ConsoleApplication1
 {
     class VkApiModule
     {
-        private static string Token {get; set;}
-        private static string User_id { get; set; }
-        private static Song[] Songs { get; set; }
-        public static string Authorization()
+        private string Token {get; set;}
+        public string User_id { get; set; }
+        private Song[] Songs { get; set; }
+
+        private enum Errors
+        {
+            User_denied
+        }
+        public string Authorization()
         {
             string AuthRequest = String.Format("https://oauth.vk.com/authorize?client_id={0}&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope={1}&response_type=token&v=5.37&revoke=1"
                 , 5114224, "audio");
             return AuthRequest;
         }
-        public static string Logout()
+        public string Get_Response(Uri Url)
         {
-            //
-            string LogoutRequest = "https://login.vk.com/?act=logout&hash=61d76ff4cef2e4859f&_origin=http://vk.com";
-            return LogoutRequest;
+            if (Url != null)
+            {
+                string Url_string = Url.ToString();
+                string[] Url_massive = Url_string.Split('=');
+                string Response = Url_massive[Url_massive.Length - 1];
+                if (Url_string.StartsWith("https://oauth.vk.com/blank.html"))
+                {
+                    if (Url_string.Contains("error")) { return Response; }
+                    Token = Url_massive[1].Split('&')[0];
+                    User_id = Response;
+                    Get_audio();
+                    return Response;
+                }
+            }
+            return "Вы преждевременно закрыли окно";
         }
-        public static void Get_Token(Uri Url)
-        {
-            string Url_string = Url.ToString();
-            VkApiModule.Token = Url_string.Split('=')[1].Split('&')[0];
-            VkApiModule.User_id = Url_string.Split('=')[3];
-
-        }
-        public static void Get_audio()
+        public void Get_audio()
         {
             string GetAudioRequest = String.Format("https://api.vk.com/method/audio.get?owner_id={0}&access_token={1}",User_id,Token);
             WebRequest AudioRequest = WebRequest.Create(GetAudioRequest);
@@ -42,6 +52,7 @@ namespace ConsoleApplication1
             Stream dataStream = AudioAnswer.GetResponseStream();
             StreamReader reader = new StreamReader(dataStream);
             string responeFromServer = reader.ReadToEnd();
+
             reader.Close();
             dataStream.Close();
             responeFromServer = HttpUtility.HtmlDecode(responeFromServer);

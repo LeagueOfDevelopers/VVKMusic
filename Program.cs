@@ -12,24 +12,22 @@ namespace ConsoleApplication1
         [STAThread]
         static void Main(string[] args)
         {
+            VkApiModule ApiMethods = new VkApiModule();
             using (Form AuthForm = new Form())
             {
                 WebBrowser Auth = new WebBrowser();
-                Auth.DocumentCompleted += new WebBrowserDocumentCompletedEventHandler(Getting_token);
+                Auth.HandleDestroyed += new EventHandler( (object sender, EventArgs e) => 
+                {
+                    var a = (WebBrowser)sender;
+                    string resp = ApiMethods.Get_Response(a.Url);
+                    MessageBox.Show(resp);
+                });
                 AuthForm.Controls.Add(Auth);
-                Auth.Url = new Uri(VkApiModule.Authorization());
-                //Auth.Url = new Uri(VkApiModule.Logout());
+                Auth.Url = new Uri(ApiMethods.Authorization());
                 Auth.Anchor = AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left;
                 AuthForm.ShowDialog();
             }
-            VkApiModule.Get_audio();
             Console.ReadLine();
-        }
-        static public void Getting_token(object sender, EventArgs e)
-        {
-            var a = (WebBrowser)sender;
-            VkApiModule.Get_Token(a.Url);
-            Console.WriteLine("{0}", a.Url);
         }
     }
 }

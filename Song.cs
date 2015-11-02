@@ -12,7 +12,7 @@ namespace ConsoleApplication1
     class Song
     {
         [JsonProperty("aid")]
-        public int id {get; set;}
+        public int Id {get; set;}
         [JsonProperty("owner_id")]
         public int owner_id {get; set;}
 
