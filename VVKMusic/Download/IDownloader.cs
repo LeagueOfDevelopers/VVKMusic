@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure;
+using Status = Common.Common.Status;
+using Common;
 
 namespace Downloader
 {
     interface IDownloader
     {
-        int DownloadSong(Song[] songMas);
+         Status DownloadSong(Song[] songMas);
     }
 }

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure;
+using Common;
 
 namespace VKAPI
 {
     interface IVKAPI
     {
-        int Auth(string login, string password);
-        Song[] GetSongs(string linkToSong);
+        string Auth();
+        string GetResponse(string linkToSong);
+        Song[] GetAudio();
     }
 }

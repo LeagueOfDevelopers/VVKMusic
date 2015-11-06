@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure;
+using Common;
+using Status = Common.Common.Status;
 
 namespace Playlist
 {
     interface IPlaylist
     {
-        int MoveSong(Song song, int position);
-        int UpdateList(Song[] songMas);
-        int AddToList(Song[] songMas, int position);
+        Status MoveSong(Song song, int position);
+        Status UpdateList(Song[] songMas);
+        Status AddToList(Song[] songMas, int position);
         void MixPlaylist();
         void SortByDownloaded(bool pattern);
-        int SearchSong(string pattern);
+        Status SearchSong(string pattern);
         Song[] GetList();
     }
 }
