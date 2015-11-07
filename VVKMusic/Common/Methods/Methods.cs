@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace Common
 {
-    public class Common
+    public class Methods
     {
-        public enum Status
-        {
-            OK = 0
-        };
 
-        public List<Song> SongList;
     }
 }

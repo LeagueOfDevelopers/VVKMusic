@@ -47,6 +47,7 @@
     <Compile Include="Entities\Song.cs" />
     <Compile Include="Entities\SoundSettings.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Methods\Methods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

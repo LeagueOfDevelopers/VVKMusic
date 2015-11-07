@@ -26,5 +26,6 @@ namespace Common
         [JsonProperty("genre")]
         public int GenreID { get; set; }
         public int Date { get; set; }
+        public bool Downloaded { get; set; }
     }
 }
