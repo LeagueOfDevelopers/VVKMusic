@@ -8,7 +8,7 @@ using Status = Common.Common.Status;
 
 namespace Playlist
 {
-    public class Playlist
+    public class Playlist : IPlaylist
     {
         private List<Song> _ListOfSongs;
 
@@ -35,7 +35,7 @@ namespace Playlist
             _ListOfSongs.Insert(index, song);
             return Status.OK;
         }
-        Status RemoveFromList(int index)
+        public Status RemoveFromList(int index)
         {
             _ListOfSongs.RemoveAt(index);
             return Status.OK;
