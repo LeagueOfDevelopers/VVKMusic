@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Infrastructure;
+using Common;
+using Status = Common.Common.Status;
 
 namespace UserManager
 {
     interface IUserManager
     {
-        int AddUser(User user);
-        int ChangeUser(User user);
-        int RemoveUser(User user);
-        int UpdateUserList(Song[] SongMas, User user);
-        int GetUserList(User user);
-        int UpdateSettings(User user, Settings settings);
+        Status AddUser(User user);
+        Status ChangeUser(User user);
+        Status RemoveUser(User user);
+        Status UpdateUserList(Song[] SongMas, User user);
+        Status GetUserList(User user);
+        Status UpdateSettings(User user, Settings settings);
         User[] GetListOfUsers();
     }
 }

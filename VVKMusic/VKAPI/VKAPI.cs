@@ -7,6 +7,7 @@ using System.Text;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Common;
 
 namespace VKAPI
 {
@@ -43,7 +44,7 @@ namespace VKAPI
             }
             return "Вы преждевременно закрыли окно";
         }
-        public Infrastructure.Song[] GetAudio()
+        public Song[] GetAudio()
         {
             string GetAudioRequest = String.Format("https://api.vk.com/method/audio.get?owner_id={0}&access_token={1}",User_id,Token);
             WebRequest AudioRequest = WebRequest.Create(GetAudioRequest);
@@ -57,7 +58,7 @@ namespace VKAPI
             responeFromServer = HttpUtility.HtmlDecode(responeFromServer);
 
             JObject obj = JObject.Parse(responeFromServer);
-            Infrastructure.Song[] Songs = obj["response"].Children().Skip(1).Select(c => c.ToObject<Infrastructure.Song>()).ToArray();
+            Song[] Songs = obj["response"].Children().Skip(1).Select(c => c.ToObject<Song>()).ToArray();
             return Songs;
     }
 

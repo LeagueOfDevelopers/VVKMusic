@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace Infrastructure
+namespace Common
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class Song
@@ -26,5 +26,6 @@ namespace Infrastructure
         [JsonProperty("genre")]
         public int GenreID { get; set; }
         public int Date { get; set; }
+        public bool Downloaded { get; set; }
     }
 }

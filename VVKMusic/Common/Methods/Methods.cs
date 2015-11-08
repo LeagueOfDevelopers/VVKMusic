@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure
+namespace Common
 {
-    public class Settings
+    public class Methods
     {
+
     }
 }
