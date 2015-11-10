@@ -8,5 +8,9 @@ namespace Common
 {
     public class User
     {
+        public string Name { get; set; }
+        public string UserID { get; set; }
+        public Settings Settings;
+        public SoundSettings SoundSettings;
     }
 }
