@@ -14,6 +14,5 @@ namespace Common
             Error = 1
         };
 
-        public List<Song> SongList;
     }
 }

@@ -12,7 +12,7 @@ namespace UserManager
     {
         Status AddUser(User user);
         Status UpdateUserSettings(string userID, Settings settings);
-        Status UpdateUserListOfSongs(Song[] SongMas, User user);
+        Status UpdateUserListOfSongs(string userID, List<Song> songList);
         Status RemoveUser(string userID);
         Song[] GetUserListOfSongs(string userID);
         User[] GetListOfUsers();
