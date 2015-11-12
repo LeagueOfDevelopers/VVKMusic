@@ -11,11 +11,10 @@ namespace UserManager
     interface IUserManager
     {
         Status AddUser(User user);
-        Status ChangeUser(User user);
-        Status RemoveUser(User user);
-        Status UpdateUserList(Song[] SongMas, User user);
-        Status GetUserList(User user);
-        Status UpdateSettings(User user, Settings settings);
+        Status UpdateUserSettings(string userID, Settings settings);
+        Status UpdateUserListOfSongs(string userID, List<Song> songList);
+        Status RemoveUser(string userID);
+        Song[] GetUserListOfSongs(string userID);
         User[] GetListOfUsers();
     }
 }

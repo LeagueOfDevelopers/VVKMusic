@@ -10,9 +10,9 @@ namespace Common
     {
         public enum Status
         {
-            OK = 0
+            OK = 0,
+            Error = 1
         };
 
-        public List<Song> SongList;
     }
 }

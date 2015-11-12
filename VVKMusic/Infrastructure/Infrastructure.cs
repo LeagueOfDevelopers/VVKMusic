@@ -9,9 +9,17 @@ namespace Infrastructure
 {
     public class Infrastructure
     {
-        public static Status CheckConnection()
+        public Status CheckConnection()
         {
-            return 0;
+            return Status.OK;
+        }
+        public Status SaveListOfUsers()
+        {
+            return Status.OK;
+        }
+        public Status LoadListOfUsers()
+        {
+            return Status.OK;
         }
     }
 }
