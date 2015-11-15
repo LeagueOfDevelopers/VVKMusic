@@ -10,7 +10,7 @@ namespace UserManager
 {
     class UserManager : IUserManager 
     {
-        private List<User> _ListOfUsers;
+        private List<User> _ListOfUsers = new List<User>();
 
         public Status AddUser(User user)
         {
