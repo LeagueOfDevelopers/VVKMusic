@@ -7,9 +7,15 @@ using Newtonsoft.Json;
 
 namespace Common
 {
-    [JsonObject(MemberSerialization.OptIn)]
+
+    [Serializable()][JsonObject(MemberSerialization.OptIn)]
     public class Song
     {
+        public Song(int id)
+        {
+            this.ID = id;
+        }
+
         [JsonProperty("aid")]
         public int ID { get; set; }
         [JsonProperty("owner_id")]
