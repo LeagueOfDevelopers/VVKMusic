@@ -8,6 +8,5 @@ namespace Common
 {
     public class Methods
     {
-
     }
 }

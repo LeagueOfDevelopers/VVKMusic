@@ -6,15 +6,22 @@ using System.Threading.Tasks;
 
 namespace Common
 {
+    [Serializable()]
     public class User
     {
         public User(string name, string userID, List<Song> songList)
         {
-            Name = name;
-            UserID = userID;
-            Settings = new global::Common.Settings();
-            SoundSettings = new global::Common.SoundSettings();
-            SongList = songList;
+            this.Name = name;
+            this.UserID = userID;
+            this.Settings = new global::Common.Settings();
+            this.SoundSettings = new global::Common.SoundSettings();
+            this.SongList = songList;
+        }
+        public User ()
+        {
+            this.Settings = new global::Common.Settings();
+            this.SoundSettings = new global::Common.SoundSettings();
+            this.SongList = new List<Song>();
         }
         public string Name { get; set; }
         public string UserID { get; set; }
