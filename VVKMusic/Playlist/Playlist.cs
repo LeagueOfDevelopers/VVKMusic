@@ -10,7 +10,7 @@ namespace Playlist
 {
     public class Playlist : IPlaylist
     {
-        private List<Song> _ListOfSongs;
+        private List<Song> _ListOfSongs = new List<Song>();
 
         public Status MoveSong(int oldIndex, int newIndex)
         {
@@ -55,7 +55,7 @@ namespace Playlist
         }
         public void SortByDownloaded()
         {
-            _ListOfSongs.Sort((song1,song2) => song1.Downloaded.CompareTo(song2.Downloaded));
+            _ListOfSongs.Sort((song1,song2) => song2.Downloaded.CompareTo(song1.Downloaded));
         }
         public Song[] SearchSong(string pattern)
         {
