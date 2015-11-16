@@ -10,7 +10,7 @@ namespace Tests
     public class PlaylistTests
     {
         [TestMethod]
-        public void Playlist_GetList()
+        public void GetAndUpdateList_IDOfFirstAndFourthSongsShouldBeTheSameInBothListAndInsertedArray()
         {
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();
@@ -20,16 +20,7 @@ namespace Tests
             Assert.AreEqual(4, playlist.GetList()[3].ID);
         }
         [TestMethod]
-        public void Playlist_UpdateList()
-        {
-            Playlist.Playlist playlist = new Playlist.Playlist();
-            List<Song> songList = new List<Song>();
-            songList.AddRange(new Song[] { new Song(1), new Song(2), new Song(3), new Song(4) });
-            playlist.UpdateList(songList.ToArray());
-            Assert.AreEqual(songList[0].ID, playlist.GetList()[0].ID);
-        }
-        [TestMethod]
-        public void Playlist_MoveSong()
+        public void MoveSong_IDOfThirdSongShouldBe1()
         {
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();
@@ -39,7 +30,7 @@ namespace Tests
             Assert.AreEqual(1, playlist.GetList()[2].ID);
         }
         [TestMethod]
-        public void Playlist_SingleAddToList()
+        public void AddToList_IDOfFirstThirdAndFiftsSongsShouldBe8()
         {
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();
@@ -54,7 +45,7 @@ namespace Tests
             Assert.AreEqual(insertedSong.ID, playlist.GetList()[3].ID);
         }
         [TestMethod]
-        public void Playlist_MultipleAddToList()
+        public void AddToList_IDOfFirstSongInArrayAndFifthSongInListShouldBeTheSame()
         {
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();
@@ -65,7 +56,7 @@ namespace Tests
             Assert.AreEqual(insertedArrayOfSongs[0].ID, playlist.GetList()[4].ID);
         }
         [TestMethod]
-        public void Playlist_RemoveFromList()
+        public void RemoveSong_IDsOfThirdSongShouldBe4AndFirstSongShouldBe2()
         {
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();
@@ -77,7 +68,7 @@ namespace Tests
             Assert.AreEqual(2, playlist.GetList()[0].ID);
         }
         [TestMethod]
-        public void Playlist_SortByDownloaded()
+        public void SortByDownloaded_PropertyDownloadedOfFirstAndSecondSongsShouldBeTrue()
         {
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();
@@ -90,7 +81,7 @@ namespace Tests
             Assert.AreEqual(true, playlist.GetList()[1].Downloaded);
         }
         [TestMethod]
-        public void Playlist_SearchSong()
+        public void SearchSong_IDOfFirstSongShouldBe2()
         {
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();

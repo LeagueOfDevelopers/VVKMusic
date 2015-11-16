@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F9916B09-4D11-4F09-8C8A-6C8DE60DC2CF}</ProjectGuid>
+    <ProjectGuid>{6A7BACFD-2247-44A3-B8A3-0C272726074F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tests</RootNamespace>
-    <AssemblyName>Tests</AssemblyName>
+    <RootNamespace>InfrastructureTests</RootNamespace>
+    <AssemblyName>InfrastructureTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="InfrastructureTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PlaylistTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
@@ -62,18 +61,6 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
       <Project>{14d74ed4-cf0f-42f5-a49f-9f02dcc57fbc}</Project>
       <Name>Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Player\Player.csproj">
-      <Project>{b3e1602d-6bfe-4889-a93c-b406a725cf48}</Project>
-      <Name>Player</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Playlist\Playlist.csproj">
-      <Project>{0a4429be-ac94-4c2d-b21e-abf19ca08a29}</Project>
-      <Name>Playlist</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UserManager\UserManager.csproj">
-      <Project>{4b140d0a-10b9-4eec-9318-642852d9d6d6}</Project>
-      <Name>UserManager</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

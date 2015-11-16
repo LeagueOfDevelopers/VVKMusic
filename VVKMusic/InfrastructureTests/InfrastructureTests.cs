@@ -10,7 +10,7 @@ namespace Tests
     public class InfrastructureTests
     {
         [TestMethod]
-        public void Infrastructure_Serialization()
+        public void SaveAndLoadListOfUsers_IDOfFirstElementsOfSavedListAndLoadedListsShouldBeTheSame()
         {
             Infrastructure.Infrastructure infrastructure = new Infrastructure.Infrastructure();
             List<Song> songList = new List<Song>();
