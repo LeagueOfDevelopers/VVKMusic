@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Common;
+using System.Collections.Generic;
 
 namespace UserManagerTests
 {
