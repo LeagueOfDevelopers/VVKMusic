@@ -21,7 +21,7 @@ namespace Player
         }
         public Status SetSource(Uri source)
         {
-            stream = Bass.BASS_StreamCreateFile(source.ToString(), 0, 0, BASSFlag.BASS_DEFAULT);
+            stream = Bass.BASS_StreamCreateFile(source.LocalPath, 0, 0, BASSFlag.BASS_DEFAULT);
             if (stream != 0)
             {
                 return Status.OK;
