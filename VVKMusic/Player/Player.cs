@@ -19,9 +19,16 @@ namespace Player
                 throw new Exception();
             }
         }
-        public Status SetSource(Uri source)
+        public Status SetSource(Uri source, bool downloaded)
         {
-            stream = Bass.BASS_StreamCreateFile(source.LocalPath, 0, 0, BASSFlag.BASS_DEFAULT);
+            if (downloaded)
+            {
+                stream = Bass.BASS_StreamCreateFile(source.LocalPath, 0, 0, BASSFlag.BASS_DEFAULT);
+            }
+            else
+            {
+                stream = Bass.BASS_StreamCreateURL(source.ToString(), 0, 0, null, new IntPtr(0));
+            }
             if (stream != 0)
             {
                 return Status.OK;
