@@ -9,7 +9,7 @@ namespace Player
 {
     interface IPlayer
     {
-        Status SetSource(Uri source);
+        Status SetSource(Uri source, bool downloaded);
         Status Play();
         Status Stop();
     }
