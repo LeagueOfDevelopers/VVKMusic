@@ -117,6 +117,48 @@
     <Resource Include="Resources\Pictures\sort.png" />
     <Resource Include="Resources\Pictures\stop.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{bb44bc30-12a9-4706-bb19-3083275f53e5}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Downloader\Downloader.csproj">
+      <Project>{2e25b27c-1a46-440d-9e32-bc9d1083d0b4}</Project>
+      <Name>Downloader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InfrastructureTests\InfrastructureTests.csproj">
+      <Project>{6a7bacfd-2247-44a3-b8a3-0c272726074f}</Project>
+      <Name>InfrastructureTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <Project>{14d74ed4-cf0f-42f5-a49f-9f02dcc57fbc}</Project>
+      <Name>Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Player\Player.csproj">
+      <Project>{b3e1602d-6bfe-4889-a93c-b406a725cf48}</Project>
+      <Name>Player</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlaylistTests\PlaylistTests.csproj">
+      <Project>{6041f068-2e0d-43a7-9f1e-e1b90a2ba52f}</Project>
+      <Name>PlaylistTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Playlist\Playlist.csproj">
+      <Project>{0a4429be-ac94-4c2d-b21e-abf19ca08a29}</Project>
+      <Name>Playlist</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserManagerTests\UserManagerTests.csproj">
+      <Project>{05883d97-a99a-4a08-aaf6-c52014935556}</Project>
+      <Name>UserManagerTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserManager\UserManager.csproj">
+      <Project>{4b140d0a-10b9-4eec-9318-642852d9d6d6}</Project>
+      <Name>UserManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VKAPI\VKAPI.csproj">
+      <Project>{a33b1cb5-ab5c-4976-aa01-7866bb5578b9}</Project>
+      <Name>VKAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

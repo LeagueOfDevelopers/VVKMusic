@@ -12,5 +12,7 @@ namespace Player
         Status SetSource(Uri source, bool downloaded);
         Status Play();
         Status Stop();
+        Status Pause();
+        Status AdjustSound();
     }
 }

@@ -60,6 +60,21 @@ namespace Player
                 return Status.Error;
             }
         }
+        public Status Pause()
+        {
+            if (Bass.BASS_ChannelPause(stream))
+            {
+                return Status.OK;
+            }
+            else
+            {
+                return Status.Error;
+            }
+        }
+        public Status AdjustSound()
+        {
+            return Status.OK;
+        }
         ~Player()
         {
             Bass.BASS_StreamFree(stream);
