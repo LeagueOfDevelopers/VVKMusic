@@ -86,9 +86,9 @@ namespace UserManager
             }
             
         }
-        public User[] GetListOfUsers()
+        public List<User> GetListOfUsers()
         {
-            return _ListOfUsers.ToArray();
+            return _ListOfUsers;
         }
     }
 }

@@ -6,10 +6,11 @@ namespace Common
     [Serializable()]
     public class User
     {
-        public User(string name, string userID, List<Song> songList)
+        public User(string accessToken, string userID, List<Song> songList)
         {
-            this.Name = name;
+            this.Name = "UnnamedUser";
             this.ID = userID;
+            this.AccessToken = accessToken;
             this.Settings = new global::Common.Settings();
             this.SoundSettings = new global::Common.SoundSettings();
             this.SongList = songList;
@@ -30,6 +31,7 @@ namespace Common
         }
         public string Name { get; set; }
         public string ID { get; set; }
+        public string AccessToken { get; set; }
         public Settings Settings { get; set; }
         public SoundSettings SoundSettings { get; set; }
         public List<Song> SongList { get; set; }

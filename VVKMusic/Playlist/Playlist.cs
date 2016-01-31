@@ -58,9 +58,9 @@ namespace Playlist
         {
             return _ListOfSongs.FindAll(x => x.Title == pattern).ToArray();
         }
-        public Song[] GetList()
+        public List<Song> GetList()
         {
-            return _ListOfSongs.ToArray();
+            return _ListOfSongs;
         }
     }
 }

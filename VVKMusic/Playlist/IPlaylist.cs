@@ -1,4 +1,5 @@
 ﻿using Common;
+using System.Collections.Generic;
 using Status = Common.Common.Status;
 
 namespace Playlist
@@ -13,6 +14,6 @@ namespace Playlist
         void MixPlaylist();
         void SortByDownloaded();
         Song[] SearchSong(string pattern);
-        Song[] GetList();
+        List<Song> GetList();
     }
 }
