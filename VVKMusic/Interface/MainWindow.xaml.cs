@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -81,11 +82,22 @@ namespace Interface
         {
             List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(e.UserID.ToString(), e.AccessToken));
             UserManager1.AddUser(new User(e.AccessToken, e.UserID.ToString(), SongList));
+            Playlist1.UpdateList(SongList);
+            Player1.SetSource(SongList[0].url, false);
+
+            ListBox PlaylistBox = (ListBox)FindName("Playlist");
+            ObservableCollection<Song> oSong = new ObservableCollection<Song>(SongList);
+            PlaylistBox.DataContext = oSong;
+            Binding binding = new Binding();
+            PlaylistBox.SetBinding(ListBox.ItemsSourceProperty, binding);
+            TextBox SongName = (TextBox)FindName("SongName");
+            SongName.Text = SongList[0].ToString();
+            TextBox SongTime = (TextBox)FindName("SongTime");
+            SongTime.Text = String.Format("0:00 / {0}",SongList[0].Duration);
         }
         private void Download_Click(object sender, RoutedEventArgs e)
         {
             //TODO
-            throw new NotImplementedException();
         }
         private void Prev_Click(object sender, RoutedEventArgs e)
         {
@@ -102,6 +114,7 @@ namespace Interface
                 }
             Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
             Player1.Play();
+            //TODO View in Name, Time and Playlist
         }
         private void Next_Click(object sender, RoutedEventArgs e)
         {
@@ -118,6 +131,7 @@ namespace Interface
                 }
             Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
             Player1.Play();
+            //TODO View in Name, Time and Playlist
         }
         private void Pause_Click(object sender, RoutedEventArgs e)
         {
@@ -135,20 +149,17 @@ namespace Interface
         {
             TextBox MenuList = (TextBox)FindName("Search");
             Song[] result = Playlist1.SearchSong(MenuList.Text);
-            //TODO Render
-            throw new NotImplementedException();
+            //TODO Render in playlist
         }
         private void Mix_Click(object sender, RoutedEventArgs e)
         {
             Playlist1.MixPlaylist();
             //TODO Render playlist
-            throw new NotImplementedException();
         }
         private void Sort_Click(object sender, RoutedEventArgs e)
         {
             Playlist1.SortByDownloaded();
             //TODO Render Playlist
-            throw new NotImplementedException();
         }
         private void Close_Click(object sender, RoutedEventArgs e)
         {
