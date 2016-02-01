@@ -43,7 +43,7 @@ namespace Interface
                 UserManager1.UpdateUserList(Infrastructure1.LoadListOfUsers());
             }
         }
-        private void MenuClick(object sender, RoutedEventArgs e)
+        private void Menu_Click(object sender, RoutedEventArgs e)
         {
             ListBox MenuList = (ListBox)FindName("MenuList");
             Image MenuButtonImage = (Image)FindName("MenuButtonImage");
@@ -58,7 +58,7 @@ namespace Interface
                 MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
             }
         }
-        private void MenuListSelectionHandler(object sender, RoutedEventArgs e)
+        private void MenuList_SelectionChanged(object sender, RoutedEventArgs e)
         {
             ListBox MenuList = (ListBox)FindName("MenuList");
             ListBoxItem item = (ListBoxItem)MenuList.SelectedValue;
@@ -82,12 +82,12 @@ namespace Interface
             List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(e.UserID.ToString(), e.AccessToken));
             UserManager1.AddUser(new User(e.AccessToken, e.UserID.ToString(), SongList));
         }
-        private void DownloadClick(object sender, RoutedEventArgs e)
+        private void Download_Click(object sender, RoutedEventArgs e)
         {
             //TODO
             throw new NotImplementedException();
         }
-        private void PrevClick(object sender, RoutedEventArgs e)
+        private void Prev_Click(object sender, RoutedEventArgs e)
         {
             Player1.Stop();
             Song[] SongList = Playlist1.GetList().ToArray();
@@ -103,7 +103,7 @@ namespace Interface
             Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
             Player1.Play();
         }
-        private void NextClick(object sender, RoutedEventArgs e)
+        private void Next_Click(object sender, RoutedEventArgs e)
         {
             Player1.Stop();
             Song[] SongList = Playlist1.GetList().ToArray();
@@ -119,47 +119,70 @@ namespace Interface
             Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
             Player1.Play();
         }
-        private void PauseClick(object sender, RoutedEventArgs e)
+        private void Pause_Click(object sender, RoutedEventArgs e)
         {
             Player1.Pause();
         }
-        private void PlayClick(object sender, RoutedEventArgs e)
+        private void Play_Click(object sender, RoutedEventArgs e)
         {
             Player1.Play();
         }
-        private void StopClick(object sender, RoutedEventArgs e)
+        private void Stop_Click(object sender, RoutedEventArgs e)
         {
             Player1.Stop();
         }
-        private void SearchClick(object sender, RoutedEventArgs e)
+        private void Search_Click(object sender, RoutedEventArgs e)
         {
             TextBox MenuList = (TextBox)FindName("Search");
             Song[] result = Playlist1.SearchSong(MenuList.Text);
             //TODO Render
             throw new NotImplementedException();
         }
-        private void MixClick(object sender, RoutedEventArgs e)
+        private void Mix_Click(object sender, RoutedEventArgs e)
         {
             Playlist1.MixPlaylist();
             //TODO Render playlist
             throw new NotImplementedException();
         }
-        private void SortClick(object sender, RoutedEventArgs e)
+        private void Sort_Click(object sender, RoutedEventArgs e)
         {
             Playlist1.SortByDownloaded();
             //TODO Render Playlist
             throw new NotImplementedException();
         }
-        public void RemoveTextSearch(object sender, RoutedEventArgs e)
+        private void Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+        private void Expand_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+            }
+        }
+        private void Collapse_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+        public void Search_RemoveText(object sender, RoutedEventArgs e)
         {
             TextBox Search = (TextBox)FindName("Search");
             Search.Text = "";
         }
-        public void AddTextSearch(object sender, RoutedEventArgs e)
+        public void Search_AddText(object sender, RoutedEventArgs e)
         {
             TextBox Search = (TextBox)FindName("Search");
             if (Search.Text == "")
                 Search.Text = "Search";
+        }
+        private void Draggable_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            this.DragMove();
         }
         //TODO User clicked on playlist and song was autoplayed
     }

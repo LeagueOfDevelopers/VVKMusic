@@ -20,9 +20,27 @@
             <RowDefinition Height="268" />
             <RowDefinition Height="20" />
         </Grid.RowDefinitions>
-        <TextBox Name="SongName" HorizontalAlignment="Center" Height="20" Margin="0,20,0,0" TextWrapping="NoWrap" Text="Protest the Hero - Sex Tapes" TextAlignment="Center" VerticalAlignment="Top" Width="180" BorderBrush="Transparent" Grid.Row="1"/>
-        <TextBox HorizontalAlignment="Center" Height="20" Margin="0,40,0,0" TextWrapping="Wrap" Text="1:57 / 4:30" TextAlignment="Center" VerticalAlignment="Top" Width="80" BorderBrush="Transparent" Grid.Row="1"/>
-        <Button  HorizontalAlignment="Right" Height="25" Margin="0,12,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="MenuClick" Grid.Row="1">
+        <Rectangle Height="500" Name="Draggable" Width="auto" Fill="#5A5A5A" MouseDown="Draggable_MouseDown" Grid.Row="0"/>
+        <Button  HorizontalAlignment="Right" Height="15" Margin="0,0,0,0" VerticalAlignment="Top" Width="15" Style="{StaticResource ClearButton}" Click="Close_Click" Grid.Row="0">
+            <StackPanel>
+                <Image Source="Resources/Pictures/no.png" />
+            </StackPanel>
+        </Button>
+        <Button  HorizontalAlignment="Right" Height="15" Margin="0,0,15,0" VerticalAlignment="Top" Width="15" Style="{StaticResource ClearButton}" Click="Expand_Click" Grid.Row="0">
+            <StackPanel>
+                <Image Source="Resources/Pictures/expand.png" />
+            </StackPanel>
+        </Button>
+        <Button  HorizontalAlignment="Right" Height="15" Margin="0,0,30,0" VerticalAlignment="Top" Width="15" Style="{StaticResource ClearButton}" Click="Collapse_Click" Grid.Row="0">
+            <StackPanel>
+                <Image Source="Resources/Pictures/collapse.png" />
+            </StackPanel>
+        </Button>
+        <Grid Background="#E1E1E1" Grid.Row="1"/>
+        <Grid Width="325"  HorizontalAlignment="Center" Grid.Row="1">
+            <TextBox Name="SongName" Background="#E1E1E1" HorizontalAlignment="Center" Height="20" Margin="0,20,0,0" TextWrapping="NoWrap" Text="Protest the Hero - Sex Tapes" TextAlignment="Center" VerticalAlignment="Top" Width="180" BorderBrush="Transparent" Grid.Row="1"/>
+            <TextBox Background="#E1E1E1" HorizontalAlignment="Center" Height="20" Margin="0,40,0,0" TextWrapping="Wrap" Text="1:57 / 4:30" TextAlignment="Center" VerticalAlignment="Top" Width="80" BorderBrush="Transparent" Grid.Row="1"/>
+        <Button  HorizontalAlignment="Right" Height="25" Margin="0,12,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="Menu_Click" Grid.Row="1">
             <StackPanel>
                 <Image Name="MenuButtonImage" Source="Resources/Pictures/menu.png" />
             </StackPanel>
@@ -32,63 +50,71 @@
                 <Image Source="Resources/Pictures/settings.png" />
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" Height="35" Margin="15,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="DownloadClick" Grid.Row="1">
+        <Button HorizontalAlignment="Left" Height="35" Margin="15,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Download_Click" Grid.Row="1">
             <StackPanel>
                 <Image Source="Resources/Pictures/download.png" />
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" Height="35" Margin="55,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="PrevClick" Grid.Row="2">
+        </Grid>
+        <Grid Background="#F5F5F5" Grid.Row="2">
+        <Grid Width="310" HorizontalAlignment="Center" Grid.Row="2">
+        <Button HorizontalAlignment="Left" Height="35" Margin="47,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Prev_Click" Grid.Row="2">
             <StackPanel>
                 <Image Source="Resources/Pictures/prev.png" />
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" Height="35" Margin="100,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="PauseClick" Grid.Row="2">
+        <Button HorizontalAlignment="Left" Height="35" Margin="92,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Pause_Click" Grid.Row="2">
             <StackPanel>
                 <Image Source="Resources/Pictures/pause.png" />
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" Height="35" Margin="145,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="PlayClick" Grid.Row="2">
+        <Button HorizontalAlignment="Left" Height="35" Margin="137,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Play_Click" Grid.Row="2">
             <StackPanel>
                 <Image Source="Resources/Pictures/play.png" />
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" Height="35" Margin="190,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="StopClick" Grid.Row="2">
+        <Button HorizontalAlignment="Left" Height="35" Margin="182,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Stop_Click" Grid.Row="2">
             <StackPanel>
                 <Image Source="Resources/Pictures/stop.png" />
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" Height="35" Margin="235,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="NextClick" Grid.Row="2">
+        <Button HorizontalAlignment="Left" Height="35" Margin="227,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Next_Click" Grid.Row="2">
             <StackPanel>
                 <Image Source="Resources/Pictures/next.png" />
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" Height="35" Margin="10,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="DownloadClick" Grid.Row="4">
+        </Grid>
+        </Grid>
+        <Grid Background="#B1B1B1" Grid.Row="3"/>
+        <Grid Background="#5A5A5A" Grid.Row="4"/>
+        <Grid Width="325"  HorizontalAlignment="Center" Grid.Row="4">
+        <Button HorizontalAlignment="Left" Height="35" Margin="10,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Download_Click" Grid.Row="4">
             <StackPanel>
                 <Image Source="Resources/Pictures/download.png" />
             </StackPanel>
         </Button>
-        <TextBox Name="Search" HorizontalAlignment="Left" Height="21" Margin="55,9,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="130" BorderThickness="1,1,0,1" GotFocus="RemoveTextSearch" LostFocus="AddTextSearch" Grid.Row="4"/>
-        <Button HorizontalAlignment="Left" Height="35" Margin="177,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="SearchClick" Grid.Row="4">
+        <TextBox Name="Search" HorizontalAlignment="Left" Height="21" Margin="55,9,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="130" BorderThickness="1,1,0,1" GotFocus="Search_RemoveText" LostFocus="Search_AddText" Grid.Row="4"/>
+        <Button HorizontalAlignment="Left" Height="35" Margin="182,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Search_Click" Grid.Row="4">
             <StackPanel>
                 <Image Source="Resources/Pictures/search.png" />
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" Height="35" Margin="230,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="MixClick" Grid.Row="4">
+        <Button HorizontalAlignment="Left" Height="35" Margin="233,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Mix_Click" Grid.Row="4">
             <StackPanel>
                 <Image Source="Resources/Pictures/mix.png" />
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" Height="35" Margin="282,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="SortClick" Grid.Row="4">
+        <Button HorizontalAlignment="Left" Height="35" Margin="282,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Sort_Click" Grid.Row="4">
             <StackPanel>
                 <Image Source="Resources/Pictures/sort.png" />
             </StackPanel>
         </Button>
-        <TextBox HorizontalAlignment="Left" Height="268" Margin="0,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="325" BorderBrush="Transparent" Grid.Row="5"/>
-        <ListBox Name="MenuList" HorizontalAlignment="Right" Margin="0,15,28,0" VerticalAlignment="Top" Width="119" Visibility="Hidden" SelectionChanged="MenuListSelectionHandler" Grid.Row="1">
+        </Grid>
+        <ListBox HorizontalAlignment="Center" MinHeight="268" Height="auto" Margin="0,0,0,0" VerticalAlignment="Top" BorderThickness="0" MinWidth="325" Width="auto" Grid.Row="5"/>
+        <ListBox Name="MenuList" HorizontalAlignment="Right" Margin="0,15,28,0" VerticalAlignment="Top" Width="119" Visibility="Hidden" SelectionChanged="MenuList_SelectionChanged" Grid.Row="1">
             <ListBoxItem>Login</ListBoxItem>
         </ListBox>
-
-
+        <Grid Background="#5A5A5A" Grid.Row="7"></Grid>
     </Grid>
 
 </Window>
