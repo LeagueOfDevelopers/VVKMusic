@@ -18,5 +18,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
     </Style>
 </ResourceDictionary>

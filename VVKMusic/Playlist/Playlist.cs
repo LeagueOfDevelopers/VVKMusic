@@ -16,10 +16,10 @@ namespace Playlist
             _ListOfSongs.Insert(newIndex, songToMove);
             return Status.OK;
         }
-        public Status UpdateList(Song[] songMas)
+        public Status UpdateList(List<Song> songList)
         {
             _ListOfSongs.Clear();
-            _ListOfSongs.AddRange(songMas);
+            _ListOfSongs = songList;
             return Status.OK;
         }
         public Status AddToList(Song[] songMas, int index)
@@ -58,9 +58,9 @@ namespace Playlist
         {
             return _ListOfSongs.FindAll(x => x.Title == pattern).ToArray();
         }
-        public Song[] GetList()
+        public List<Song> GetList()
         {
-            return _ListOfSongs.ToArray();
+            return _ListOfSongs;
         }
     }
 }

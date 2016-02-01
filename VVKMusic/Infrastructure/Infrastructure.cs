@@ -36,18 +36,13 @@ namespace Infrastructure
         }
         public List<User> LoadListOfUsers()
         {
-            FileStream fs = new FileStream("Users.dat", FileMode.Open);
+            FileStream fs = new FileStream("Users.dat", FileMode.OpenOrCreate);
             try
             {
                 BinaryFormatter formatter = new BinaryFormatter();
-
                 return (List<User>)formatter.Deserialize(fs);
             }
-            catch (SerializationException e)
-            {
-                Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
-                throw;
-            }
+            catch (SerializationException e) { return null; }
             finally
             {
                 fs.Close();

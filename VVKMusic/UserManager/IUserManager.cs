@@ -12,6 +12,6 @@ namespace UserManager
         Status UpdateUserListOfSongs(string userID, List<Song> songList);
         Status RemoveUser(string userID);
         Song[] GetUserListOfSongs(string userID);
-        User[] GetListOfUsers();
+        List<User> GetListOfUsers();
     }
 }

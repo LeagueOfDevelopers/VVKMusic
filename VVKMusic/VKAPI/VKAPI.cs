@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 
+
 namespace VKAPI
 {
     public class VKAPI : IVKAPI
@@ -57,8 +58,24 @@ namespace VKAPI
             JObject obj = JObject.Parse(responeFromServer);
             Song[] Songs = obj["response"].Children().Skip(1).Select(c => c.ToObject<Song>()).ToArray();
             return Songs;
-    }
+        }
 
+        public Song[] GetAudioExternal(string userID, string token)
+        {
+            string GetAudioRequest = String.Format("https://api.vk.com/method/audio.get?owner_id={0}&access_token={1}", userID, token);
+            WebRequest AudioRequest = WebRequest.Create(GetAudioRequest);
+            WebResponse AudioAnswer = AudioRequest.GetResponse();
+            Stream dataStream = AudioAnswer.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responeFromServer = reader.ReadToEnd();
 
+            reader.Close();
+            dataStream.Close();
+            responeFromServer = HttpUtility.HtmlDecode(responeFromServer);
+
+            JObject obj = JObject.Parse(responeFromServer);
+            Song[] Songs = obj["response"].Children().Skip(1).Select(c => c.ToObject<Song>()).ToArray();
+            return Songs;
+        }
     }
 }
