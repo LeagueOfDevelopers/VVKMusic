@@ -34,8 +34,8 @@ namespace Interface
         public UserManager.UserManager UserManager1 = new UserManager.UserManager();
         public VKAPI.VKAPI VKAPI1 = new VKAPI.VKAPI();
         public Infrastructure.Infrastructure Infrastructure1 = new Infrastructure.Infrastructure();
-        public string CurrentUser = null;
-        public int CurrentSong = 0;
+        protected string CurrentUser = null;
+        protected int CurrentSong = 0;
         public MainWindow()
         {
             InitializeComponent();
@@ -85,13 +85,9 @@ namespace Interface
             Playlist1.UpdateList(SongList);
             Player1.SetSource(SongList[0].url, false);
 
-            ListBox PlaylistBox = (ListBox)FindName("Playlist");
-            ObservableCollection<Song> oSong = new ObservableCollection<Song>(SongList);
-            PlaylistBox.DataContext = oSong;
-            Binding binding = new Binding();
-            PlaylistBox.SetBinding(ListBox.ItemsSourceProperty, binding);
-            TextBox SongName = (TextBox)FindName("SongName");
-            SongName.Text = SongList[0].ToString();
+            RenderPlaylist(SongList);
+            CurrentSong = 0;
+            RenderNameAndSelectedSong();
             TextBox SongTime = (TextBox)FindName("SongTime");
             SongTime.Text = String.Format("0:00 / {0}",SongList[0].Duration);
         }
@@ -113,8 +109,8 @@ namespace Interface
                     CurrentSong = SongList.Length - 1;
                 }
             Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
+            RenderNameAndSelectedSong();
             Player1.Play();
-            //TODO View in Name, Time and Playlist
         }
         private void Next_Click(object sender, RoutedEventArgs e)
         {
@@ -130,8 +126,8 @@ namespace Interface
                     CurrentSong = 0;
                 }
             Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
+            RenderNameAndSelectedSong();
             Player1.Play();
-            //TODO View in Name, Time and Playlist
         }
         private void Pause_Click(object sender, RoutedEventArgs e)
         {
@@ -147,19 +143,18 @@ namespace Interface
         }
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            TextBox MenuList = (TextBox)FindName("Search");
-            Song[] result = Playlist1.SearchSong(MenuList.Text);
-            //TODO Render in playlist
+            TextBox Search = (TextBox)FindName("Search");
+            RenderPlaylist(Playlist1.SearchSong(Search.Text));
         }
         private void Mix_Click(object sender, RoutedEventArgs e)
         {
             Playlist1.MixPlaylist();
-            //TODO Render playlist
+            RenderPlaylist(Playlist1.GetList());
         }
         private void Sort_Click(object sender, RoutedEventArgs e)
         {
             Playlist1.SortByDownloaded();
-            //TODO Render Playlist
+            RenderPlaylist(Playlist1.GetList());
         }
         private void Close_Click(object sender, RoutedEventArgs e)
         {
@@ -180,12 +175,12 @@ namespace Interface
         {
             this.WindowState = WindowState.Minimized;
         }
-        public void Search_RemoveText(object sender, RoutedEventArgs e)
+        private void Search_RemoveText(object sender, RoutedEventArgs e)
         {
             TextBox Search = (TextBox)FindName("Search");
             Search.Text = "";
         }
-        public void Search_AddText(object sender, RoutedEventArgs e)
+        private void Search_AddText(object sender, RoutedEventArgs e)
         {
             TextBox Search = (TextBox)FindName("Search");
             if (Search.Text == "")
@@ -195,6 +190,43 @@ namespace Interface
         {
             this.DragMove();
         }
-        //TODO User clicked on playlist and song was autoplayed
+        private void RenderNameAndSelectedSong()
+        {
+            TextBox SongName = (TextBox)FindName("SongName");
+            List<Song> SongList = Playlist1.GetList();
+            SongName.Text = SongList[CurrentSong].ToString();
+            ListBox PlaylistBox = (ListBox)FindName("Playlist");
+            if(PlaylistBox.Items != null)
+                PlaylistBox.SelectedItem = (PlaylistBox.Items[CurrentSong]);
+        }
+        private void RenderPlaylist(List<Song> SongList) 
+        {
+            ListBox PlaylistBox = (ListBox)FindName("Playlist");
+            ObservableCollection<Song> oSong = new ObservableCollection<Song>(SongList);
+            PlaylistBox.DataContext = oSong;
+            Binding binding = new Binding();
+            PlaylistBox.SetBinding(ListBox.ItemsSourceProperty, binding);
+        }
+        private void Search_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TextBox Search = (TextBox)FindName("Search");
+            if(Search.Text == "")
+            {
+                RenderPlaylist(Playlist1.GetList());
+            }
+        }
+        private void Playlist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Player1.Stop();
+            ListBox PlaylistBox = (ListBox)FindName("Playlist");
+            if(PlaylistBox.SelectedIndex != -1)
+            {
+                CurrentSong = PlaylistBox.SelectedIndex;
+            }
+            Player1.SetSource(Playlist1.GetList()[CurrentSong].url, false);
+            RenderNameAndSelectedSong();
+            Player1.Play();
+        }
+        
     }
 }

@@ -13,7 +13,7 @@ namespace Playlist
         Status RemoveFromList(int index);
         void MixPlaylist();
         void SortByDownloaded();
-        Song[] SearchSong(string pattern);
+        List<Song> SearchSong(string pattern);
         List<Song> GetList();
     }
 }

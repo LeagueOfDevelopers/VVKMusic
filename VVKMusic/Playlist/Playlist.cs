@@ -54,9 +54,9 @@ namespace Playlist
         {
             _ListOfSongs.Sort((song1,song2) => song2.Downloaded.CompareTo(song1.Downloaded));
         }
-        public Song[] SearchSong(string pattern)
+        public List<Song> SearchSong(string pattern)
         {
-            return _ListOfSongs.FindAll(x => x.Title == pattern).ToArray();
+            return _ListOfSongs.FindAll(x => (x.Artist + " - " + x.Title).Contains(pattern));
         }
         public List<Song> GetList()
         {
