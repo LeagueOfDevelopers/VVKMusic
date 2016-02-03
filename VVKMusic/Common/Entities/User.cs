@@ -8,7 +8,16 @@ namespace Common
     {
         public User(string accessToken, string userID, List<Song> songList)
         {
-            this.Name = "UnnamedUser";
+            this.Name = "NoName"+userID;
+            this.ID = userID;
+            this.AccessToken = accessToken;
+            this.Settings = new global::Common.Settings();
+            this.SoundSettings = new global::Common.SoundSettings();
+            this.SongList = songList;
+        }
+        public User(string name, string accessToken, string userID, List<Song> songList)
+        {
+            this.Name = name;
             this.ID = userID;
             this.AccessToken = accessToken;
             this.Settings = new global::Common.Settings();
@@ -35,5 +44,9 @@ namespace Common
         public Settings Settings { get; set; }
         public SoundSettings SoundSettings { get; set; }
         public List<Song> SongList { get; set; }
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

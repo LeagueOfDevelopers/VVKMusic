@@ -34,8 +34,9 @@ namespace Interface
         public UserManager.UserManager UserManager1 = new UserManager.UserManager();
         public VKAPI.VKAPI VKAPI1 = new VKAPI.VKAPI();
         public Infrastructure.Infrastructure Infrastructure1 = new Infrastructure.Infrastructure();
-        protected string CurrentUser = null;
+        protected User CurrentUser = null;
         protected int CurrentSong = 0;
+        
         public MainWindow()
         {
             InitializeComponent();
@@ -47,6 +48,7 @@ namespace Interface
         private void Menu_Click(object sender, RoutedEventArgs e)
         {
             ListBox MenuList = (ListBox)FindName("MenuList");
+            ListBox LoginAs = (ListBox)FindName("LoginAs");
             Image MenuButtonImage = (Image)FindName("MenuButtonImage");
             if (MenuList.Visibility == Visibility.Hidden)
             {
@@ -56,33 +58,48 @@ namespace Interface
             else
             {
                 MenuList.Visibility = Visibility.Hidden;
+                LoginAs.Visibility = Visibility.Hidden;
+                LoginAs.UnselectAll();
+                MenuList.UnselectAll();
                 MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
             }
         }
         private void MenuList_SelectionChanged(object sender, RoutedEventArgs e)
         {
             ListBox MenuList = (ListBox)FindName("MenuList");
+            ListBox LoginAs = (ListBox)FindName("LoginAs");
             ListBoxItem item = (ListBoxItem)MenuList.SelectedValue;
             Image MenuButtonImage = (Image)FindName("MenuButtonImage");
             if(item != null)
-            switch(item.Content.ToString())
-            {
-                case "Login":
-                    MenuList.Visibility = Visibility.Hidden;
-                    MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
-                    WebLogin WebLogin1 = new WebLogin();
-                    WebLogin1.RaiseCustomEvent += new EventHandler<CustomEventArgs>(WebLogin1_RaiseCustomEvent);
-                    WebLogin1.Show();
-                    break;
-            }
-            MenuList.Visibility = Visibility.Hidden;
-            MenuList.UnselectAll();
+                switch(item.Content.ToString())
+                {
+                    case "New Login":
+                        MenuList.Visibility = Visibility.Hidden;
+                        MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
+                        WebLogin WebLogin1 = new WebLogin();
+                        WebLogin1.RaiseCustomEvent += new EventHandler<CustomEventArgs>(WebLogin1_RaiseCustomEvent);
+                        WebLogin1.Show();
+                        MenuList.Visibility = Visibility.Hidden;
+                        MenuList.UnselectAll();
+                        break;
+                    case "Login as...":
+                        LoginAs.Visibility = Visibility.Visible;
+                        if(UserManager1.GetListOfUsers().Count > 0)
+                        {
+                            ObservableCollection<User> oUsers = new ObservableCollection<User>(UserManager1.GetListOfUsers());
+                            LoginAs.DataContext = oUsers;
+                            Binding binding = new Binding();
+                            LoginAs.SetBinding(ListBox.ItemsSourceProperty, binding);
+                        }
+                        break;
+                }
         }
         private void WebLogin1_RaiseCustomEvent(object sender, CustomEventArgs e)
         {
             List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(e.UserID.ToString(), e.AccessToken));
-            UserManager1.AddUser(new User(e.AccessToken, e.UserID.ToString(), SongList));
+            UserManager1.AddUser(new User(e.Name, e.AccessToken, e.UserID.ToString(), SongList));
             Playlist1.UpdateList(SongList);
+            Infrastructure1.SaveListOfUsers(UserManager1.GetListOfUsers());
             Player1.SetSource(SongList[0].url, false);
 
             RenderPlaylist(SongList);
@@ -90,6 +107,27 @@ namespace Interface
             RenderNameAndSelectedSong();
             TextBox SongTime = (TextBox)FindName("SongTime");
             SongTime.Text = String.Format("0:00 / {0}",SongList[0].Duration);
+        }
+        private void LoginAs_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            ListBox MenuList = (ListBox)FindName("MenuList");
+            ListBox LoginAs = (ListBox)FindName("LoginAs");
+            if (LoginAs.SelectedValue != null)
+            {
+                CurrentUser = (User)LoginAs.SelectedValue;
+                List<Song> SongList1 = new List<Song>(VKAPI1.GetAudioExternal(CurrentUser.ID, CurrentUser.AccessToken));
+                Playlist1.UpdateList(SongList1);
+                Player1.SetSource(SongList1[0].url, false);
+                RenderPlaylist(SongList1);
+                CurrentSong = 0;
+                RenderNameAndSelectedSong();
+                TextBox SongTime = (TextBox)FindName("SongTime");
+                SongTime.Text = String.Format("0:00 / {0}", SongList1[0].Duration);
+                MenuList.Visibility = Visibility.Hidden;
+                MenuList.UnselectAll();
+                LoginAs.Visibility = Visibility.Hidden;
+                LoginAs.UnselectAll();
+            }
         }
         private void Download_Click(object sender, RoutedEventArgs e)
         {
@@ -108,8 +146,8 @@ namespace Interface
                 {
                     CurrentSong = SongList.Length - 1;
                 }
-            Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
             RenderNameAndSelectedSong();
+            Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
             Player1.Play();
         }
         private void Next_Click(object sender, RoutedEventArgs e)
@@ -217,14 +255,15 @@ namespace Interface
         }
         private void Playlist_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Player1.Stop();
             ListBox PlaylistBox = (ListBox)FindName("Playlist");
             if(PlaylistBox.SelectedIndex != -1)
             {
                 CurrentSong = PlaylistBox.SelectedIndex;
             }
-            Player1.SetSource(Playlist1.GetList()[CurrentSong].url, false);
             RenderNameAndSelectedSong();
+            Player1.Stop();
+            List<Song> SongList = Playlist1.GetList();
+            Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
             Player1.Play();
         }
         

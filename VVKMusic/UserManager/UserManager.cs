@@ -74,17 +74,21 @@ namespace UserManager
             _ListOfUsers = listOfUsers;
             return Status.OK;
         }
-        public Song[] GetUserListOfSongs(string userID)
+        public List<Song> GetUserListOfSongs(string userID)
         {
             if (_ListOfUsers.Exists(x => x.ID == userID))
             {
-                return _ListOfUsers[_ListOfUsers.FindIndex(x => x.ID == userID)].SongList.ToArray();
+                return _ListOfUsers[_ListOfUsers.FindIndex(x => x.ID == userID)].SongList;
             }
             else
             {
                 return null;
             }
             
+        }
+        public User GetUser(string name)
+        {
+            return _ListOfUsers.Find(x => x.Name == name);
         }
         public List<User> GetListOfUsers()
         {
