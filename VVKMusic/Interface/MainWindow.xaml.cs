@@ -102,12 +102,13 @@ namespace Interface
             Infrastructure1.SaveListOfUsers(UserManager1.GetListOfUsers());
             if (SongList.Count > 0)
             {
-                Player1.SetSource(SongList[0].url, false);
-                RenderPlaylist(SongList);
                 CurrentSong = 0;
+                Player1.SetSource(SongList[CurrentSong].url, false);
+                RenderPlaylist(SongList);
                 RenderNameAndSelectedSong();
                 TextBox SongTime = (TextBox)FindName("SongTime");
                 SongTime.Text = String.Format("0:00 / {0}", SongList[0].Duration);
+                Player1.Play();
             }
             else
             {
@@ -125,12 +126,13 @@ namespace Interface
                 Playlist1.UpdateList(SongList1);
                 if (SongList1.Count > 0)
                 {
-                    Player1.SetSource(SongList1[0].url, false);
-                    RenderPlaylist(SongList1);
                     CurrentSong = 0;
+                    Player1.SetSource(SongList1[CurrentSong].url, false);
+                    RenderPlaylist(SongList1);
                     RenderNameAndSelectedSong();
                     TextBox SongTime = (TextBox)FindName("SongTime");
                     SongTime.Text = String.Format("0:00 / {0}", SongList1[0].Duration);
+                    Player1.Play();
                 }
                 else
                 {
@@ -149,26 +151,26 @@ namespace Interface
         private void Prev_Click(object sender, RoutedEventArgs e)
         {
             Player1.Stop();
-            Song[] SongList = Playlist1.GetList().ToArray();
-            if(SongList.Length > 0)
+            List<Song> SongList = Playlist1.GetList();
+            if(SongList.Count > 0)
                 if(CurrentSong > 0)
                 {
                     CurrentSong--;
                 }
                 else
                 {
-                    CurrentSong = SongList.Length - 1;
+                    CurrentSong = SongList.Count - 1;
                 }
-            RenderNameAndSelectedSong();
             Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
             Player1.Play();
+            RenderNameAndSelectedSong();
         }
         private void Next_Click(object sender, RoutedEventArgs e)
         {
             Player1.Stop();
-            Song[] SongList = Playlist1.GetList().ToArray();
-            if (SongList.Length > 0)
-                if (CurrentSong < SongList.Length - 1)
+            List<Song> SongList = Playlist1.GetList();
+            if (SongList.Count > 0)
+                if (CurrentSong < SongList.Count - 1)
                 {
                     CurrentSong++;
                 }
@@ -177,8 +179,8 @@ namespace Interface
                     CurrentSong = 0;
                 }
             Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
-            RenderNameAndSelectedSong();
             Player1.Play();
+            RenderNameAndSelectedSong();
         }
         private void Pause_Click(object sender, RoutedEventArgs e)
         {
@@ -226,12 +228,12 @@ namespace Interface
         {
             this.WindowState = WindowState.Minimized;
         }
-        private void Search_RemoveText(object sender, RoutedEventArgs e)
+        private void Search_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox Search = (TextBox)FindName("Search");
             Search.Text = "";
         }
-        private void Search_AddText(object sender, RoutedEventArgs e)
+        private void Search_LostFocus(object sender, RoutedEventArgs e)
         {
             TextBox Search = (TextBox)FindName("Search");
             if (Search.Text == "")
@@ -266,7 +268,7 @@ namespace Interface
                 RenderPlaylist(Playlist1.GetList());
             }
         }
-        private void Playlist_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Playlist_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             ListBox PlaylistBox = (ListBox)FindName("Playlist");
             if(PlaylistBox.SelectedIndex != -1)
