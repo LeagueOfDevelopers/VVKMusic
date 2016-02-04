@@ -64,14 +64,15 @@ namespace Interface
                 MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
             }
         }
-        private void MenuList_SelectionChanged(object sender, RoutedEventArgs e)
+        private void MenuList_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             ListBox MenuList = (ListBox)FindName("MenuList");
             ListBox LoginAs = (ListBox)FindName("LoginAs");
             ListBoxItem item = (ListBoxItem)MenuList.SelectedValue;
             Image MenuButtonImage = (Image)FindName("MenuButtonImage");
-            if(item != null)
-                switch(item.Content.ToString())
+            if (item != null)
+            {
+                switch (item.Content.ToString())
                 {
                     case "New Login":
                         MenuList.Visibility = Visibility.Hidden;
@@ -79,13 +80,12 @@ namespace Interface
                         WebLogin WebLogin1 = new WebLogin();
                         WebLogin1.RaiseCustomEvent += new EventHandler<CustomEventArgs>(WebLogin1_RaiseCustomEvent);
                         WebLogin1.Show();
-                        MenuList.Visibility = Visibility.Hidden;
                         MenuList.UnselectAll();
                         break;
                     case "Login as...":
-                        LoginAs.Visibility = Visibility.Visible;
-                        if(UserManager1.GetListOfUsers().Count > 0)
+                        if (UserManager1.GetListOfUsers().Count > 0)
                         {
+                            LoginAs.Visibility = Visibility.Visible;
                             ObservableCollection<User> oUsers = new ObservableCollection<User>(UserManager1.GetListOfUsers());
                             LoginAs.DataContext = oUsers;
                             Binding binding = new Binding();
@@ -93,6 +93,7 @@ namespace Interface
                         }
                         break;
                 }
+            }
         }
         private void WebLogin1_RaiseCustomEvent(object sender, CustomEventArgs e)
         {
@@ -116,13 +117,14 @@ namespace Interface
                 MessageBox.Show("Данный пользователь не имеет аудиозаписей.", "VVKMusic информация", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
-        private void LoginAs_SelectionChanged(object sender, RoutedEventArgs e)
+        private void LoginAs_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            Player1.Stop();
             ListBox MenuList = (ListBox)FindName("MenuList");
             ListBox LoginAs = (ListBox)FindName("LoginAs");
+            Image MenuButtonImage = (Image)FindName("MenuButtonImage");
             if (LoginAs.SelectedValue != null)
             {
+                Player1.Stop();
                 CurrentUser = (User)LoginAs.SelectedValue;
                 List<Song> SongList1 = new List<Song>(VKAPI1.GetAudioExternal(CurrentUser.ID, CurrentUser.AccessToken));
                 Playlist1.UpdateList(SongList1);
@@ -140,6 +142,7 @@ namespace Interface
                 {
                     MessageBox.Show("Данный пользователь не имеет аудиозаписей.", "VVKMusic информация", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
+                MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
                 MenuList.Visibility = Visibility.Hidden;
                 MenuList.UnselectAll();
                 LoginAs.Visibility = Visibility.Hidden;
@@ -273,16 +276,27 @@ namespace Interface
         private void Playlist_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
             ListBox PlaylistBox = (ListBox)FindName("Playlist");
-            if(PlaylistBox.SelectedIndex != -1)
+            if (PlaylistBox.SelectedIndex != -1 && CurrentSong != PlaylistBox.SelectedIndex)
             {
                 CurrentSong = PlaylistBox.SelectedIndex;
+                RenderNameAndSelectedSong();
+                Player1.Stop();
+                List<Song> SongList = Playlist1.GetList();
+                Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
+                Player1.Play();
             }
-            RenderNameAndSelectedSong();
-            Player1.Stop();
-            List<Song> SongList = Playlist1.GetList();
-            Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
-            Player1.Play();
         }
-        
+        private void LoginAs_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Image MenuButtonImage = (Image)FindName("MenuButtonImage");
+            ListBox MenuList = (ListBox)FindName("MenuList");
+            ListBox LoginAs = (ListBox)FindName("LoginAs");
+            MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
+            MenuList.Visibility = Visibility.Hidden;
+            LoginAs.Visibility = Visibility.Hidden;
+            MenuList.UnselectAll();
+            LoginAs.UnselectAll();
+        }
     }
 }
+
