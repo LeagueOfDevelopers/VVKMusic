@@ -96,6 +96,7 @@ namespace Interface
         }
         private void WebLogin1_RaiseCustomEvent(object sender, CustomEventArgs e)
         {
+            Player1.Stop();
             List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(e.UserID.ToString(), e.AccessToken));
             UserManager1.AddUser(new User(e.Name, e.AccessToken, e.UserID.ToString(), SongList));
             Playlist1.UpdateList(SongList);
@@ -117,6 +118,7 @@ namespace Interface
         }
         private void LoginAs_SelectionChanged(object sender, RoutedEventArgs e)
         {
+            Player1.Stop();
             ListBox MenuList = (ListBox)FindName("MenuList");
             ListBox LoginAs = (ListBox)FindName("LoginAs");
             if (LoginAs.SelectedValue != null)
