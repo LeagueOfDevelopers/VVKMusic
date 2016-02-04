@@ -100,13 +100,19 @@ namespace Interface
             UserManager1.AddUser(new User(e.Name, e.AccessToken, e.UserID.ToString(), SongList));
             Playlist1.UpdateList(SongList);
             Infrastructure1.SaveListOfUsers(UserManager1.GetListOfUsers());
-            Player1.SetSource(SongList[0].url, false);
-
-            RenderPlaylist(SongList);
-            CurrentSong = 0;
-            RenderNameAndSelectedSong();
-            TextBox SongTime = (TextBox)FindName("SongTime");
-            SongTime.Text = String.Format("0:00 / {0}",SongList[0].Duration);
+            if (SongList.Count > 0)
+            {
+                Player1.SetSource(SongList[0].url, false);
+                RenderPlaylist(SongList);
+                CurrentSong = 0;
+                RenderNameAndSelectedSong();
+                TextBox SongTime = (TextBox)FindName("SongTime");
+                SongTime.Text = String.Format("0:00 / {0}", SongList[0].Duration);
+            }
+            else
+            {
+                MessageBox.Show("Данный пользователь не имеет аудиозаписей.", "VVKMusic информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
         private void LoginAs_SelectionChanged(object sender, RoutedEventArgs e)
         {
@@ -117,12 +123,19 @@ namespace Interface
                 CurrentUser = (User)LoginAs.SelectedValue;
                 List<Song> SongList1 = new List<Song>(VKAPI1.GetAudioExternal(CurrentUser.ID, CurrentUser.AccessToken));
                 Playlist1.UpdateList(SongList1);
-                Player1.SetSource(SongList1[0].url, false);
-                RenderPlaylist(SongList1);
-                CurrentSong = 0;
-                RenderNameAndSelectedSong();
-                TextBox SongTime = (TextBox)FindName("SongTime");
-                SongTime.Text = String.Format("0:00 / {0}", SongList1[0].Duration);
+                if (SongList1.Count > 0)
+                {
+                    Player1.SetSource(SongList1[0].url, false);
+                    RenderPlaylist(SongList1);
+                    CurrentSong = 0;
+                    RenderNameAndSelectedSong();
+                    TextBox SongTime = (TextBox)FindName("SongTime");
+                    SongTime.Text = String.Format("0:00 / {0}", SongList1[0].Duration);
+                }
+                else
+                {
+                    MessageBox.Show("Данный пользователь не имеет аудиозаписей.", "VVKMusic информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
                 MenuList.Visibility = Visibility.Hidden;
                 MenuList.UnselectAll();
                 LoginAs.Visibility = Visibility.Hidden;
