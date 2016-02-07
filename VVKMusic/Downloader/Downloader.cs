@@ -19,9 +19,9 @@ namespace Downloader
                     {
                         if (!song.Downloaded)
                         {
-
-                            string fileName = song.url.AbsolutePath.Substring(song.url.AbsolutePath.LastIndexOf('/') + 1);
-                            Client.DownloadFileAsync(song.url, @folder + fileName);
+                            string fileName = @folder + song.Artist + "-" + song.Title + ".mp3"; 
+                            Client.DownloadFileAsync(song.Uri, @fileName);
+                            song.DownloadedUri = new Uri(@fileName);
                             song.Downloaded = true;
                         }
                     }
