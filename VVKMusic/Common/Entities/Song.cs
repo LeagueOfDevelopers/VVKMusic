@@ -23,7 +23,8 @@ namespace Common
         [JsonProperty("duration")]
         public int Duration { get; set; }
         [JsonProperty("url")]
-        public Uri url { get; set; }
+        public Uri Uri { get; set; }
+        public Uri DownloadedUri { get; set; }
         public int LyricsID { get; set; }
         [JsonProperty("genre")]
         public int GenreID { get; set; }

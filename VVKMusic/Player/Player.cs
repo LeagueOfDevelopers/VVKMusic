@@ -1,8 +1,9 @@
-﻿using System.Windows.Media;
+﻿using System;
+using System.Windows.Media;
 using Un4seen.Bass;
-using Un4seen.Bass.Misc;
 using Un4seen.Bass.AddOn.Wma;
-using System;
+using Un4seen.Bass.Misc;
+using Common;
 using Status = Common.Common.Status;
 
 namespace Player
@@ -19,15 +20,15 @@ namespace Player
                 throw new Exception();
             }
         }
-        public Status SetSource(Uri source, bool downloaded)
+        public Status SetSource(Song playedSong)
         {
-            if (downloaded)
+            if (playedSong.Downloaded)
             {
-                stream = Bass.BASS_StreamCreateFile(source.LocalPath, 0, 0, BASSFlag.BASS_DEFAULT);
+                stream = Bass.BASS_StreamCreateFile(playedSong.DownloadedUri.LocalPath, 0, 0, BASSFlag.BASS_DEFAULT);
             }
             else
             {
-                stream = Bass.BASS_StreamCreateURL(source.ToString(), 0, 0, null, new IntPtr(0));
+                stream = Bass.BASS_StreamCreateURL(playedSong.Uri.ToString(), 0, 0, null, new IntPtr(0));
             }
             if (stream != 0)
             {
@@ -35,7 +36,19 @@ namespace Player
             }
             else
             {
-                return Status.Error;
+                if (playedSong.Downloaded)
+                {
+                    playedSong.Downloaded = false;
+                    stream = Bass.BASS_StreamCreateURL(playedSong.Uri.ToString(), 0, 0, null, new IntPtr(0));
+                }
+                if (stream != 0)
+                {
+                    return Status.OK;
+                }
+                else
+                {
+                    return Status.Error;
+                }
             }
         }
         public Status Play()

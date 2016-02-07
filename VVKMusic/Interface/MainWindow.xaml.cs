@@ -92,7 +92,7 @@ namespace Interface
             if (SongList.Count > 0)
             {
                 CurrentSong = 0;
-                Player1.SetSource(SongList[CurrentSong].url, false);
+                Player1.SetSource(SongList[CurrentSong]);
                 RenderPlaylist(SongList);
                 RenderNameAndSelectedSong();
                 TextBox SongTime = (TextBox)FindName("SongTime");
@@ -118,7 +118,7 @@ namespace Interface
                 if (SongList1.Count > 0)
                 {
                     CurrentSong = 0;
-                    Player1.SetSource(SongList1[CurrentSong].url, false);
+                    Player1.SetSource(SongList1[CurrentSong]);
                     RenderPlaylist(SongList1);
                     RenderNameAndSelectedSong();
                     TextBox SongTime = (TextBox)FindName("SongTime");
@@ -153,7 +153,7 @@ namespace Interface
                 {
                     CurrentSong = SongList.Count - 1;
                 }
-            Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
+            Player1.SetSource(SongList[CurrentSong]);
             Player1.Play();
             RenderNameAndSelectedSong();
         }
@@ -170,7 +170,7 @@ namespace Interface
                 {
                     CurrentSong = 0;
                 }
-            Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
+            Player1.SetSource(SongList[CurrentSong]);
             Player1.Play();
             RenderNameAndSelectedSong();
         }
@@ -269,7 +269,7 @@ namespace Interface
                 RenderNameAndSelectedSong();
                 Player1.Stop();
                 List<Song> SongList = Playlist1.GetList();
-                Player1.SetSource(SongList[CurrentSong].url, SongList[CurrentSong].Downloaded);
+                Player1.SetSource(SongList[CurrentSong]);
                 Player1.Play();
             }
         }

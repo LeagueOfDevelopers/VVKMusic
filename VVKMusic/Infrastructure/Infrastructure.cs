@@ -42,7 +42,7 @@ namespace Infrastructure
                 BinaryFormatter formatter = new BinaryFormatter();
                 return (List<User>)formatter.Deserialize(fs);
             }
-            catch (SerializationException e) { return null; }
+            catch (SerializationException) { return null; }
             finally
             {
                 fs.Close();
