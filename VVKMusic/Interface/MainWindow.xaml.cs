@@ -84,56 +84,59 @@ namespace Interface
         }
         private void WebLogin1_RaiseCustomEvent(object sender, CustomEventArgs e)
         {
-            Player1.Stop();
             List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(e.UserID.ToString(), e.AccessToken));
-            UserManager1.AddUser(new User(e.Name, e.AccessToken, e.UserID.ToString(), SongList));
-            Playlist1.UpdateList(SongList);
-            Infrastructure1.SaveListOfUsers(UserManager1.GetListOfUsers());
-            if (SongList.Count > 0)
-            {
-                CurrentSong = 0;
-                Player1.SetSource(SongList[CurrentSong]);
-                RenderPlaylist(SongList);
-                RenderNameAndSelectedSong();
-                TextBox SongTime = (TextBox)FindName("SongTime");
-                SongTime.Text = String.Format("0:00 / {0}", SongList[0].Duration);
-                Player1.Play();
-            }
-            else
-            {
-                MessageBox.Show("Данный пользователь не имеет аудиозаписей.", "VVKMusic информация", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            SetUser(new User(e.Name, e.AccessToken, e.UserID.ToString(), SongList), false);
+            
         }
         private void LoginAs_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            ListBox MenuList = (ListBox)FindName("MenuList");
-            ListBox LoginAs = (ListBox)FindName("LoginAs");
-            Image MenuButtonImage = (Image)FindName("MenuButtonImage");
-            if (LoginAs.SelectedValue != null)
+            SetUser((User)LoginAs.SelectedValue, true);
+        }
+        private void SetUser(User user, bool wasAlreadyEnteringThroughThisApp)
+        {
+            Player1.Stop();
+            CurrentUser = user;
+            if (!wasAlreadyEnteringThroughThisApp)
             {
-                Player1.Stop();
-                CurrentUser = (User)LoginAs.SelectedValue;
-                List<Song> SongList1 = new List<Song>(VKAPI1.GetAudioExternal(CurrentUser.ID, CurrentUser.AccessToken));
-                Playlist1.UpdateList(SongList1);
-                if (SongList1.Count > 0)
-                {
-                    CurrentSong = 0;
-                    Player1.SetSource(SongList1[CurrentSong]);
-                    RenderPlaylist(SongList1);
-                    RenderNameAndSelectedSong();
-                    TextBox SongTime = (TextBox)FindName("SongTime");
-                    SongTime.Text = String.Format("0:00 / {0}", SongList1[0].Duration);
-                    Player1.Play();
-                }
-                else
-                {
-                    MessageBox.Show("Данный пользователь не имеет аудиозаписей.", "VVKMusic информация", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
+                UserManager1.AddUser(user);
+                Playlist1.UpdateList(user.SongList);
+                Infrastructure1.SaveListOfUsers(UserManager1.GetListOfUsers());
+            }
+            else
+            {
+                ListBox MenuList = (ListBox)FindName("MenuList");
+                ListBox LoginAs = (ListBox)FindName("LoginAs");
+                Image MenuButtonImage = (Image)FindName("MenuButtonImage");
+                List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(user.ID, user.AccessToken));
+                UserManager1.UpdateUserListOfSongs(user.ID, SongList);
+                Playlist1.UpdateList(SongList);
                 MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
                 MenuList.Visibility = Visibility.Hidden;
                 MenuList.UnselectAll();
                 LoginAs.Visibility = Visibility.Hidden;
                 LoginAs.UnselectAll();
+
+            }
+            if (user.SongList.Count > 0)
+            {
+                CurrentSong = 0;
+                Player1.SetSource(user.SongList[CurrentSong]);
+                RenderPlaylist(user.SongList);
+                RenderNameAndSelectedSong();
+                TextBox SongTime = (TextBox)FindName("SongTime");
+                SongTime.Text = String.Format("0:00 / {0}", user.SongList[0].Duration);
+                Player1.Play();
+            }
+            else
+            {
+                if (!wasAlreadyEnteringThroughThisApp)
+                {
+                    MessageBox.Show("У данного пользователя нет аудиозаписей.", "VVKMusic информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Вконтакте сообщает, что аудиозаписей нет. Если на данном аккаунте есть аудиозаписи, возможно Вам нужно залогиниться заново.", "VVKMusic информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
         }
         private void Download_Click(object sender, RoutedEventArgs e)
@@ -189,7 +192,7 @@ namespace Interface
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             TextBox Search = (TextBox)FindName("Search");
-            RenderPlaylist(Playlist1.SearchSong(Search.Text));
+            RenderPlaylist(Playlist1.SearchSong(Search.Text.ToLower()));
         }
         private void Mix_Click(object sender, RoutedEventArgs e)
         {

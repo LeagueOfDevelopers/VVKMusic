@@ -56,7 +56,7 @@ namespace Playlist
         }
         public List<Song> SearchSong(string pattern)
         {
-            return _ListOfSongs.FindAll(x => (x.Artist + " - " + x.Title).Contains(pattern));
+            return _ListOfSongs.FindAll(x => (x.Artist + " - " + x.Title).ToLower().Contains(pattern));
         }
         public List<Song> GetList()
         {

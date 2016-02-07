@@ -74,7 +74,15 @@ namespace VKAPI
             responeFromServer = HttpUtility.HtmlDecode(responeFromServer);
 
             JObject obj = JObject.Parse(responeFromServer);
-            Song[] Songs = obj["response"].Children().Skip(1).Select(c => c.ToObject<Song>()).ToArray();
+            Song[] Songs;
+            try
+            {
+                Songs = obj["response"].Children().Skip(1).Select(c => c.ToObject<Song>()).ToArray();
+            }
+            catch (NullReferenceException)
+            {
+                Songs = new Song[0];
+            }
             return Songs;
         }
     }
