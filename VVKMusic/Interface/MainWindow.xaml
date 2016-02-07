@@ -50,7 +50,7 @@
                 <Image Source="Resources/Pictures/settings.png" />
             </StackPanel>
         </Button>
-        <Button HorizontalAlignment="Left" Height="35" Margin="15,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Download_Click" Grid.Row="1">
+        <Button Name="btnDownload" HorizontalAlignment="Left" Height="35" Margin="15,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="Download_Click" Grid.Row="1">
             <StackPanel>
                 <Image Source="Resources/Pictures/download.png" />
             </StackPanel>

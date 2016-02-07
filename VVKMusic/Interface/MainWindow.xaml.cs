@@ -21,6 +21,7 @@ namespace Interface
         public UserManager.UserManager UserManager1 = new UserManager.UserManager();
         public VKAPI.VKAPI VKAPI1 = new VKAPI.VKAPI();
         public Infrastructure.Infrastructure Infrastructure1 = new Infrastructure.Infrastructure();
+        public Downloader.Downloader Downloader1 = new Downloader.Downloader();
         protected User CurrentUser = null;
         protected int CurrentSong = 0;
         
@@ -141,7 +142,15 @@ namespace Interface
         }
         private void Download_Click(object sender, RoutedEventArgs e)
         {
-            //TODO
+            List<Song> ListToDownload = new List<Song>();
+            if (e.GetHashCode() == btnDownload.GetHashCode())
+                ListToDownload.Add(Playlist1.GetList()[CurrentSong]);
+            else
+                ListToDownload = Playlist1.GetList();
+            if (Downloader1.DownloadSong(ListToDownload) == Common.Common.Status.Error)
+                MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);
+            else
+                MessageBox.Show("Скачивание завершено", "", MessageBoxButton.OK);
         }
         private void Prev_Click(object sender, RoutedEventArgs e)
         {

@@ -1,10 +1,11 @@
-﻿using Status = Common.Common.Status;
+﻿using System.Collections.Generic;
+using Status = Common.Common.Status;
 using Common;
 
 namespace Downloader
 {
     interface IDownloader
     {
-         Status DownloadSong(Song[] songMas);
+        Status DownloadSong(List<Song> songList);
     }
 }
