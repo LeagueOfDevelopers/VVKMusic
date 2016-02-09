@@ -200,6 +200,22 @@ namespace Interface
         {
             RenderPlaylist(Playlist1.SearchSong(txtSearch.Text.ToLower()));
         }
+        private void txtSearch_GotFocus(object sender, RoutedEventArgs e)
+        {
+            txtSearch.Text = "";
+        }
+        private void txtSearch_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (txtSearch.Text == "")
+                txtSearch.Text = "Search";
+        }
+        private void txtSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                RenderPlaylist(Playlist1.SearchSong(txtSearch.Text.ToLower()));
+            }
+        }
         private void btnMix_Click(object sender, RoutedEventArgs e)
         {
             Playlist1.MixPlaylist();
@@ -228,15 +244,6 @@ namespace Interface
         private void btnCollapse_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
-        }
-        private void txtSearch_GotFocus(object sender, RoutedEventArgs e)
-        {
-            txtSearch.Text = "";
-        }
-        private void txtSearch_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (txtSearch.Text == "")
-                txtSearch.Text = "Search";
         }
         private void rectangleDraggable_MouseDown(object sender, MouseButtonEventArgs e)
         {

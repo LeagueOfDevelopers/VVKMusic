@@ -93,8 +93,8 @@
                 <Image Source="Resources/Pictures/download.png" />
             </StackPanel>
         </Button>
-        <TextBox Name="txtSearch" HorizontalAlignment="Left" Height="21" Margin="55,9,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="130" BorderThickness="1,1,0,1" GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus" TextChanged="txtSearch_TextChanged" Grid.Row="4"/>
-        <Button HorizontalAlignment="Left" Height="35" Margin="182,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="btnSearch_Click" Grid.Row="4">
+            <TextBox Name="txtSearch" HorizontalAlignment="Left" Height="21" Margin="55,9,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="130" BorderThickness="1,1,0,1" GotFocus="txtSearch_GotFocus" LostFocus="txtSearch_LostFocus" TextChanged="txtSearch_TextChanged" Grid.Row="4" KeyDown="txtSearch_KeyDown"/>
+            <Button HorizontalAlignment="Left" Height="35" Margin="182,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="btnSearch_Click" Grid.Row="4">
             <StackPanel>
                 <Image Source="Resources/Pictures/search.png" />
             </StackPanel>
