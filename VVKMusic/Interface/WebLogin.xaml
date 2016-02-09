@@ -4,13 +4,13 @@
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         Title="Login" Height="500" Width="700">
     <Grid>
-        <WindowsFormsHost Name="WebBrowser1">
+        <WindowsFormsHost Name="wbsWebLogin">
             <WindowsFormsHost.Child>
-                <wf:WebBrowser DocumentCompleted="WebBrowser1_DocumentCompleted"/>
+                <wf:WebBrowser DocumentCompleted="wbsWebLogin_DocumentCompleted"/>
             </WindowsFormsHost.Child>
         </WindowsFormsHost>
-        <TextBox Name="UserName" HorizontalAlignment="Center" Height="20" Margin="0,150,0,0" Text="Enter your name here" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="250" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Visibility="Hidden"/>
-        <Button Name="Submit" Content="Submit" HorizontalAlignment="Center" Height="20" Margin="0,180,0,0" VerticalAlignment="Top" Width="85" Click="Button_Click" Visibility="Hidden"/>
+        <TextBox Name="txtUserName" HorizontalAlignment="Center" Height="20" Margin="0,150,0,0" Text="Enter your name here" TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="250" GotFocus="txtUserName_GotFocus" LostFocus="txtUserName_LostFocus" Visibility="Hidden"/>
+        <Button Name="btnSubmit" Content="Submit" HorizontalAlignment="Center" Height="20" Margin="0,180,0,0" VerticalAlignment="Top" Width="85" Click="btnSubmit_Click" Visibility="Hidden"/>
 
 
     </Grid>

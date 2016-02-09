@@ -17,7 +17,7 @@ namespace Player
             BassNet.Registration("xxxddr3@gmail.com", "2X441017152222");
             if(!(Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero)))
             {
-                throw new Exception();
+                throw new Exception("Error while initializing Player instance");
             }
         }
         public Status SetSource(Song playedSong)
