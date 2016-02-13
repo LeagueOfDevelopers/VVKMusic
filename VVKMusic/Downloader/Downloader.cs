@@ -16,18 +16,16 @@ namespace Downloader
             {
                 string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + @"\";
                 count = songList.Count;
-                int wcCounter = 0;
                 try
                 {
-                    WebClient[] Client = new WebClient[songList.Count];
+                    WebClient Client = new WebClient();
                     foreach (Song song in songList)
                     {
-                        Client[wcCounter].DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCallback);
+                        Client.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCallback);
                         string fileName = song.Artist + "-" + song.Title + ".mp3";
-                        Client[wcCounter].DownloadFileAsync(song.Uri, @folder + fileName);
+                        Client.DownloadFileAsync(song.Uri, @folder + fileName);
                         song.DownloadedUri = new Uri(@folder + fileName);
                         song.Downloaded = true;
-                        wcCounter++;
                     }
                 }
                 catch (WebException)
