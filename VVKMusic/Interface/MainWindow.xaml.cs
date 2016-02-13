@@ -141,14 +141,12 @@ namespace Interface
         private void btnDownload_Click(object sender, RoutedEventArgs e)
         {
             List<Song> ListToDownload = new List<Song>();
-            if (e.GetHashCode() == btnDownload.GetHashCode())
+            if (sender.GetHashCode() == btnDownload.GetHashCode())
                 ListToDownload.Add(Playlist1.GetList()[CurrentSong]);
             else
                 ListToDownload = Playlist1.GetList();
             if (Downloader1.DownloadSong(ListToDownload) == Common.Common.Status.Error)
                 MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);
-            else
-                MessageBox.Show("Скачивание завершено", "", MessageBoxButton.OK);
         }
         private void btnPrev_Click(object sender, RoutedEventArgs e)
         {

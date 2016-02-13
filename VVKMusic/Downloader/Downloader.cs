@@ -1,45 +1,51 @@
 ﻿using Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.ComponentModel;
 using System.Net;
+using System.Windows;
 using Status = Common.Common.Status;
 
 namespace Downloader
-{
-    public class Downloader : IDownloader
     {
-        public Status DownloadSong(List<Song> songList)
+        public class Downloader : IDownloader
         {
-            string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + @"\";
-            try
+            int count = 0;
+            public Status DownloadSong(List<Song> songList)
             {
-                using (WebClient Client = new WebClient())
+                string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + @"\";
+                count = songList.Count;
+                int wcCounter = 0;
+                try
                 {
+                    WebClient[] Client = new WebClient[songList.Count];
                     foreach (Song song in songList)
                     {
-                        if (!song.Downloaded)
-                        {
-                            string fileName = @folder + song.Artist + "-" + song.Title + ".mp3"; 
-                            Client.DownloadFileAsync(song.Uri, @fileName);
-                            song.DownloadedUri = new Uri(@fileName);
-                            song.Downloaded = true;
-                        }
+                        Client[wcCounter].DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCallback);
+                        string fileName = song.Artist + "-" + song.Title + ".mp3";
+                        Client[wcCounter].DownloadFileAsync(song.Uri, @folder + fileName);
+                        song.DownloadedUri = new Uri(@folder + fileName);
+                        song.Downloaded = true;
+                        wcCounter++;
                     }
                 }
-            }
-            catch (WebException)
-            {
-                return Status.Error;
-            }
-            catch (ArgumentNullException)
-            {
-                return Status.Error;
-            }
-            catch (NotSupportedException)
-            {
+                catch (WebException)
+                {
+                    return Status.Error;
+                }
+                catch (ArgumentNullException)
+                {
+                    return Status.Error;
+                }
+                catch (NotSupportedException) { }
                 return Status.OK;
             }
-            return Status.OK;
+            public void DownloadFileCallback(object sender, AsyncCompletedEventArgs e)
+            {
+                count--;
+                MessageBox.Show("Скачивание завершено полностью" + count.ToString(), "", MessageBoxButton.OK);
+            }
+
         }
     }
-}
