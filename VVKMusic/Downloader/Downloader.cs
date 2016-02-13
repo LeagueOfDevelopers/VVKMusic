@@ -1,6 +1,7 @@
 ﻿using Common;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using Status = Common.Common.Status;
 
@@ -40,6 +41,21 @@ namespace Downloader
                 return Status.OK;
             }
             return Status.OK;
+        }
+        public int[] CheckIfDownloaded(List<Song> songList)
+        {
+            int[] array = new int[songList.Count];
+            int i = 0;
+            foreach (Song song in songList)
+            {
+                if (File.Exists(song.DownloadedUri.AbsoluteUri))
+                {
+                    array[i] = 1;
+                }
+                else array[i] = 0;
+                i++;
+            }
+            return array;
         }
     }
 }
