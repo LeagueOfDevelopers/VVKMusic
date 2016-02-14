@@ -42,7 +42,7 @@ namespace Downloader
             public void DownloadFileCallback(object sender, AsyncCompletedEventArgs e)
             {
                 count--;
-                MessageBox.Show("Скачивание завершено полностью" + count.ToString(), "", MessageBoxButton.OK);
+                MessageBox.Show("Скачивание завершено полностью " + count.ToString(), "", MessageBoxButton.OK);
             }
 
         }
