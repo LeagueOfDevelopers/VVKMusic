@@ -11,9 +11,9 @@ namespace Player
     interface IPlayer
     {
         Status SetSource(Song playedSong);
-        Status Play();
-        Status Stop();
-        Status Pause();
+        Status PlayAndStartTimer();
+        Status StopAndStopTimer();
+        Status PauseAndStopTimer();
         Status AdjustSound();
     }
 }
