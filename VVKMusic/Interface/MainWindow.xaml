@@ -57,8 +57,13 @@
         </Button>
         </Grid>
         <Grid Background="#F5F5F5" Grid.Row="2">
-        <Grid Width="310" HorizontalAlignment="Center" Grid.Row="2">
-        <Button HorizontalAlignment="Left" Height="35" Margin="47,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="btnPrev_Click" Grid.Row="2">
+            <Grid Width="310" HorizontalAlignment="Center" Grid.Row="2">
+                <Grid Width="298" Height="8" HorizontalAlignment="Center" Margin="5,5,0,0" VerticalAlignment="Top" Grid.Row="2" MouseUp="rectangleProgressBarMain_MouseUp">
+                    <Rectangle Name="rectangleProgressBarMain" Width="298" Height="8" HorizontalAlignment="Left" VerticalAlignment="Center" Fill="#F59184"/>
+                    <Rectangle Name="rectangleProgressBarElapsed" Height="4" HorizontalAlignment="Left" Width="0" VerticalAlignment="Center" Fill="#F8F4F5"/>
+                    <Ellipse Name="circleProgressBar" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Visibility="Hidden" Fill="#F8F4F5" Width="8" Height="8" Stroke="#F59184" StrokeThickness="1"/>
+                </Grid>
+                <Button HorizontalAlignment="Left" Height="35" Margin="47,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="btnPrev_Click" Grid.Row="2">
             <StackPanel>
                 <Image Source="Resources/Pictures/prev.png" />
             </StackPanel>
