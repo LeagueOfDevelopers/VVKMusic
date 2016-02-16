@@ -2,12 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using Un4seen.Bass;
+using Un4seen.Bass.Misc;
+
 
 namespace Interface
 {
@@ -16,14 +21,17 @@ namespace Interface
     /// </summary>
     public partial class MainWindow : Window
     {
-        public Playlist.Playlist Playlist1 = new Playlist.Playlist();
-        public Player.Player Player1 = new Player.Player();
-        public UserManager.UserManager UserManager1 = new UserManager.UserManager();
-        public VKAPI.VKAPI VKAPI1 = new VKAPI.VKAPI();
-        public Infrastructure.Infrastructure Infrastructure1 = new Infrastructure.Infrastructure();
-        public Downloader.Downloader Downloader1 = new Downloader.Downloader();
-        protected User CurrentUser = null;
-        protected int CurrentSong = 0;
+        private Playlist.Playlist Playlist1 = new Playlist.Playlist();
+        private Player.Player Player1 = new Player.Player();
+        private UserManager.UserManager UserManager1 = new UserManager.UserManager();
+        private VKAPI.VKAPI VKAPI1 = new VKAPI.VKAPI();
+        private Infrastructure.Infrastructure Infrastructure1 = new Infrastructure.Infrastructure();
+        private Downloader.Downloader Downloader1 = new Downloader.Downloader();
+
+        private User _CurrentUser = null;
+        private int _CurrentSong = 0;
+        private int _updateInterval = 50;
+        private int _tickCounter = 0;
         
         public MainWindow()
         {
@@ -98,7 +106,7 @@ namespace Interface
         private void SetUser(User user, bool wasAlreadyEnteringThroughThisApp)
         {
             Player1.Stop();
-            CurrentUser = user;
+            _CurrentUser = user;
             if (!wasAlreadyEnteringThroughThisApp)
             {
                 UserManager1.AddUser(user);
@@ -119,11 +127,11 @@ namespace Interface
             }
             if (user.SongList.Count > 0)
             {
-                CurrentSong = 0;
-                Player1.SetSource(user.SongList[CurrentSong]);
+                _CurrentSong = 0;
+                Player1.SetSource(user.SongList[_CurrentSong]);
                 RenderPlaylist(user.SongList);
                 RenderNameAndSelectedSong();
-                txtSongTime.Text = String.Format("0:00 / {0}", user.SongList[0].Duration);
+                Player1.SetTimer(_updateInterval, timerUpdate_Tick);
                 Player1.Play();
             }
             else
@@ -142,7 +150,7 @@ namespace Interface
         {
             List<Song> ListToDownload = new List<Song>();
             if (sender.GetHashCode() == btnDownload.GetHashCode())
-                ListToDownload.Add(Playlist1.GetList()[CurrentSong]);
+                ListToDownload.Add(Playlist1.GetList()[_CurrentSong]);
             else
                 ListToDownload = Playlist1.GetList();
             if (Downloader1.DownloadSong(ListToDownload) == Common.Common.Status.Error)
@@ -153,15 +161,15 @@ namespace Interface
             Player1.Stop();
             List<Song> SongList = Playlist1.GetList();
             if(SongList.Count > 0)
-                if(CurrentSong > 0)
+                if(_CurrentSong > 0)
                 {
-                    CurrentSong--;
+                    _CurrentSong--;
                 }
                 else
                 {
-                    CurrentSong = SongList.Count - 1;
+                    _CurrentSong = SongList.Count - 1;
                 }
-            Player1.SetSource(SongList[CurrentSong]);
+            Player1.SetSource(SongList[_CurrentSong]);
             Player1.Play();
             RenderNameAndSelectedSong();
         }
@@ -170,15 +178,15 @@ namespace Interface
             Player1.Stop();
             List<Song> SongList = Playlist1.GetList();
             if (SongList.Count > 0)
-                if (CurrentSong < SongList.Count - 1)
+                if (_CurrentSong < SongList.Count - 1)
                 {
-                    CurrentSong++;
+                    _CurrentSong++;
                 }
                 else
                 {
-                    CurrentSong = 0;
+                    _CurrentSong = 0;
                 }
-            Player1.SetSource(SongList[CurrentSong]);
+            Player1.SetSource(SongList[_CurrentSong]);
             Player1.Play();
             RenderNameAndSelectedSong();
         }
@@ -226,6 +234,7 @@ namespace Interface
         }
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
+            Player1.Stop();
             this.Close();
         }
         private void btnExpand_Click(object sender, RoutedEventArgs e)
@@ -250,9 +259,9 @@ namespace Interface
         private void RenderNameAndSelectedSong()
         {
             List<Song> SongList = Playlist1.GetList();
-            txtSongName.Text = SongList[CurrentSong].ToString();
+            txtSongName.Text = SongList[_CurrentSong].ToString();
             if(lstPlaylist.Items != null)
-                lstPlaylist.SelectedItem = (lstPlaylist.Items[CurrentSong]);
+                lstPlaylist.SelectedItem = (lstPlaylist.Items[_CurrentSong]);
         }
         private void RenderPlaylist(List<Song> SongList) 
         {
@@ -270,16 +279,84 @@ namespace Interface
         }
         private void lstPlaylist_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (lstPlaylist.SelectedIndex != -1 && CurrentSong != lstPlaylist.SelectedIndex)
+            if (lstPlaylist.SelectedIndex != -1 && _CurrentSong != lstPlaylist.SelectedIndex)
             {
-                CurrentSong = lstPlaylist.SelectedIndex;
+                _CurrentSong = lstPlaylist.SelectedIndex;
                 RenderNameAndSelectedSong();
                 Player1.Stop();
                 List<Song> SongList = Playlist1.GetList();
-                Player1.SetSource(SongList[CurrentSong]);
+                Player1.SetSource(SongList[_CurrentSong]);
                 Player1.Play();
             }
         }
+
+        #region ProgressBar
+        private void timerUpdate_Tick(object sender, System.EventArgs e)
+        {
+            int _stream = Player1.Stream;
+            if (Bass.BASS_ChannelIsActive(_stream) == BASSActive.BASS_ACTIVE_PLAYING)
+            { }
+            else
+            {
+                DrawPosition(-1, -1);
+                return;
+            }
+            _tickCounter++;
+            if (_tickCounter == 5)
+            {
+                long pos = Bass.BASS_ChannelGetPosition(_stream); // position in bytes
+                long len = Bass.BASS_ChannelGetLength(_stream); // length in bytes
+                // display the position every 250ms (since timer is 50ms)
+                _tickCounter = 0;
+                double totaltime = Bass.BASS_ChannelBytes2Seconds(_stream, len);
+                double elapsedtime = Bass.BASS_ChannelBytes2Seconds(_stream, pos);
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => 
+                    txtSongTime.Text = String.Format("{0:#0.00} / {1:#0.00}", Utils.FixTimespan(elapsedtime, "MMSS"), Utils.FixTimespan(totaltime, "MMSS"))));
+                DrawPosition(pos, len);
+            }
+        }
+        private void DrawPosition(long pos, long len)
+        {
+            if (len == 0 || pos < 0)
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                {
+                    rectangleProgressBarElapsed.Width = 0;
+                    circleProgressBar.Visibility = Visibility.Hidden;
+                    circleProgressBar.Margin = new Thickness(0);
+                }));
+                return;
+            }
+
+            if (circleProgressBar.Visibility == Visibility.Hidden)
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                    circleProgressBar.Visibility = Visibility.Visible));
+
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+            {
+                double bpp = len / (double)rectangleProgressBarMain.Width;  // bytes per pixel
+                int x = (int)Math.Round(pos / bpp);
+                rectangleProgressBarElapsed.Width = x;
+                circleProgressBar.Margin = new Thickness(x, 0, 0, 0);
+            }));
+        }
+        private void rectangleProgressBarMain_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            int _stream = Player1.Stream;
+            if (_CurrentUser == null || _CurrentSong < 0)
+                return;
+            long len = Bass.BASS_ChannelGetLength(_stream);
+            double multiplyer = 0;
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() =>
+            {
+                multiplyer = e.GetPosition(rectangleProgressBarMain).X / rectangleProgressBarMain.Width;
+                long pos = (long)(multiplyer * len);
+                Bass.BASS_ChannelSetPosition(_stream, pos);
+            }));
+        }
+        #endregion
+
+        
     }
 }
 
