@@ -56,7 +56,7 @@ namespace Player
                 }
             }
         }
-        public Status Play()
+        public Status PlayAndStartTimer()
         {
             _updateTimer.Start();
             if(Bass.BASS_ChannelPlay(_stream, false))
@@ -68,7 +68,7 @@ namespace Player
                 return Status.Error;
             }
         }
-        public Status Stop()
+        public Status StopAndStopTimer()
         {
             _updateTimer.Stop();
             if (Bass.BASS_ChannelStop(_stream))
@@ -80,8 +80,9 @@ namespace Player
                 return Status.Error;
             }
         }
-        public Status Pause()
+        public Status PauseAndStopTimer()
         {
+            _updateTimer.Stop();
             if (Bass.BASS_ChannelPause(_stream))
             {
                 return Status.OK;

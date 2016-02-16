@@ -59,9 +59,9 @@ namespace Interface
         {
             int AppID = 5114224;
             string Scope = "audio";
-            (wbsWebLogin.Child as System.Windows.Forms.WebBrowser).Navigate(String.Format("http://api.vkontakte.ru/oauth/authorize?client_id={0}&scope={1}&display=popup&response_type=token&revoke=1", AppID, Scope));
+            (webbrowserWebLogin.Child as System.Windows.Forms.WebBrowser).Navigate(String.Format("http://api.vkontakte.ru/oauth/authorize?client_id={0}&scope={1}&display=popup&response_type=token&revoke=1", AppID, Scope));
         }
-        private void wbsWebLogin_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        private void webbrowserWebLogin_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             AccessToken = "";
             UserID = 0;
@@ -79,9 +79,9 @@ namespace Interface
                         UserID = Convert.ToInt32(m.Groups["value"].Value);
                     }
                 }
-                wbsWebLogin.Visibility = Visibility.Hidden;
-                txtUserName.Visibility = Visibility.Visible;
-                btnSubmit.Visibility = Visibility.Visible;
+                webbrowserWebLogin.Visibility = Visibility.Hidden;
+                textboxUserName.Visibility = Visibility.Visible;
+                buttonSubmit.Visibility = Visibility.Visible;
             }
             
         }
@@ -89,18 +89,18 @@ namespace Interface
         {
             this.Close();
         }
-        private void txtUserName_GotFocus(object sender, RoutedEventArgs e)
+        private void textboxUserName_GotFocus(object sender, RoutedEventArgs e)
         {
-            txtUserName.Text = "";
+            textboxUserName.Text = "";
         }
-        private void txtUserName_LostFocus(object sender, RoutedEventArgs e)
+        private void textboxUserName_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (txtUserName.Text == "")
-                txtUserName.Text = "Enter your name here";
+            if (textboxUserName.Text == "")
+                textboxUserName.Text = "Enter your name here";
         }
-        private void btnSubmit_Click(object sender, RoutedEventArgs e)
+        private void buttonSubmit_Click(object sender, RoutedEventArgs e)
         {
-            RaiseCustomEvent(this, new CustomEventArgs(txtUserName.Text, AccessToken, UserID));
+            RaiseCustomEvent(this, new CustomEventArgs(textboxUserName.Text, AccessToken, UserID));
         }
     } 
 }
