@@ -338,7 +338,7 @@ namespace Interface
                 double bpp = len / (double)rectangleProgressBarMain.Width;  // bytes per pixel
                 int x = (int)Math.Round(pos / bpp);
                 rectangleProgressBarElapsed.Width = x;
-                circleProgressBar.Margin = new Thickness(x, 0, 0, 0);
+                if (x > 2) circleProgressBar.Margin = new Thickness(x - 2, 0, 0, 0);
             }));
         }
         private void rectangleProgressBarMain_MouseUp(object sender, MouseButtonEventArgs e)
