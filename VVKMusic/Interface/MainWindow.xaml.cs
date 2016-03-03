@@ -27,8 +27,7 @@ namespace Interface
         private VKAPI.VKAPI VKAPI1 = new VKAPI.VKAPI();
         private Infrastructure.Infrastructure Infrastructure1 = new Infrastructure.Infrastructure();
         private Downloader.Downloader Downloader1 = new Downloader.Downloader();
-
-        private List<Song> BaseSongList;
+        
         private User _CurrentUser = null;
         private int _CurrentSong = 0;
         private int _updateInterval = 50;
@@ -118,7 +117,6 @@ namespace Interface
             else
             {
                 List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(user.ID, user.AccessToken));
-                BaseSongList = new List<Song>(VKAPI1.GetAudioExternal(user.ID, user.AccessToken));
                 UserManager1.UpdateUserListOfSongs(user.ID, SongList);
                 Playlist1.UpdateList(SongList);
                 MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
@@ -207,10 +205,7 @@ namespace Interface
         }
         private void buttonSearch_Click(object sender, RoutedEventArgs e)
         {
-            Playlist1.UpdateList(BaseSongList);
-            if (textboxSearch.Text != "")
-                Playlist1.UpdateList(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
-            RenderPlaylist(Playlist1.GetList());
+            RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
         }
         private void textboxSearch_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -227,10 +222,7 @@ namespace Interface
         {
             if (e.Key == Key.Enter)
             {
-                Playlist1.UpdateList(BaseSongList);
-                if (textboxSearch.Text != "")
-                    Playlist1.UpdateList(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
-                RenderPlaylist(Playlist1.GetList());
+                RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
             }
         }
         private void buttonMix_Click(object sender, RoutedEventArgs e)
@@ -269,7 +261,11 @@ namespace Interface
         }
         private void RenderNameAndSelectedSong()
         {
-            List<Song> SongList = Playlist1.GetList();
+            List<Song> SongList = new List<Song>();
+            for (int i = 0; i < listboxPlaylist.Items.Count; ++i)
+            {
+                SongList.Add((Song)listboxPlaylist.Items.GetItemAt(i));
+            }
             textboxSongName.Text = SongList[_CurrentSong].ToString();
             if(listboxPlaylist.Items != null)
                 listboxPlaylist.SelectedItem = (listboxPlaylist.Items[_CurrentSong]);
@@ -295,7 +291,11 @@ namespace Interface
                 _CurrentSong = listboxPlaylist.SelectedIndex;
                 RenderNameAndSelectedSong();
                 Player1.StopAndStopTimer();
-                List<Song> SongList = Playlist1.GetList();
+                List<Song> SongList = new List<Song>();
+                for (int i = 0; i < listboxPlaylist.Items.Count; ++i)
+                {
+                    SongList.Add((Song)listboxPlaylist.Items.GetItemAt(i));
+                }
                 Player1.SetSource(SongList[_CurrentSong]);
                 Player1.PlayAndStartTimer();
             }
