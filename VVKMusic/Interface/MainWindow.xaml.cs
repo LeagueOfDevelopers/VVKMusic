@@ -28,6 +28,7 @@ namespace Interface
         private Infrastructure.Infrastructure Infrastructure1 = new Infrastructure.Infrastructure();
         private Downloader.Downloader Downloader1 = new Downloader.Downloader();
 
+        private List<Song> BaseSongList;
         private User _CurrentUser = null;
         private int _CurrentSong = 0;
         private int _updateInterval = 50;
@@ -117,6 +118,7 @@ namespace Interface
             else
             {
                 List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(user.ID, user.AccessToken));
+                BaseSongList = new List<Song>(VKAPI1.GetAudioExternal(user.ID, user.AccessToken));
                 UserManager1.UpdateUserListOfSongs(user.ID, SongList);
                 Playlist1.UpdateList(SongList);
                 MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
@@ -205,7 +207,10 @@ namespace Interface
         }
         private void buttonSearch_Click(object sender, RoutedEventArgs e)
         {
-            RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+            Playlist1.UpdateList(BaseSongList);
+            if (textboxSearch.Text != "")
+                Playlist1.UpdateList(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+            RenderPlaylist(Playlist1.GetList());
         }
         private void textboxSearch_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -214,13 +219,18 @@ namespace Interface
         private void textboxSearch_LostFocus(object sender, RoutedEventArgs e)
         {
             if (textboxSearch.Text == "")
+            {
                 textboxSearch.Text = "Search";
+            }
         }
         private void textboxSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
-                RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+                Playlist1.UpdateList(BaseSongList);
+                if (textboxSearch.Text != "")
+                    Playlist1.UpdateList(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+                RenderPlaylist(Playlist1.GetList());
             }
         }
         private void buttonMix_Click(object sender, RoutedEventArgs e)
@@ -280,7 +290,7 @@ namespace Interface
         }
         private void listboxPlaylist_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (listboxPlaylist.SelectedIndex != -1 && _CurrentSong != listboxPlaylist.SelectedIndex)
+            if (listboxPlaylist.SelectedIndex != -1) 
             {
                 _CurrentSong = listboxPlaylist.SelectedIndex;
                 RenderNameAndSelectedSong();
@@ -338,7 +348,7 @@ namespace Interface
                 double bpp = len / (double)rectangleProgressBarMain.Width;  // bytes per pixel
                 int x = (int)Math.Round(pos / bpp);
                 rectangleProgressBarElapsed.Width = x;
-                if (x > 2) circleProgressBar.Margin = new Thickness(x - 2, 0, 0, 0);
+                circleProgressBar.Margin = new Thickness(x, 0, 0, 0);
             }));
         }
         private void rectangleProgressBarMain_MouseUp(object sender, MouseButtonEventArgs e)
