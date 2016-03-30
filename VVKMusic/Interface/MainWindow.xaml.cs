@@ -238,17 +238,6 @@ namespace Interface
             Player1.StopAndStopTimer();
             this.Close();
         }
-        private void buttonExpand_Click(object sender, RoutedEventArgs e)
-        {
-            if (this.WindowState == WindowState.Maximized)
-            {
-                this.WindowState = WindowState.Normal;
-            }
-            else
-            {
-                this.WindowState = WindowState.Maximized;
-            }
-        }
         private void buttonCollapse_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized;
