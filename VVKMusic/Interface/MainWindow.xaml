@@ -105,7 +105,7 @@
                     <Image Source="Resources/Pictures/mix.png" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Left" Height="35" Margin="255,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonMix_Click" Grid.Row="4">
+            <Button HorizontalAlignment="Left" Height="35" Margin="255,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonLoop_Click" Grid.Row="4">
                 <StackPanel>
                     <Image Source="Resources/Pictures/mix.png" />
                 </StackPanel>

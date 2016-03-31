@@ -8,6 +8,7 @@ namespace Playlist
     public class Playlist : IPlaylist
     {
         private List<Song> _ListOfSongs = new List<Song>();
+        public Boolean isLoop = false;
 
         public Status MoveSong(int oldIndex, int newIndex)
         {

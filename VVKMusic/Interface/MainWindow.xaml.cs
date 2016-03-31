@@ -228,6 +228,13 @@ namespace Interface
             Playlist1.MixPlaylist();
             RenderPlaylist(Playlist1.GetList());
         }
+        private void buttonLoop_Click(object sender, RoutedEventArgs e)
+        {
+            if (Playlist1.isLoop)
+                Playlist1.isLoop = false;
+            else
+                Playlist1.isLoop = true;
+        }
         private void buttonSort_Click(object sender, RoutedEventArgs e)
         {
             Playlist1.SortByDownloaded();
@@ -271,7 +278,10 @@ namespace Interface
         {
             if (listboxPlaylist.SelectedIndex != -1 && _CurrentSong != listboxPlaylist.SelectedIndex)
             {
-                _CurrentSong = listboxPlaylist.SelectedIndex;
+                //if (Playlist1.isLoop)
+                //    listboxPlaylist.SelectedIndex = _CurrentSong;
+                //else
+                    _CurrentSong = listboxPlaylist.SelectedIndex;
                 RenderNameAndSelectedSong();
                 Player1.StopAndStopTimer();
                 List<Song> SongList = Playlist1.GetList();
