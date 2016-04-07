@@ -150,6 +150,7 @@ namespace Interface
         private void buttonDownload_Click(object sender, RoutedEventArgs e)
         {
             List<Song> ListToDownload = new List<Song>();
+            // TODO: rewrite for new playlist
             if (sender.GetHashCode() == buttonDownload.GetHashCode())
                 ListToDownload.Add(Playlist1.GetList()[_CurrentSong]);
             else
@@ -160,6 +161,7 @@ namespace Interface
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {
             Player1.StopAndStopTimer();
+            // TODO: rewrite
             List<Song> SongList = Playlist1.GetList();
             if(SongList.Count > 0)
                 if(_CurrentSong > 0)
@@ -177,6 +179,7 @@ namespace Interface
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {
             Player1.StopAndStopTimer();
+            // TODO: rewrite
             List<Song> SongList = Playlist1.GetList();
             if (SongList.Count > 0)
                 if (_CurrentSong < SongList.Count - 1)
@@ -205,7 +208,8 @@ namespace Interface
         }
         private void buttonSearch_Click(object sender, RoutedEventArgs e)
         {
-            RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+            // TODO: something questionable
+            //RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
         }
         private void textboxSearch_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -220,16 +224,19 @@ namespace Interface
         {
             if (e.Key == Key.Enter)
             {
-                RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+                // TODO: something questionable as well
+                //RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
             }
         }
         private void buttonMix_Click(object sender, RoutedEventArgs e)
         {
+            // TODO: rewrite
             Playlist1.MixPlaylist();
             RenderPlaylist(Playlist1.GetList());
         }
         private void buttonSort_Click(object sender, RoutedEventArgs e)
         {
+            // TODO: rewrite
             Playlist1.SortByDownloaded();
             RenderPlaylist(Playlist1.GetList());
         }

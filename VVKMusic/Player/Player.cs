@@ -37,7 +37,7 @@ namespace Player
             }
             if (_stream != 0)
             {
-                return Status.OK;
+                return Status.Ok;
             }
             else
             {
@@ -48,7 +48,7 @@ namespace Player
                 }
                 if (_stream != 0)
                 {
-                    return Status.OK;
+                    return Status.Ok;
                 }
                 else
                 {
@@ -61,7 +61,7 @@ namespace Player
             _updateTimer.Start();
             if(Bass.BASS_ChannelPlay(_stream, false))
             {
-                return Status.OK;
+                return Status.Ok;
             }
             else
             {
@@ -73,7 +73,7 @@ namespace Player
             _updateTimer.Stop();
             if (Bass.BASS_ChannelStop(_stream))
             {
-                return Status.OK;
+                return Status.Ok;
             }
             else
             {
@@ -85,7 +85,7 @@ namespace Player
             _updateTimer.Stop();
             if (Bass.BASS_ChannelPause(_stream))
             {
-                return Status.OK;
+                return Status.Ok;
             }
             else
             {
@@ -94,13 +94,13 @@ namespace Player
         }
         public Status AdjustSound()
         {
-            return Status.OK;
+            return Status.Ok;
         }
         public Status SetTimer(int updateInterval, EventHandler e)
         {
             _updateTimer = new BASSTimer(updateInterval);
             _updateTimer.Tick += e;
-            return Status.OK;
+            return Status.Ok;
         }
         ~Player()
         {
