@@ -120,21 +120,20 @@
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Padding" Value="5"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                <Border x:Name="brd" Background="{TemplateBinding Background}" 
-                                            BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                    <CheckBox Focusable="False" Margin="{TemplateBinding Padding}" Foreground="{TemplateBinding Foreground}"
-                                                     IsChecked="false">
-                                        <ContentPresenter/>
-                                    </CheckBox>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
                 </Style>
             </ListBox.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Button HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Style="{StaticResource ClearButton}">
+                            <StackPanel>
+                                <Image Source="Resources/Pictures/ok.png" />
+                            </StackPanel>
+                        </Button>
+                        <TextBlock Text="{Binding}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
         </ListBox>
         <ListBox Name="listboxMenu" HorizontalAlignment="Right" Margin="0,15,28,0" VerticalAlignment="Top" Width="119" Visibility="Hidden" PreviewMouseUp="listboxMenu_PreviewMouseUp" Grid.Row="1">
             <ListBoxItem>New Login</ListBoxItem>
