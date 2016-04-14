@@ -12,6 +12,7 @@ namespace Downloader
 {
     public class Downloader : IDownloader
     {
+        double percentage;
         int count = 0;
         public Status DownloadSong(List<Song> songList)
         {
@@ -40,12 +41,27 @@ namespace Downloader
             }
         }
 
+        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            try
+            {
+                if (percentage != e.ProgressPercentage)
+                    percentage = e.ProgressPercentage;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+
         public async Task DownloadAudioAync(Uri url, string path)
         {
             try
             {
                 WebClient Client = new WebClient();
                 Client.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCallback);
+                Client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
                 await Client.DownloadFileTaskAsync(url, path);
             }
             catch

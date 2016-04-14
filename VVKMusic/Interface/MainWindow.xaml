@@ -1,6 +1,7 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:DesignInControl="clr-namespace:DesignInControl"
         xmlns:local="clr-namespace:Interface" x:Class="Interface.MainWindow"
         Title="VVK Player" Height="500" Width="350" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="False" Icon="Resources/Pictures/play.png" HorizontalContentAlignment="Stretch">
     <Window.Resources>
@@ -45,7 +46,7 @@
                     <Image Source="Resources/Pictures/settings.png" />
                 </StackPanel>
             </Button>
-            <Button Name="buttonDownload" HorizontalAlignment="Left" Height="35" Margin="15,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="1">
+            <Button HorizontalAlignment="Left" Height="35" Margin="15,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="1">
                 <StackPanel>
                     <Image Source="Resources/Pictures/download.png" />
                 </StackPanel>
@@ -89,7 +90,7 @@
         </Grid>
         <Grid Background="#5A5A5A" Grid.Row="4"/>
         <Grid Width="325"  HorizontalAlignment="Center" Grid.Row="4">
-            <Button HorizontalAlignment="Left" Height="35" Margin="10,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="4">
+            <Button x:Name="buttonDownload" HorizontalAlignment="Left" Height="35" Margin="10,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="4">
                 <StackPanel>
                     <Image Source="Resources/Pictures/download.png" />
                 </StackPanel>
@@ -117,20 +118,18 @@
             </Button>
         </Grid>
         <ListBox Name="listboxPlaylist" HorizontalAlignment="Center" MinHeight="268" Height="auto" Margin="0,0,0,0" Padding="10,10,0,0" VerticalAlignment="Top" BorderThickness="0" MinWidth="325" Width="auto" Grid.Row="5" PreviewMouseUp="listboxPlaylist_PreviewMouseUp" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Padding" Value="5"/>
-                </Style>
-            </ListBox.ItemContainerStyle>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Button HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Style="{StaticResource ClearButton}">
-                            <StackPanel>
-                                <Image Source="Resources/Pictures/ok.png" />
-                            </StackPanel>
-                        </Button>
-                        <TextBlock Text="{Binding}"/>
+                        <Grid>
+                            <DesignInControl:CircularProgressBar x:Name ="progressBar" HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="90" SegmentColor="#5A5A5A" StrokeThickness="3" Radius="13"/>
+                            <Button HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="30" Style="{StaticResource ClearButton}" Click="buttonDownload_Click">
+                                <StackPanel>
+                                    <Image Source="Resources/Pictures/ok.png" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                        <TextBlock Padding="5"  HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding}"/>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

@@ -151,11 +151,12 @@ namespace Interface
         {
             List<Song> ListToDownload = new List<Song>();
             if (sender.GetHashCode() == buttonDownload.GetHashCode())
-                ListToDownload.Add(Playlist1.GetList()[_CurrentSong]);
-            else
                 ListToDownload = Playlist1.GetList();
+            else
+                ListToDownload.Add(Playlist1.GetList()[_CurrentSong]);
             if (Downloader1.DownloadSong(ListToDownload) == Common.Common.Status.Error)
                 MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);
+           
         }
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {
