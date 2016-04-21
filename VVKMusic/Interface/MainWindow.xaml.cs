@@ -17,6 +17,7 @@ using System.Drawing;
 using System.Windows.Threading;
 using Un4seen.Bass;
 using Un4seen.Bass.Misc;
+using DesignInControl;
 
 
 namespace Interface
@@ -162,6 +163,7 @@ namespace Interface
             if (Downloader1.DownloadSong(ListToDownload, listboxPlaylist) == Common.Common.Status.Error)
                 MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);        
         }
+
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {
             Player1.StopAndStopTimer();

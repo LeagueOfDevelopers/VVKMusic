@@ -4,19 +4,21 @@ using System.Collections.Generic;
 using System.IO;
 using System.ComponentModel;
 using System.Net;
-using System.Windows;
 using System.Threading.Tasks;
+using System.Windows;
 using Status = Common.Common.Status;
 using System.Windows.Controls;
+using DesignInControl;
 
 namespace Downloader
 {
     public class Downloader : IDownloader
     {
-        double percentage;
+        CircularProgressBar progressBar;
         int count = 0;
-        public Status DownloadSong(List<Song> songList, ListBox listToDownload)
+        public Status DownloadSong(List<Song> songList, ListBox listboxPlaylist)
         {
+            progressBar = (CircularProgressBar)listboxPlaylist.ItemTemplate.FindName("progressBar", (ListBoxItem)listboxPlaylist.Items[0]);
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + @"\";
             count = songList.Count;
             foreach (Song song in songList)
@@ -46,8 +48,8 @@ namespace Downloader
         {
             try
             {
-                if (percentage != e.ProgressPercentage)
-                    percentage = e.ProgressPercentage;
+                if (progressBar.Percentage != e.ProgressPercentage)
+                    progressBar.Percentage = e.ProgressPercentage;
             }
             catch (Exception ex)
             {
