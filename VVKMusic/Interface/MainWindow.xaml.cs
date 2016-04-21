@@ -1,14 +1,19 @@
 ﻿using Common;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Windows.Threading;
 using Un4seen.Bass;
 using Un4seen.Bass.Misc;
@@ -154,9 +159,8 @@ namespace Interface
                 ListToDownload = Playlist1.GetList();
             else
                 ListToDownload.Add(Playlist1.GetList()[_CurrentSong]);
-            if (Downloader1.DownloadSong(ListToDownload) == Common.Common.Status.Error)
-                MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);
-           
+            if (Downloader1.DownloadSong(ListToDownload, listboxPlaylist) == Common.Common.Status.Error)
+                MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);        
         }
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {

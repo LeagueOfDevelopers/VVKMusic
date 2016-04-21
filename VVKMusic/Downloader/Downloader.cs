@@ -7,6 +7,7 @@ using System.Net;
 using System.Windows;
 using System.Threading.Tasks;
 using Status = Common.Common.Status;
+using System.Windows.Controls;
 
 namespace Downloader
 {
@@ -14,7 +15,7 @@ namespace Downloader
     {
         double percentage;
         int count = 0;
-        public Status DownloadSong(List<Song> songList)
+        public Status DownloadSong(List<Song> songList, ListBox listToDownload)
         {
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + @"\";
             count = songList.Count;

@@ -60,15 +60,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="..\..\..\..\Downloads\CircularProgressBar\CircularProgressBar.Silverlight\CircularProgressBar.xaml.cs">
-      <Link>CircularProgressBar.xaml.cs</Link>
+    <Compile Include="CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="WebLogin.xaml.cs">
       <DependentUpon>WebLogin.xaml</DependentUpon>
     </Compile>
-    <Page Include="..\..\..\..\Downloads\CircularProgressBar\CircularProgressBar.Silverlight\CircularProgressBar.xaml">
-      <Link>CircularProgressBar.xaml</Link>
+    <Page Include="CircularProgressBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
