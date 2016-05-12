@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,7 +33,8 @@ namespace Interface
         private int _CurrentSong = 0;
         private int _updateInterval = 50;
         private int _tickCounter = 0;
-        
+        public ObservableCollection<Song> oSong { get; private set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -40,6 +42,9 @@ namespace Interface
             {
                 UserManager1.UpdateUserList(Infrastructure1.LoadListOfUsers());
             }
+            CollectionViewSource view = FindResource("sortedSongList") as CollectionViewSource;
+            view.SortDescriptions.Add(new SortDescription("title", ListSortDirection.Ascending));
+            DataContext = this;
         }
         private void buttonMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -262,11 +267,13 @@ namespace Interface
         }
         private void RenderPlaylist(List<Song> SongList) 
         {
-            ObservableCollection<Song> oSong = new ObservableCollection<Song>(SongList);
-            listboxPlaylist.DataContext = oSong;
+
+            oSong = new ObservableCollection<Song>(SongList);
+            //listboxPlaylist.DataContext = oSong;
             Binding binding = new Binding();
+            //binding.Source = SongList;
             listboxPlaylist.SetBinding(ListBox.ItemsSourceProperty, binding);
-        }
+        }        
         private void textboxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             if(textboxSearch.Text == "")
@@ -334,7 +341,7 @@ namespace Interface
                 double bpp = len / (double)rectangleProgressBarMain.Width;  // bytes per pixel
                 int x = (int)Math.Round(pos / bpp);
                 rectangleProgressBarElapsed.Width = x;
-                if (x > 2) circleProgressBar.Margin = new Thickness(x - 2, 0, 0, 0);
+                if (x >= 0) circleProgressBar.Margin = new Thickness(x, 0, 0, 0);
             }));
         }
         private void rectangleProgressBarMain_MouseUp(object sender, MouseButtonEventArgs e)
@@ -351,9 +358,30 @@ namespace Interface
                 Bass.BASS_ChannelSetPosition(_stream, pos);
             }));
         }
-        #endregion
+        #endregion       
+    }
+    public class RowNumberConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            CollectionViewSource collectionViewSource = parameter as CollectionViewSource;
 
-        
+            int counter = 1;
+            foreach (object item in collectionViewSource.View)
+            {
+                if (item == value)
+                {
+                    return counter.ToString();
+                }
+                counter++;
+            }
+            return string.Empty;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
