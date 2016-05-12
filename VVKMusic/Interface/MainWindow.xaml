@@ -99,7 +99,9 @@
                     <Image Source="Resources/Pictures/download.png" />
                 </StackPanel>
             </Button>
-            <TextBox Name="textboxSearch" HorizontalAlignment="Left" Height="21" Margin="55,9,0,0" TextWrapping="Wrap" Text="Search" VerticalAlignment="Top" Width="130" BorderThickness="1,1,0,1" GotFocus="textboxSearch_GotFocus" LostFocus="textboxSearch_LostFocus" TextChanged="textboxSearch_TextChanged" Grid.Row="4" KeyDown="textboxSearch_KeyDown"/>
+            <TextBox Name="textboxSearch" HorizontalAlignment="Left" Height="21" Margin="55,9,0,0" TextWrapping="Wrap" Padding="6,0,0,0" Text="Search" VerticalAlignment="Top"  Width="150" GotFocus="textboxSearch_GotFocus" LostFocus="textboxSearch_LostFocus" TextChanged="textboxSearch_TextChanged" Grid.Row="4" KeyDown="textboxSearch_KeyDown"/>
+            <Border CornerRadius="10" BorderThickness="5" Height="28"  Width="155" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="4" BorderBrush="#5A5A5A" Margin="51,6,0,0"/>
+            <Ellipse HorizontalAlignment="Left" Margin="185,2,0,0" VerticalAlignment="Center" Fill="#5A5A5A" Width="30" Height="30" Grid.Row="4"/>
             <Button HorizontalAlignment="Left" Height="35" Margin="180,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonSearch_Click" Grid.Row="4">
                 <StackPanel>
                     <Image Source="Resources/Pictures/search.png" />
@@ -130,7 +132,7 @@
                         </Grid>
                         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex)}"/>
                         <TextBlock Margin="0,5,0,5" HorizontalAlignment="Center" VerticalAlignment="Center" Text="."/>
-                        <TextBlock Padding="5" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding}"/>
+                        <TextBlock Padding="5" HorizontalAlignment="Center" Width="210"  VerticalAlignment="Center" Text="{Binding}"/>
                     </StackPanel>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
