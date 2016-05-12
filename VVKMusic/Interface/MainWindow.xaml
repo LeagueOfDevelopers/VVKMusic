@@ -13,8 +13,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Resources.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <local:RowNumberConverter x:Key="RowNumberConverter" />
-            <CollectionViewSource x:Key="sortedSongList" Source="{Binding Path=oSong}" />
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -124,14 +122,14 @@
             </Button>
         </Grid>
         <playlist:Playlist Name="listboxPlaylist" HorizontalAlignment="Center" MinHeight="268" Height="auto" Margin="0,0,0,0" Padding="10,10,0,0" VerticalAlignment="Top" BorderThickness="0" MinWidth="325" Width="auto" Grid.Row="5" 
-                           PreviewMouseUp="listboxPlaylist_PreviewMouseUp" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                           ItemsSource="{Binding Source={StaticResource sortedSongList}}">
+                           PreviewMouseUp="listboxPlaylist_PreviewMouseUp" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Grid>
                         </Grid>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Converter={StaticResource RowNumberConverter}, ConverterParameter={StaticResource sortedSongList}}"/>
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex)}"/>
+                        <TextBlock Margin="0,5,0,5" HorizontalAlignment="Center" VerticalAlignment="Center" Text="."/>
                         <TextBlock Padding="5" HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding}"/>
                     </StackPanel>
                 </DataTemplate>

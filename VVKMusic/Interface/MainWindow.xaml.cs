@@ -2,12 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
@@ -33,7 +30,6 @@ namespace Interface
         private int _CurrentSong = 0;
         private int _updateInterval = 50;
         private int _tickCounter = 0;
-        public ObservableCollection<Song> oSong { get; private set; }
 
         public MainWindow()
         {
@@ -42,9 +38,6 @@ namespace Interface
             {
                 UserManager1.UpdateUserList(Infrastructure1.LoadListOfUsers());
             }
-            CollectionViewSource view = FindResource("sortedSongList") as CollectionViewSource;
-            view.SortDescriptions.Add(new SortDescription("title", ListSortDirection.Ascending));
-            DataContext = this;
         }
         private void buttonMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -267,12 +260,12 @@ namespace Interface
         }
         private void RenderPlaylist(List<Song> SongList) 
         {
-
-            oSong = new ObservableCollection<Song>(SongList);
-            //listboxPlaylist.DataContext = oSong;
+            listboxPlaylist.ItemsSource = SongList;
+            listboxPlaylist.AlternationCount = SongList.Count;
             Binding binding = new Binding();
-            //binding.Source = SongList;
+            binding.Source = SongList;
             listboxPlaylist.SetBinding(ListBox.ItemsSourceProperty, binding);
+            listboxPlaylist.Items.Refresh();
         }        
         private void textboxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -359,29 +352,6 @@ namespace Interface
             }));
         }
         #endregion       
-    }
-    public class RowNumberConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            CollectionViewSource collectionViewSource = parameter as CollectionViewSource;
-
-            int counter = 1;
-            foreach (object item in collectionViewSource.View)
-            {
-                if (item == value)
-                {
-                    return counter.ToString();
-                }
-                counter++;
-            }
-            return string.Empty;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 
