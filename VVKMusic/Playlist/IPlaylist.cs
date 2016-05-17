@@ -11,9 +11,10 @@ namespace Playlist
         Status AddToList(Song[] songMas, int index);
         Status AddToList(Song song, int index);
         Status RemoveFromList(int index);
+        Status NextSong();
+        Status PreviousSong();
         void MixPlaylist();
         void SortByDownloaded();
-        List<Song> SearchSong(string pattern);
-        List<Song> GetList();
+        void SearchSong(string pattern);
     }
 }

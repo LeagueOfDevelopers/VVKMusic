@@ -18,7 +18,7 @@ namespace UserManager
             {
                 _ListOfUsers.Add(user);
             }
-            return Status.OK;
+            return Status.Ok;
         }
         public Status UpdateUserSettings(string userID, Settings settings)
         {
@@ -30,7 +30,7 @@ namespace UserManager
             {
                 return Status.Error;
             }
-            return Status.OK;
+            return Status.Ok;
         }
         public Status UpdateUserSoundSettings(string userID, SoundSettings soundSettings)
         {
@@ -42,7 +42,7 @@ namespace UserManager
             {
                 return Status.Error;
             }
-            return Status.OK;
+            return Status.Ok;
         }
         public Status UpdateUserListOfSongs(string userID, List<Song> songList)
         {
@@ -54,7 +54,7 @@ namespace UserManager
             {
                 return Status.Error;
             }
-            return Status.OK;
+            return Status.Ok;
         }
         public Status RemoveUser(string userID)
         {
@@ -66,13 +66,13 @@ namespace UserManager
             {
                 return Status.Error;
             }
-            return Status.OK;
+            return Status.Ok;
         }
         public Status UpdateUserList(List<User> listOfUsers)
         {
             _ListOfUsers.Clear();
             _ListOfUsers = listOfUsers;
-            return Status.OK;
+            return Status.Ok;
         }
         public List<Song> GetUserListOfSongs(string userID)
         {

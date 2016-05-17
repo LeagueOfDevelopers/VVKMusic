@@ -12,7 +12,7 @@ namespace Infrastructure
     {
         public Status CheckConnection()
         {
-            return Status.OK;
+            return Status.Ok;
         }
         public Status SaveListOfUsers(List<User> listOfUsers)
         {
@@ -32,7 +32,7 @@ namespace Infrastructure
                 fs.Close();
             }
 
-            return Status.OK;
+            return Status.Ok;
         }
         public List<User> LoadListOfUsers()
         {

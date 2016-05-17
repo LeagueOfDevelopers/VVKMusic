@@ -31,7 +31,7 @@ namespace Downloader
                 song.DownloadedUri = new Uri(@folder + fileName);
                 song.Downloaded = true;
             }
-            return Status.OK;
+            return Status.Ok;
         }
 
 

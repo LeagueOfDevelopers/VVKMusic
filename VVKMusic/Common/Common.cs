@@ -10,7 +10,7 @@ namespace Common
     {
         public enum Status
         {
-            OK = 0,
+            Ok = 0,
             Error = 1
         };
 

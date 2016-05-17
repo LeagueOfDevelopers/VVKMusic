@@ -1,12 +1,15 @@
 ﻿using Common;
 using System;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using System.Linq;
 using System.Text;
+=======
+using System.Collections.ObjectModel;
+>>>>>>> master
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -262,11 +265,13 @@ namespace Interface
         }
         private void RenderPlaylist(List<Song> SongList) 
         {
-            ObservableCollection<Song> oSong = new ObservableCollection<Song>(SongList);
-            listboxPlaylist.DataContext = oSong;
+            listboxPlaylist.ItemsSource = SongList;
+            listboxPlaylist.AlternationCount = SongList.Count;
             Binding binding = new Binding();
+            binding.Source = SongList;
             listboxPlaylist.SetBinding(ListBox.ItemsSourceProperty, binding);
-        }
+            listboxPlaylist.Items.Refresh();
+        }        
         private void textboxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             if(textboxSearch.Text == "")
@@ -334,7 +339,7 @@ namespace Interface
                 double bpp = len / (double)rectangleProgressBarMain.Width;  // bytes per pixel
                 int x = (int)Math.Round(pos / bpp);
                 rectangleProgressBarElapsed.Width = x;
-                if (x > 2) circleProgressBar.Margin = new Thickness(x - 2, 0, 0, 0);
+                if (x >= 0) circleProgressBar.Margin = new Thickness(x, 0, 0, 0);
             }));
         }
         private void rectangleProgressBarMain_MouseUp(object sender, MouseButtonEventArgs e)
@@ -351,9 +356,7 @@ namespace Interface
                 Bass.BASS_ChannelSetPosition(_stream, pos);
             }));
         }
-        #endregion
-
-        
+        #endregion       
     }
 }
 
