@@ -1,27 +1,16 @@
 ﻿using Common;
 using System;
 using System.Collections.Generic;
-<<<<<<< HEAD
-using System.Linq;
-using System.Text;
-=======
 using System.Collections.ObjectModel;
->>>>>>> master
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Windows.Threading;
 using Un4seen.Bass;
 using Un4seen.Bass.Misc;
-using DesignInControl;
-
+using System.Globalization;
 
 namespace Interface
 {
@@ -215,7 +204,7 @@ namespace Interface
         }
         private void buttonSearch_Click(object sender, RoutedEventArgs e)
         {
-            RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+            //RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
         }
         private void textboxSearch_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -230,7 +219,7 @@ namespace Interface
         {
             if (e.Key == Key.Enter)
             {
-                RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+                //RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
             }
         }
         private void buttonMix_Click(object sender, RoutedEventArgs e)
@@ -357,6 +346,37 @@ namespace Interface
             }));
         }
         #endregion       
+    }
+    public class SongNumberConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int number = (int)value;
+            return ++number;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class DurationConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int time = (int)value;
+            int minutes = time / 60;
+            time -= minutes * 60;
+            if (time < 10)
+                return String.Format("{0}:0{1}", minutes, time);
+            else
+                return String.Format("{0}:{1}", minutes, time);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
