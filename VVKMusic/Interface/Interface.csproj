@@ -131,6 +131,10 @@
     <Resource Include="Resources\Pictures\stop.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Circular\DesignInControl.csproj">
+      <Project>{988e3d2e-502f-4d3d-89f7-f69b47c9884f}</Project>
+      <Name>DesignInControl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{bb44bc30-12a9-4706-bb19-3083275f53e5}</Project>
       <Name>Common</Name>

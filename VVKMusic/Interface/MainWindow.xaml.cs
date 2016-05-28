@@ -10,7 +10,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Un4seen.Bass;
 using Un4seen.Bass.Misc;
-
+using System.Globalization;
+using System.Net;
 
 namespace Interface
 {
@@ -34,7 +35,7 @@ namespace Interface
         public MainWindow()
         {
             InitializeComponent();
-            if(Infrastructure1.LoadListOfUsers() != null)
+            if (Infrastructure1.LoadListOfUsers() != null)
             {
                 UserManager1.UpdateUserList(Infrastructure1.LoadListOfUsers());
             }
@@ -88,7 +89,7 @@ namespace Interface
         {
             List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(e.UserID.ToString(), e.AccessToken));
             SetUser(new User(e.Name, e.AccessToken, e.UserID.ToString(), SongList), false);
-            
+
         }
         private void listboxLoginAs_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -148,21 +149,43 @@ namespace Interface
         private void buttonDownload_Click(object sender, RoutedEventArgs e)
         {
             List<Song> ListToDownload = new List<Song>();
-            // TODO: rewrite for new playlist
             if (sender.GetHashCode() == buttonDownload.GetHashCode())
-                ListToDownload.Add(Playlist1.GetList()[_CurrentSong]);
-            else
                 ListToDownload = Playlist1.GetList();
-            if (Downloader1.DownloadSong(ListToDownload) == Common.Common.Status.Error)
+            else
+                ListToDownload.Add(Playlist1.GetList()[_CurrentSong]);
+            if (Downloader1.DownloadSong(ListToDownload, ProgressChanged) == Common.Common.Status.Error)
                 MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);
         }
+
+        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            try
+            {
+                foreach (Song song in Playlist1.GetList())
+                {
+                    if (song.GetHashCode() == Downloader1.hashCodeConnection[sender.GetHashCode()])
+                    {
+                        if (song.Percentage != e.ProgressPercentage)
+                        {
+                            song.Percentage = e.ProgressPercentage;
+                            listboxPlaylist.Items.Refresh();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {
             Player1.StopAndStopTimer();
-            // TODO: rewrite
             List<Song> SongList = Playlist1.GetList();
-            if(SongList.Count > 0)
-                if(_CurrentSong > 0)
+            if (SongList.Count > 0)
+                if (_CurrentSong > 0)
                 {
                     _CurrentSong--;
                 }
@@ -177,7 +200,6 @@ namespace Interface
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {
             Player1.StopAndStopTimer();
-            // TODO: rewrite
             List<Song> SongList = Playlist1.GetList();
             if (SongList.Count > 0)
                 if (_CurrentSong < SongList.Count - 1)
@@ -206,7 +228,6 @@ namespace Interface
         }
         private void buttonSearch_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: something questionable
             //RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
         }
         private void textboxSearch_GotFocus(object sender, RoutedEventArgs e)
@@ -222,19 +243,16 @@ namespace Interface
         {
             if (e.Key == Key.Enter)
             {
-                // TODO: something questionable as well
                 //RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
             }
         }
         private void buttonMix_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: rewrite
             Playlist1.MixPlaylist();
             RenderPlaylist(Playlist1.GetList());
         }
         private void buttonSort_Click(object sender, RoutedEventArgs e)
         {
-            // TODO: rewrite
             Playlist1.SortByDownloaded();
             RenderPlaylist(Playlist1.GetList());
         }
@@ -255,21 +273,22 @@ namespace Interface
         {
             List<Song> SongList = Playlist1.GetList();
             textboxSongName.Text = SongList[_CurrentSong].ToString();
-            if(listboxPlaylist.Items != null)
+            if (listboxPlaylist.Items != null)
                 listboxPlaylist.SelectedItem = (listboxPlaylist.Items[_CurrentSong]);
         }
-        private void RenderPlaylist(List<Song> SongList) 
+        private void RenderPlaylist(List<Song> SongList)
         {
             listboxPlaylist.ItemsSource = SongList;
             listboxPlaylist.AlternationCount = SongList.Count;
             Binding binding = new Binding();
             binding.Source = SongList;
             listboxPlaylist.SetBinding(ListBox.ItemsSourceProperty, binding);
+
             listboxPlaylist.Items.Refresh();
-        }        
+        }
         private void textboxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(textboxSearch.Text == "")
+            if (textboxSearch.Text == "")
             {
                 RenderPlaylist(Playlist1.GetList());
             }
@@ -307,7 +326,7 @@ namespace Interface
                 _tickCounter = 0;
                 double totaltime = Bass.BASS_ChannelBytes2Seconds(_stream, len);
                 double elapsedtime = Bass.BASS_ChannelBytes2Seconds(_stream, pos);
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => 
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                     textboxSongTime.Text = String.Format("{0:#0.00} / {1:#0.00}", Utils.FixTimespan(elapsedtime, "MMSS"), Utils.FixTimespan(totaltime, "MMSS"))));
                 DrawPosition(pos, len);
             }
@@ -353,5 +372,35 @@ namespace Interface
         }
         #endregion       
     }
-}
+    public class SongNumberConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int number = (int)value;
+            return ++number;
+        }
 
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    public class DurationConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            int time = (int)value;
+            int minutes = time / 60;
+            time -= minutes * 60;
+            if (time < 10)
+                return String.Format("{0}:0{1}", minutes, time);
+            else
+                return String.Format("{0}:{1}", minutes, time);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
