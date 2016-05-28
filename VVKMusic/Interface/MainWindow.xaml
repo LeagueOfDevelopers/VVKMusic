@@ -131,7 +131,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <Grid>
-                            <DesignInControl:CircularProgressBar x:Name ="progressBar" HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="0" SegmentColor="#5A5A5A" StrokeThickness="3" Radius="13"/>
+                            <DesignInControl:CircularProgressBar x:Name ="progressBar" HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{Binding Path=Percentage}" SegmentColor="#5A5A5A" StrokeThickness="3" Radius="13"/>
                             <Button HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="30" Style="{StaticResource ClearButton}" Click="buttonDownload_Click">
                                 <StackPanel>
                                     <Image Source="Resources/Pictures/ok.png" />

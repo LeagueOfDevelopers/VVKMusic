@@ -30,11 +30,11 @@ namespace Interface
         private int _CurrentSong = 0;
         private int _updateInterval = 50;
         private int _tickCounter = 0;
-        
+
         public MainWindow()
         {
             InitializeComponent();
-            if(Infrastructure1.LoadListOfUsers() != null)
+            if (Infrastructure1.LoadListOfUsers() != null)
             {
                 UserManager1.UpdateUserList(Infrastructure1.LoadListOfUsers());
             }
@@ -88,7 +88,7 @@ namespace Interface
         {
             List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(e.UserID.ToString(), e.AccessToken));
             SetUser(new User(e.Name, e.AccessToken, e.UserID.ToString(), SongList), false);
-            
+
         }
         private void listboxLoginAs_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -152,16 +152,16 @@ namespace Interface
                 ListToDownload = Playlist1.GetList();
             else
                 ListToDownload.Add(Playlist1.GetList()[_CurrentSong]);
-            if (Downloader1.DownloadSong(ListToDownload, listboxPlaylist) == Common.Common.Status.Error)
-                MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);        
+            if (Downloader1.DownloadSong(ListToDownload, Playlist1.GetList()) == Common.Common.Status.Error)
+                MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);
         }
 
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {
             Player1.StopAndStopTimer();
             List<Song> SongList = Playlist1.GetList();
-            if(SongList.Count > 0)
-                if(_CurrentSong > 0)
+            if (SongList.Count > 0)
+                if (_CurrentSong > 0)
                 {
                     _CurrentSong--;
                 }
@@ -249,21 +249,22 @@ namespace Interface
         {
             List<Song> SongList = Playlist1.GetList();
             textboxSongName.Text = SongList[_CurrentSong].ToString();
-            if(listboxPlaylist.Items != null)
+            if (listboxPlaylist.Items != null)
                 listboxPlaylist.SelectedItem = (listboxPlaylist.Items[_CurrentSong]);
         }
-        private void RenderPlaylist(List<Song> SongList) 
+        private void RenderPlaylist(List<Song> SongList)
         {
             listboxPlaylist.ItemsSource = SongList;
             listboxPlaylist.AlternationCount = SongList.Count;
             Binding binding = new Binding();
             binding.Source = SongList;
             listboxPlaylist.SetBinding(ListBox.ItemsSourceProperty, binding);
+
             listboxPlaylist.Items.Refresh();
-        }        
+        }
         private void textboxSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(textboxSearch.Text == "")
+            if (textboxSearch.Text == "")
             {
                 RenderPlaylist(Playlist1.GetList());
             }
@@ -301,7 +302,7 @@ namespace Interface
                 _tickCounter = 0;
                 double totaltime = Bass.BASS_ChannelBytes2Seconds(_stream, len);
                 double elapsedtime = Bass.BASS_ChannelBytes2Seconds(_stream, pos);
-                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => 
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                     textboxSongTime.Text = String.Format("{0:#0.00} / {1:#0.00}", Utils.FixTimespan(elapsedtime, "MMSS"), Utils.FixTimespan(totaltime, "MMSS"))));
                 DrawPosition(pos, len);
             }
@@ -379,4 +380,3 @@ namespace Interface
         }
     }
 }
-

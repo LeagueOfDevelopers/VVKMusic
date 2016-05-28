@@ -10,6 +10,7 @@ namespace Common
         public Song(int id)
         {
             this.ID = id;
+            this.Percentage = 0;
         }
 
         [JsonProperty("aid")]
@@ -30,6 +31,7 @@ namespace Common
         public int GenreID { get; set; }
         public int Date { get; set; }
         public bool Downloaded { get; set; }
+        public int Percentage { get; set; }
 
         public override string ToString()
         {

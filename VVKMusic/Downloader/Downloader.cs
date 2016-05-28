@@ -8,23 +8,24 @@ using System.Threading.Tasks;
 using System.Windows;
 using Status = Common.Common.Status;
 using System.Windows.Controls;
-using DesignInControl;
 
 namespace Downloader
 {
     public class Downloader : IDownloader
     {
-        CircularProgressBar progressBar;
+        Dictionary<int, int> hashCodeConnection = new Dictionary<int, int>();
+        public List<Song> SongList;
         int count = 0;
-        public Status DownloadSong(List<Song> songList, ListBox listboxPlaylist)
+
+        public Status DownloadSong(List<Song> listToDownload, List<Song> songs)
         {
-            progressBar = (CircularProgressBar)listboxPlaylist.ItemTemplate.FindName("progressBar", (ListBoxItem)listboxPlaylist.Items[0]);
+            SongList = songs;
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + @"\";
-            count = songList.Count;
-            foreach (Song song in songList)
+            count = listToDownload.Count;
+            foreach (Song song in listToDownload)
             {
                 string fileName = song.Artist + "-" + song.Title + ".mp3";
-                if (DownloadAudioAync(song.Uri, @folder + fileName).Exception != null)
+                if (DownloadAudioAync(song, @folder + fileName).Exception != null)
                 {
                     return Status.Error;
                 }
@@ -48,8 +49,15 @@ namespace Downloader
         {
             try
             {
-                if (progressBar.Percentage != e.ProgressPercentage)
-                    progressBar.Percentage = e.ProgressPercentage;
+                foreach (Song song in SongList)
+                {
+                    if (song.GetHashCode() == hashCodeConnection[sender.GetHashCode()])
+                    {
+                        if (song.Percentage != e.ProgressPercentage)
+                            song.Percentage = e.ProgressPercentage;
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -58,14 +66,15 @@ namespace Downloader
         }
 
 
-        public async Task DownloadAudioAync(Uri url, string path)
+        public async Task DownloadAudioAync(Song song, string path)
         {
             try
             {
                 WebClient Client = new WebClient();
+                hashCodeConnection.Add(Client.GetHashCode(), song.GetHashCode());
                 Client.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCallback);
                 Client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
-                await Client.DownloadFileTaskAsync(url, path);
+                await Client.DownloadFileTaskAsync(song.Uri, path);
             }
             catch
             { }

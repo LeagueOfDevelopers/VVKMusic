@@ -8,6 +8,6 @@ namespace Downloader
 {
     interface IDownloader
     {
-        Status DownloadSong(List<Song> songList, ListBox listboxPlaylist);
+        Status DownloadSong(List<Song> listToDownload, List<Song> songList);
     }
 }
