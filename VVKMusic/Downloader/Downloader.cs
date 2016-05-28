@@ -13,19 +13,17 @@ namespace Downloader
 {
     public class Downloader : IDownloader
     {
-        Dictionary<int, int> hashCodeConnection = new Dictionary<int, int>();
-        public List<Song> SongList;
+        public Dictionary<int, int> hashCodeConnection = new Dictionary<int, int>();
         int count = 0;
 
-        public Status DownloadSong(List<Song> listToDownload, List<Song> songs)
+        public Status DownloadSong(List<Song> listToDownload, DownloadProgressChangedEventHandler ProgressChanged)
         {
-            SongList = songs;
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + @"\";
             count = listToDownload.Count;
             foreach (Song song in listToDownload)
             {
                 string fileName = song.Artist + "-" + song.Title + ".mp3";
-                if (DownloadAudioAync(song, @folder + fileName).Exception != null)
+                if (DownloadAudioAync(song, @folder + fileName, ProgressChanged).Exception != null)
                 {
                     return Status.Error;
                 }
@@ -45,28 +43,7 @@ namespace Downloader
             }
         }
 
-        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            try
-            {
-                foreach (Song song in SongList)
-                {
-                    if (song.GetHashCode() == hashCodeConnection[sender.GetHashCode()])
-                    {
-                        if (song.Percentage != e.ProgressPercentage)
-                            song.Percentage = e.ProgressPercentage;
-                    }
-                }
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
-
-
-        public async Task DownloadAudioAync(Song song, string path)
+        public async Task DownloadAudioAync(Song song, string path, DownloadProgressChangedEventHandler ProgressChanged)
         {
             try
             {

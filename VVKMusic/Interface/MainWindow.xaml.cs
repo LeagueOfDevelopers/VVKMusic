@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using Un4seen.Bass;
 using Un4seen.Bass.Misc;
 using System.Globalization;
+using System.Net;
 
 namespace Interface
 {
@@ -152,8 +153,31 @@ namespace Interface
                 ListToDownload = Playlist1.GetList();
             else
                 ListToDownload.Add(Playlist1.GetList()[_CurrentSong]);
-            if (Downloader1.DownloadSong(ListToDownload, Playlist1.GetList()) == Common.Common.Status.Error)
+            if (Downloader1.DownloadSong(ListToDownload, ProgressChanged) == Common.Common.Status.Error)
                 MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);
+        }
+
+        private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            try
+            {
+                foreach (Song song in Playlist1.GetList())
+                {
+                    if (song.GetHashCode() == Downloader1.hashCodeConnection[sender.GetHashCode()])
+                    {
+                        if (song.Percentage != e.ProgressPercentage)
+                        {
+                            song.Percentage = e.ProgressPercentage;
+                            listboxPlaylist.Items.Refresh();
+                        }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
