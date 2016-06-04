@@ -18,7 +18,10 @@ namespace Downloader
 
         public Status DownloadSong(List<Song> listToDownload, DownloadProgressChangedEventHandler ProgressChanged, AsyncCompletedEventHandler DownloadSongCallback)
         {
-            string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + @"\";
+            string folderName = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+            string pathString = Path.Combine(folderName, "VVKMusic");
+            if (!File.Exists(pathString)) Directory.CreateDirectory(pathString);
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + @"\VVKMusic\";
             count = listToDownload.Count;
             foreach (Song song in listToDownload)
             {
