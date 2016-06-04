@@ -13,6 +13,7 @@ using Un4seen.Bass.Misc;
 using System.Globalization;
 using System.Net;
 using System.ComponentModel;
+using System.Windows.Media;
 
 namespace Interface
 {
@@ -33,6 +34,7 @@ namespace Interface
         private int _CurrentSong = 0;
         private int _updateInterval = 50;
         private int _tickCounter = 0;
+        private bool _repeat = false;
 
         public MainWindow()
         {
@@ -254,7 +256,8 @@ namespace Interface
             if (SongList.Count > 0)
                 if (_CurrentSong < SongList.Count - 1)
                 {
-                    _CurrentSong++;
+                    if (!_repeat)
+                        _CurrentSong++;
                 }
                 else
                 {
@@ -262,7 +265,8 @@ namespace Interface
                 }
             Player1.SetSource(SongList[_CurrentSong]);
             Player1.PlayAndStartTimer();
-            RenderNameAndSelectedSong();
+            if (!_repeat)
+                RenderNameAndSelectedSong();
         }
         private void buttonPause_Click(object sender, RoutedEventArgs e)
         {
@@ -274,7 +278,7 @@ namespace Interface
         }
         private void buttonStop_Click(object sender, RoutedEventArgs e)
         {
-            Player1.StopAndStopTimer();
+            Player1.StopAndStopTimer();        
         }
         private void buttonSearch_Click(object sender, RoutedEventArgs e)
         {
@@ -301,6 +305,29 @@ namespace Interface
             Playlist1.MixPlaylist();
             RenderPlaylist(Playlist1.GetList());
         }
+
+        private BitmapImage AddImage(string adress)
+        {
+            BitmapImage bmi = new BitmapImage(new Uri(adress, UriKind.RelativeOrAbsolute))
+            { CreateOptions = BitmapCreateOptions.IgnoreImageCache };
+            return bmi;
+        }
+
+        private void buttonRepeat_Click(object sender, RoutedEventArgs e)
+        {
+            BitmapImage bmi = new BitmapImage();
+            if (_repeat)
+            {
+                _repeat = false;
+                imageRepeat.Source = AddImage("Resources/Pictures/repeat_grey.png"); 
+            }
+            else
+            {
+                _repeat = true;
+                imageRepeat.Source = AddImage("Resources/Pictures/repeat.png");
+            }
+        }
+
         private void buttonSort_Click(object sender, RoutedEventArgs e)
         {
             Playlist1.SortByDownloaded();
@@ -444,9 +471,9 @@ namespace Interface
                 Bass.BASS_ChannelSetPosition(_stream, pos);
             }));
         }
+
         #endregion
 
-       
     }
     public class SongNumberConverter : IValueConverter
     {

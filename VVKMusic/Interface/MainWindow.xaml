@@ -109,9 +109,9 @@
                     <Image Source="Resources/Pictures/search.png" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Left" Height="35" Margin="220,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonMix_Click" Grid.Row="4">
+            <Button HorizontalAlignment="Left" Height="35" Margin="220,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonRepeat_Click" Grid.Row="4">
                 <StackPanel>
-                    <Image Source="Resources/Pictures/mix.png" />
+                    <Image Name="imageRepeat" Source="Resources/Pictures/repeat_grey.png"/>
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Left" Height="35" Margin="255,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonMix_Click" Grid.Row="4">
