@@ -319,18 +319,37 @@ namespace Interface
         {
             this.DragMove();
         }
+
+        private void SetInformation(string text)
+        {
+            Action action = new Action(() => {textboxSongName.Text = text; });
+            if (!Dispatcher.CheckAccess())
+                Dispatcher.Invoke(action);
+            else
+                action();
+        }
+        private void SetInformation(Song song)
+        {
+            Action action = new Action(() => { listboxPlaylist.SelectedItem = song; });
+            if (!Dispatcher.CheckAccess())
+                Dispatcher.Invoke(action);
+            else
+                action();
+        }
+
         private void RenderNameAndSelectedSong()
         {
-            List<Song> SongList = Playlist1.GetList();
-            textboxSongName.Text = SongList[_CurrentSong].ToString();
-            if (listboxPlaylist.Items != null)
-                listboxPlaylist.SelectedItem = (listboxPlaylist.Items[_CurrentSong]);
+                List<Song> SongList = Playlist1.GetList();
+                SetInformation(SongList[_CurrentSong].ToString());
+                if (listboxPlaylist.Items != null)
+                    SetInformation((Song)listboxPlaylist.Items[_CurrentSong]);
         }
+
         private void RenderPlaylist(List<Song> SongList)
         {
             foreach (Song song in SongList)
                 if (song.Downloaded)
-                    song.Image = @"Resources/Pictures/ok_small.png";
+                    song.Image = @"Resources/Pictures/ok_.png";
             listboxPlaylist.ItemsSource = SongList;
             listboxPlaylist.AlternationCount = SongList.Count;
             Binding binding = new Binding();
@@ -359,7 +378,7 @@ namespace Interface
             }
         }
         #region ProgressBar
-        private void timerUpdate_Tick(object sender, System.EventArgs e)
+        private void timerUpdate_Tick(object sender, EventArgs e)
         {
             int _stream = Player1.Stream;
             if (Bass.BASS_ChannelIsActive(_stream) == BASSActive.BASS_ACTIVE_PLAYING)
@@ -367,6 +386,7 @@ namespace Interface
             else
             {
                 DrawPosition(-1, -1);
+                buttonNext_Click(new object(), new RoutedEventArgs());
                 return;
             }
             _tickCounter++;
@@ -381,6 +401,8 @@ namespace Interface
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                     textboxSongTime.Text = String.Format("{0:#0.00} / {1:#0.00}", Utils.FixTimespan(elapsedtime, "MMSS"), Utils.FixTimespan(totaltime, "MMSS"))));
                 DrawPosition(pos, len);
+                //if (Math.Round(totaltime) == Math.Round(elapsedtime))
+                //    buttonNext_Click(new object(), new RoutedEventArgs());
             }
         }
         private void DrawPosition(long pos, long len)
