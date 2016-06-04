@@ -12,6 +12,7 @@ using Un4seen.Bass;
 using Un4seen.Bass.Misc;
 using System.Globalization;
 using System.Net;
+using System.ComponentModel;
 
 namespace Interface
 {
@@ -26,6 +27,7 @@ namespace Interface
         private VKAPI.VKAPI VKAPI1 = new VKAPI.VKAPI();
         private Infrastructure.Infrastructure Infrastructure1 = new Infrastructure.Infrastructure();
         private Downloader.Downloader Downloader1 = new Downloader.Downloader();
+        private List<Song> ListToDownload1 = new List<Song>();
 
         private User _CurrentUser = null;
         private int _CurrentSong = 0;
@@ -146,15 +148,41 @@ namespace Interface
                 }
             }
         }
+
         private void buttonDownload_Click(object sender, RoutedEventArgs e)
-        {
-            List<Song> ListToDownload = new List<Song>();
+        {           
+            List<Song> listToDownload = new List<Song>();
             if (sender.GetHashCode() == buttonDownload.GetHashCode())
-                ListToDownload = Playlist1.GetList();
+            {
+                listToDownload = this.ListToDownload1;
+            }
             else
-                ListToDownload.Add(Playlist1.GetList()[_CurrentSong]);
-            if (Downloader1.DownloadSong(ListToDownload, ProgressChanged) == Common.Common.Status.Error)
+            {
+                listToDownload.Add(Playlist1.GetList()[_CurrentSong]);
+            }
+            foreach (Song song in ListToDownload1)
+            {
+                song.Image = @"Resources/Pictures/ok_lightgrey.png";
+            }
+            if (Downloader1.DownloadSong(listToDownload, ProgressChanged, DownloadSongCallback) == Common.Common.Status.Error)
                 MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);
+            ListToDownload1.Clear();
+        }
+
+        private void buttonOk_Click(object sender, RoutedEventArgs e)
+        {
+            Song song = (Song)(sender as FrameworkElement).Tag;
+            if (song.Image == @"Resources/Pictures/ok_lightgrey.png")
+            {
+                song.Image = @"Resources/Pictures/ok_orangefill.png";
+                ListToDownload1.Add(song);
+            }
+            else
+            {
+                song.Image = @"Resources/Pictures/ok_lightgrey.png";
+                ListToDownload1.Remove(song);
+            }
+            listboxPlaylist.Items.Refresh();
         }
 
         private void ProgressChanged(object sender, DownloadProgressChangedEventArgs e)
@@ -170,6 +198,28 @@ namespace Interface
                             song.Percentage = e.ProgressPercentage;
                             listboxPlaylist.Items.Refresh();
                         }
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public void DownloadSongCallback(object sender, AsyncCompletedEventArgs e)
+        {
+            try
+            {
+                foreach (Song song in Playlist1.GetList())
+                {
+                    if (song.GetHashCode() == Downloader1.hashCodeConnection[sender.GetHashCode()])
+                    {
+                        song.Image = @"Resources/Pictures/ok_small.png";
+                        song.Percentage = 0;
+                        song.Downloaded = true;
+                        listboxPlaylist.Items.Refresh();
                     }
                 }
 
@@ -278,6 +328,9 @@ namespace Interface
         }
         private void RenderPlaylist(List<Song> SongList)
         {
+            foreach (Song song in SongList)
+                if (song.Downloaded)
+                    song.Image = @"Resources/Pictures/ok_small.png";
             listboxPlaylist.ItemsSource = SongList;
             listboxPlaylist.AlternationCount = SongList.Count;
             Binding binding = new Binding();
@@ -305,7 +358,6 @@ namespace Interface
                 Player1.PlayAndStartTimer();
             }
         }
-
         #region ProgressBar
         private void timerUpdate_Tick(object sender, System.EventArgs e)
         {
@@ -370,7 +422,9 @@ namespace Interface
                 Bass.BASS_ChannelSetPosition(_stream, pos);
             }));
         }
-        #endregion       
+        #endregion
+
+       
     }
     public class SongNumberConverter : IValueConverter
     {

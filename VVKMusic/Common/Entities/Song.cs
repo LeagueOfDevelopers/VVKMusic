@@ -11,6 +11,7 @@ namespace Common
         {
             this.ID = id;
             this.Percentage = 0;
+            this.Image = @"Resources/Pictures/ok_lightgrey.png";
         }
 
         [JsonProperty("aid")]
@@ -32,6 +33,7 @@ namespace Common
         public int Date { get; set; }
         public bool Downloaded { get; set; }
         public int Percentage { get; set; }
+        public string Image { get; set; }
 
         public override string ToString()
         {

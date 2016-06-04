@@ -16,19 +16,18 @@ namespace Downloader
         public Dictionary<int, int> hashCodeConnection = new Dictionary<int, int>();
         int count = 0;
 
-        public Status DownloadSong(List<Song> listToDownload, DownloadProgressChangedEventHandler ProgressChanged)
+        public Status DownloadSong(List<Song> listToDownload, DownloadProgressChangedEventHandler ProgressChanged, AsyncCompletedEventHandler DownloadSongCallback)
         {
             string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + @"\";
             count = listToDownload.Count;
             foreach (Song song in listToDownload)
             {
                 string fileName = song.Artist + "-" + song.Title + ".mp3";
-                if (DownloadAudioAync(song, @folder + fileName, ProgressChanged).Exception != null)
+                if (DownloadAudioAync(song, @folder + fileName, ProgressChanged, DownloadSongCallback).Exception != null)
                 {
                     return Status.Error;
                 }
                 song.DownloadedUri = new Uri(@folder + fileName);
-                song.Downloaded = true;
             }
             return Status.Ok;
         }
@@ -43,12 +42,13 @@ namespace Downloader
             }
         }
 
-        public async Task DownloadAudioAync(Song song, string path, DownloadProgressChangedEventHandler ProgressChanged)
+        public async Task DownloadAudioAync(Song song, string path, DownloadProgressChangedEventHandler ProgressChanged, AsyncCompletedEventHandler DownloadSongCallback)
         {
             try
             {
                 WebClient Client = new WebClient();
                 hashCodeConnection.Add(Client.GetHashCode(), song.GetHashCode());
+                Client.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadSongCallback);
                 Client.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadFileCallback);
                 Client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgressChanged);
                 await Client.DownloadFileTaskAsync(song.Uri, path);

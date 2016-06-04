@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         xmlns:local="clr-namespace:Interface" x:Class="Interface.MainWindow"
         xmlns:playlist="clr-namespace:Playlist;assembly=Playlist"
-        Title="VVK Player" Height="500" Width="350" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="False" Icon="Resources/Pictures/play.png" HorizontalContentAlignment="Stretch">
+        Title="VVK Player" Height="500" Width="350" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="False" Icon="Resources/Pictures/icon.png" HorizontalContentAlignment="Stretch">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -125,24 +125,26 @@
                 </StackPanel>
             </Button>
         </Grid>
-        <playlist:Playlist Name="listboxPlaylist" HorizontalAlignment="Center" MinHeight="268" Height="auto" Margin="0,0,0,0" Padding="0,10,0,0" VerticalAlignment="Top" BorderThickness="0" MinWidth="325" Width="auto" Grid.Row="5" 
+        <playlist:Playlist Name="listboxPlaylist" HorizontalAlignment="Center" MinHeight="268" Height="auto" Margin="0,0,0,0" Padding="0,0,0,0" VerticalAlignment="Top" BorderThickness="0" MinWidth="325" Width="auto" Grid.Row="5" 
                            PreviewMouseUp="listboxPlaylist_PreviewMouseUp" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Grid>
-                            <DesignInControl:CircularProgressBar x:Name ="progressBar" HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{Binding Path=Percentage}" SegmentColor="#5A5A5A" StrokeThickness="3" Radius="13"/>
-                            <Button HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="30" Style="{StaticResource ClearButton}" Click="buttonDownload_Click">
-                                <StackPanel>
-                                    <Image Source="Resources/Pictures/ok.png" />
-                                </StackPanel>
-                            </Button>
-                        </Grid>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex), Converter={StaticResource songNumberConverter}}"/>
-                        <TextBlock Margin="0,5,0,5" HorizontalAlignment="Center" VerticalAlignment="Center" Text="."/>
-                        <TextBlock Padding="5" HorizontalAlignment="Center" Width="210"  VerticalAlignment="Center" Text="{Binding}"/>
-                        <TextBlock Padding="5" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="{Binding Path=Duration, Converter={StaticResource durationConverter}}"/>
-                    </StackPanel>
+                    <Border BorderThickness="0, 0, 0, 1" BorderBrush="#FFD1D3DA" Padding="5,5,5,5">
+                        <StackPanel Orientation="Horizontal">
+                            <Grid Margin="0,0,10,0">
+                                <DesignInControl:CircularProgressBar x:Name ="progressBar" HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{Binding Path=Percentage}" SegmentColor="#F59184" StrokeThickness="2" Radius="9"/>
+                                <Button HorizontalAlignment="Center" Height="25" VerticalAlignment="Center" Width="25" Tag="{Binding}" Style="{StaticResource ClearButton}" Click="buttonOk_Click">
+                                    <StackPanel>
+                                        <Image Source="{Binding Path=Image}" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex), Converter={StaticResource songNumberConverter}}"/>
+                            <TextBlock Margin="0,5,0,5" HorizontalAlignment="Center" VerticalAlignment="Center" Text="."/>
+                            <TextBlock Padding="5" HorizontalAlignment="Center" Width="240"  VerticalAlignment="Center" Text="{Binding}"/>
+                            <TextBlock Padding="5" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="{Binding Path=Duration, Converter={StaticResource durationConverter}}"/>
+                        </StackPanel>
+                    </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </playlist:Playlist>
