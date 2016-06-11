@@ -47,14 +47,14 @@
                     <Image Name="MenuButtonImage" Source="Resources/Pictures/menu.png" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Right" Height="25" Margin="0,40,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Grid.Row="1">
+            <Button HorizontalAlignment="Right" Height="25" Margin="0,40,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonSettings_Click" Grid.Row="1">
                 <StackPanel>
-                    <Image Source="Resources/Pictures/settings.png" />
+                    <Image Name="imageSettings" Source="Resources/Pictures/settings.png" />
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Left" Height="35" Margin="15,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="1">
                 <StackPanel>
-                    <Image Source="Resources/Pictures/download.png" />
+                    <Image Name="imageDownloadOne" Source="Resources/Pictures/download.png" />
                 </StackPanel>
             </Button>
         </Grid>
@@ -69,27 +69,27 @@
                 </Grid>
                 <Button HorizontalAlignment="Center" Height="35" Margin="-180,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPrev_Click" Grid.Row="2">
                     <StackPanel>
-                        <Image Source="Resources/Pictures/prev.png" />
+                        <Image Name="imagePrev" Source="Resources/Pictures/prev.png" />
                     </StackPanel>
                 </Button>
                 <Button HorizontalAlignment="Center" Height="35" Margin="-90,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPause_Click" Grid.Row="2">
                     <StackPanel>
-                        <Image Source="Resources/Pictures/pause.png" />
+                        <Image Name="imagePause" Source="Resources/Pictures/pause.png" />
                     </StackPanel>
                 </Button>
                 <Button HorizontalAlignment="Center" Height="35" Margin="0,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPlay_Click" Grid.Row="2">
                     <StackPanel>
-                        <Image Source="Resources/Pictures/play.png" />
+                        <Image Name="imagePlay" Source="Resources/Pictures/play.png" />
                     </StackPanel>
                 </Button>
                 <Button HorizontalAlignment="Center" Height="35" Margin="90,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonStop_Click" Grid.Row="2">
                     <StackPanel>
-                        <Image Source="Resources/Pictures/stop.png" />
+                        <Image Name="imageStop" Source="Resources/Pictures/stop.png" />
                     </StackPanel>
                 </Button>
                 <Button HorizontalAlignment="Center" Height="35" Margin="180,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonNext_Click" Grid.Row="2">
                     <StackPanel>
-                        <Image Source="Resources/Pictures/next.png" />
+                        <Image Name="imageNext" Source="Resources/Pictures/next.png" />
                     </StackPanel>
                 </Button>
             </Grid>
@@ -98,7 +98,7 @@
         <Grid Width="325"  HorizontalAlignment="Center" Grid.Row="4">
             <Button x:Name="buttonDownload" HorizontalAlignment="Left" Height="35" Margin="10,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="4">
                 <StackPanel>
-                    <Image Source="Resources/Pictures/download.png" />
+                    <Image Name="imageDownload" Source="Resources/Pictures/download.png" />
                 </StackPanel>
             </Button>
             <TextBox Name="textboxSearch" HorizontalAlignment="Left" Height="21" Margin="55,9,0,0" TextWrapping="Wrap" Padding="6,0,0,0" Text="Search" VerticalAlignment="Top"  Width="150" GotFocus="textboxSearch_GotFocus" LostFocus="textboxSearch_LostFocus" TextChanged="textboxSearch_TextChanged" Grid.Row="4" KeyDown="textboxSearch_KeyDown"/>
@@ -106,7 +106,7 @@
             <Ellipse HorizontalAlignment="Left" Margin="185,2,0,0" VerticalAlignment="Center" Fill="#5A5A5A" Width="30" Height="30" Grid.Row="4"/>
             <Button HorizontalAlignment="Left" Height="35" Margin="180,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonSearch_Click" Grid.Row="4">
                 <StackPanel>
-                    <Image Source="Resources/Pictures/search.png" />
+                    <Image Name="imageSearch" Source="Resources/Pictures/search.png" />
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Left" Height="35" Margin="220,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonRepeat_Click" Grid.Row="4">
@@ -116,12 +116,12 @@
             </Button>
             <Button HorizontalAlignment="Left" Height="35" Margin="255,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonMix_Click" Grid.Row="4">
                 <StackPanel>
-                    <Image Source="Resources/Pictures/mix.png" />
+                    <Image Name="imageMix" Source="Resources/Pictures/mix.png" />
                 </StackPanel>
             </Button>
             <Button HorizontalAlignment="Left" Height="35" Margin="290,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonSort_Click" Grid.Row="4">
                 <StackPanel>
-                    <Image Source="Resources/Pictures/sort.png" />
+                    <Image Name="imageSort" Source="Resources/Pictures/sort.png" />
                 </StackPanel>
             </Button>
         </Grid>

@@ -14,6 +14,7 @@ using System.Globalization;
 using System.Net;
 using System.ComponentModel;
 using System.Windows.Media;
+using System.Threading.Tasks;
 
 namespace Interface
 {
@@ -156,15 +157,20 @@ namespace Interface
             List<Song> listToDownload = new List<Song>();
             if (sender.GetHashCode() == buttonDownload.GetHashCode())
             {
+                HoverEffect(imageDownload, @"Resources/Pictures/download.png");
                 listToDownload = this.ListToDownload1;
             }
             else
             {
+                HoverEffect(imageDownloadOne, @"Resources/Pictures/download.png");
                 listToDownload.Add(Playlist1.GetList()[_CurrentSong]);
             }
             foreach (Song song in ListToDownload1)
             {
-                song.Image = @"Resources/Pictures/ok_lightgrey.png";
+                if (!song.Downloaded)
+                    song.Image = @"Resources/Pictures/ok_lightgrey.png";
+                else
+                    song.Image = @"Resources/Pictures/ok_small.png";
             }
             if (Downloader1.DownloadSong(listToDownload, ProgressChanged, DownloadSongCallback) == Common.Common.Status.Error)
                 MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);
@@ -239,6 +245,7 @@ namespace Interface
 
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {
+            HoverEffect(imagePrev,@"Resources/Pictures/prev.png");
             Player1.StopAndStopTimer();
             List<Song> SongList = Playlist1.GetList();
             if (SongList.Count > 0)
@@ -256,6 +263,7 @@ namespace Interface
         }
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {
+            HoverEffect(imageNext, @"Resources/Pictures/next.png");
             Player1.StopAndStopTimer();
             List<Song> SongList = Playlist1.GetList();
             if (SongList.Count > 0)
@@ -275,18 +283,22 @@ namespace Interface
         }
         private void buttonPause_Click(object sender, RoutedEventArgs e)
         {
+            HoverEffect(imagePause, @"Resources/Pictures/pause.png");
             Player1.PauseAndStopTimer();
         }
         private void buttonPlay_Click(object sender, RoutedEventArgs e)
         {
+            HoverEffect(imagePlay, @"Resources/Pictures/play.png");
             Player1.PlayAndStartTimer();
         }
         private void buttonStop_Click(object sender, RoutedEventArgs e)
         {
+            HoverEffect(imageStop, @"Resources/Pictures/stop.png");
             Player1.StopAndStopTimer();        
         }
         private void buttonSearch_Click(object sender, RoutedEventArgs e)
         {
+            HoverEffect(imageSearch, @"Resources/Pictures/search.png");
             //RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
         }
         private void textboxSearch_GotFocus(object sender, RoutedEventArgs e)
@@ -307,20 +319,13 @@ namespace Interface
         }
         private void buttonMix_Click(object sender, RoutedEventArgs e)
         {
+            HoverEffect(imageMix, @"Resources/Pictures/mix.png");
             Playlist1.MixPlaylist();
             RenderPlaylist(Playlist1.GetList());
         }
 
-        private BitmapImage AddImage(string adress)
-        {
-            BitmapImage bmi = new BitmapImage(new Uri(adress, UriKind.RelativeOrAbsolute))
-            { CreateOptions = BitmapCreateOptions.IgnoreImageCache };
-            return bmi;
-        }
-
         private void buttonRepeat_Click(object sender, RoutedEventArgs e)
         {
-            BitmapImage bmi = new BitmapImage();
             if (_repeat)
             {
                 _repeat = false;
@@ -333,8 +338,14 @@ namespace Interface
             }
         }
 
+        private void buttonSettings_Click(object sender, RoutedEventArgs e)
+        {
+            HoverEffect(imageSettings,"Resources/Pictures/settings.png");
+        }
+
         private void buttonSort_Click(object sender, RoutedEventArgs e)
         {
+            HoverEffect(imageSort,"Resources/Pictures/sort.png");
             Playlist1.SortByDownloaded();
             RenderPlaylist(Playlist1.GetList());
         }
@@ -409,6 +420,21 @@ namespace Interface
                 Player1.PlayAndStartTimer();
             }
         }
+
+        private BitmapImage AddImage(string adress)
+        {
+            BitmapImage bmi = new BitmapImage(new Uri(adress, UriKind.RelativeOrAbsolute))
+            { CreateOptions = BitmapCreateOptions.IgnoreImageCache };
+            return bmi;
+        }
+
+        private async void HoverEffect(Image image, String imageString)
+        {
+            image.Source = AddImage("Resources/Pictures/ok_orangefill.png");
+            await Task.Delay(100);
+            image.Source = AddImage(imageString);
+        }
+
         #region ProgressBar
         private void timerUpdate_Tick(object sender, EventArgs e)
         {
@@ -437,6 +463,7 @@ namespace Interface
                 //    buttonNext_Click(new object(), new RoutedEventArgs());
             }
         }
+
         private void DrawPosition(long pos, long len)
         {
             if (len == 0 || pos < 0)
@@ -478,8 +505,8 @@ namespace Interface
         }
 
         #endregion
-
     }
+
     public class SongNumberConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
