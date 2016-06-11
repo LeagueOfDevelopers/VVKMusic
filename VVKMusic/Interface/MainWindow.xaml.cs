@@ -181,8 +181,13 @@ namespace Interface
             }
             else
             {
-                song.Image = @"Resources/Pictures/ok_lightgrey.png";
-                ListToDownload1.Remove(song);
+                if (song.Downloaded)
+                    song.Image = @"Resources/Pictures/ok_small.png";
+                else
+                {
+                    song.Image = @"Resources/Pictures/ok_lightgrey.png";
+                    ListToDownload1.Remove(song);
+                }
             }
             listboxPlaylist.Items.Refresh();
         }
