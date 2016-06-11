@@ -260,10 +260,16 @@ namespace Interface
             Player1.SetSource(SongList[_CurrentSong]);
             Player1.PlayAndStartTimer();
             RenderNameAndSelectedSong();
+            ListboxPullOver(_CurrentSong);
         }
         private void buttonNext_Click(object sender, RoutedEventArgs e)
         {
             HoverEffect(imageNext, @"Resources/Pictures/next.png");
+            NextSongMethod();         
+        }
+
+        private void NextSongMethod()
+        {
             Player1.StopAndStopTimer();
             List<Song> SongList = Playlist1.GetList();
             if (SongList.Count > 0)
@@ -280,7 +286,9 @@ namespace Interface
             Player1.PlayAndStartTimer();
             if (!_repeat)
                 RenderNameAndSelectedSong();
+            ListboxPullOver(_CurrentSong);
         }
+
         private void buttonPause_Click(object sender, RoutedEventArgs e)
         {
             HoverEffect(imagePause, @"Resources/Pictures/pause.png");
@@ -363,29 +371,14 @@ namespace Interface
             this.DragMove();
         }
 
-        private void SetInformation(string text)
-        {
-            Action action = new Action(() => {textboxSongName.Text = text; });
-            if (!Dispatcher.CheckAccess())
-                Dispatcher.Invoke(action);
-            else
-                action();
-        }
-        private void SetInformation(Song song)
-        {
-            Action action = new Action(() => { listboxPlaylist.SelectedItem = song; });
-            if (!Dispatcher.CheckAccess())
-                Dispatcher.Invoke(action);
-            else
-                action();
-        }
-
         private void RenderNameAndSelectedSong()
         {
-                List<Song> SongList = Playlist1.GetList();
-                SetInformation(SongList[_CurrentSong].ToString());
-                if (listboxPlaylist.Items != null)
-                    SetInformation((Song)listboxPlaylist.Items[_CurrentSong]);
+            List<Song> SongList = Playlist1.GetList();
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                   textboxSongName.Text = SongList[_CurrentSong].ToString()));
+            if (listboxPlaylist.Items != null)
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                   listboxPlaylist.SelectedItem = (Song)listboxPlaylist.Items[_CurrentSong]));
         }
 
         private void RenderPlaylist(List<Song> SongList)
@@ -412,13 +405,29 @@ namespace Interface
         {
             if (listboxPlaylist.SelectedIndex != -1 && _CurrentSong != listboxPlaylist.SelectedIndex)
             {
-                _CurrentSong = listboxPlaylist.SelectedIndex;
+                ListboxPullOver(listboxPlaylist.SelectedIndex);
                 RenderNameAndSelectedSong();
                 Player1.StopAndStopTimer();
                 List<Song> SongList = Playlist1.GetList();
-                Player1.SetSource(SongList[_CurrentSong]);
+                Player1.SetSource(SongList[0]);
                 Player1.PlayAndStartTimer();
             }
+        }
+
+        private void ListboxPullOver(Int32 current)
+        {
+            for (int i = current; i < Playlist1.GetList().Count; i++)
+            {
+                for (int j = i; j > i - current; j--)
+                {
+                    Song song = Playlist1.GetList()[j-1];
+                    Playlist1.GetList()[j-1] = Playlist1.GetList()[j];
+                    Playlist1.GetList()[j] = song;
+                }
+            }
+            listboxPlaylist.SelectedIndex = 0;
+            listboxPlaylist.Items.Refresh();
+            _CurrentSong = 0;          
         }
 
         private BitmapImage AddImage(string adress)
@@ -444,7 +453,7 @@ namespace Interface
             else
             {
                 DrawPosition(-1, -1);
-                buttonNext_Click(new object(), new RoutedEventArgs());
+                NextSongMethod();
                 return;
             }
             _tickCounter++;
@@ -459,8 +468,6 @@ namespace Interface
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                     textboxSongTime.Text = String.Format("{0:#0.00} / {1:#0.00}", Utils.FixTimespan(elapsedtime, "MMSS"), Utils.FixTimespan(totaltime, "MMSS"))));
                 DrawPosition(pos, len);
-                //if (Math.Round(totaltime) == Math.Round(elapsedtime))
-                //    buttonNext_Click(new object(), new RoutedEventArgs());
             }
         }
 
