@@ -15,6 +15,7 @@ using System.Net;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace Interface
 {
@@ -36,6 +37,7 @@ namespace Interface
         private int _updateInterval = 50;
         private int _tickCounter = 0;
         private bool _repeat = false;
+        private Point _startPoint;
 
         public MainWindow()
         {
@@ -425,7 +427,8 @@ namespace Interface
                     Playlist1.GetList()[j] = song;
                 }
             }
-            listboxPlaylist.SelectedIndex = 0;
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                   listboxPlaylist.SelectedIndex = 0));           
             listboxPlaylist.Items.Refresh();
             _CurrentSong = 0;          
         }
@@ -512,6 +515,71 @@ namespace Interface
         }
 
         #endregion
+
+        #region DragNDrop
+        private void listboxPlaylist_Drop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent("myFormat"))
+            {
+                Object data = e.Data.GetData("myFormat");
+                ListView listView = sender as ListView;
+                listView.Items.Add(data);
+            }
+        }
+
+        private void listboxPlaylist_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _startPoint = e.GetPosition(null);
+
+        }
+
+        private void listboxPlaylist_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Get the current mouse position
+            Point mousePos = e.GetPosition(null);
+            Vector diff = _startPoint - mousePos;
+
+            if (e.LeftButton == MouseButtonState.Pressed &&
+                Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
+            {
+                // Get the dragged ListViewItem
+                ListView listView = sender as ListView;
+                ListViewItem listViewItem =
+                    FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
+
+                // Find the data behind the ListViewItem
+                Object data = listView.ItemContainerGenerator.
+                    ItemFromContainer(listViewItem);
+
+                // Initialize the drag & drop operation
+                DataObject dragData = new DataObject("myFormat", data);
+                DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
+            }
+        }
+
+        private static T FindAnchestor<T>(DependencyObject current) where T : DependencyObject
+        {
+            do
+            {
+                if (current is T)
+                {
+                    return (T)current;
+                }
+                current = VisualTreeHelper.GetParent(current);
+            }
+            while (current != null);
+            return null;
+        }
+
+        private void listboxPlaylist_DragEnter(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent("myFormat") || sender == e.Source)
+            {
+                e.Effects = DragDropEffects.None;
+            }
+        }
+        //#endregion
     }
 
     public class SongNumberConverter : IValueConverter
