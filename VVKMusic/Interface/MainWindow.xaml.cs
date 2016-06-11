@@ -425,8 +425,10 @@ namespace Interface
                     Playlist1.GetList()[j] = song;
                 }
             }
-            listboxPlaylist.SelectedIndex = 0;
-            listboxPlaylist.Items.Refresh();
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                  listboxPlaylist.SelectedIndex = 0));
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                   listboxPlaylist.Items.Refresh()));    
             _CurrentSong = 0;          
         }
 
