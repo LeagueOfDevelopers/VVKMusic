@@ -15,6 +15,7 @@ using System.Net;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Threading.Tasks;
+using System.Windows.Media.Effects;
 
 namespace Interface
 {
@@ -245,7 +246,7 @@ namespace Interface
 
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {
-            HoverEffect(imagePrev,@"Resources/Pictures/prev.png");
+            HoverEffect(imagePrev, @"Resources/Pictures/prev.png");
             Player1.StopAndStopTimer();
             List<Song> SongList = Playlist1.GetList();
             if (SongList.Count > 0)
@@ -348,12 +349,12 @@ namespace Interface
 
         private void buttonSettings_Click(object sender, RoutedEventArgs e)
         {
-            HoverEffect(imageSettings,"Resources/Pictures/settings.png");
+            HoverEffect(imageSettings, "Resources/Pictures/settings.png");
         }
 
         private void buttonSort_Click(object sender, RoutedEventArgs e)
         {
-            HoverEffect(imageSort,"Resources/Pictures/sort.png");
+            HoverEffect(imageSort, "Resources/Pictures/sort.png");
             Playlist1.SortByDownloaded();
             RenderPlaylist(Playlist1.GetList());
         }
@@ -420,16 +421,16 @@ namespace Interface
             {
                 for (int j = i; j > i - current; j--)
                 {
-                    Song song = Playlist1.GetList()[j-1];
-                    Playlist1.GetList()[j-1] = Playlist1.GetList()[j];
+                    Song song = Playlist1.GetList()[j - 1];
+                    Playlist1.GetList()[j - 1] = Playlist1.GetList()[j];
                     Playlist1.GetList()[j] = song;
                 }
             }
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                   listboxPlaylist.SelectedIndex = 0));
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                   listboxPlaylist.Items.Refresh()));    
-            _CurrentSong = 0;          
+                   listboxPlaylist.Items.Refresh()));
+            _CurrentSong = 0;
         }
 
         private BitmapImage AddImage(string adress)
@@ -514,6 +515,25 @@ namespace Interface
         }
 
         #endregion
+
+        private void Button_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Button button = (Button)sender;
+            DropShadowEffect dse = new DropShadowEffect()
+            {
+                Opacity = 1,
+                ShadowDepth = 0,
+                Color = Colors.Orange
+            };
+            button.Effect = dse;
+        }
+
+        private void Button_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Button button = (Button)sender;
+            DropShadowEffect dse = new DropShadowEffect() { Opacity = 0 };
+            button.Effect = dse;
+        }
     }
 
     public class SongNumberConverter : IValueConverter
