@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         xmlns:local="clr-namespace:Interface" x:Class="Interface.MainWindow"
         xmlns:playlist="clr-namespace:Playlist;assembly=Playlist"
-        Title="VVK Player" Height="500" Width="350" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="False" Icon="Resources/Pictures/icon.png" HorizontalContentAlignment="Stretch">
+        Title="VVK Player" Height="500" Width="350" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="False" Icon="Resources/Pictures/icon.png" HorizontalContentAlignment="Stretch" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

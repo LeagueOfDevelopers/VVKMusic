@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Status = Common.Common.Status;
 using System.Windows.Controls;
+using System.Windows.Threading;
 
 namespace Downloader
 {
@@ -30,7 +31,7 @@ namespace Downloader
                 {
                     return Status.Error;
                 }
-                song.DownloadedUri = new Uri(@folder + fileName);
+                song.DownloadedUri = new Uri(@folder + @fileName);
             }
             return Status.Ok;
         }
@@ -59,5 +60,25 @@ namespace Downloader
             catch
             { }
         }
+
+        public void CheckIfDownloaded(Song song)
+        {
+            string folder = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + @"\VVKMusic\";
+            string fileName = song.Artist + "-" + song.Title + ".mp3";
+            if (song.DownloadedUri == null)
+                song.DownloadedUri = new Uri(@folder + fileName);
+            string path = @folder + @fileName;
+            if (File.Exists(path))
+            {
+                song.Downloaded = true;
+                song.Image = @"Resources/Pictures/ok_small.png";
+            }
+            else
+            {
+                song.Downloaded = false;
+                song.Image = @"Resources/Pictures/ok_lightgrey.png";
+            }
+        }
+
     }
 }
