@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         xmlns:local="clr-namespace:Interface" x:Class="Interface.MainWindow"
         xmlns:playlist="clr-namespace:Playlist;assembly=Playlist"
-        Title="VVK Player" Height="500" Width="350" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="False" Icon="Resources/Pictures/icon.png" HorizontalContentAlignment="Stretch">
+        Title="VVK Player" Height="500" Width="350" ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="False" Icon="Resources/Pictures/icon.png" HorizontalContentAlignment="Stretch" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -28,12 +28,14 @@
             <RowDefinition MaxHeight="20" />
         </Grid.RowDefinitions>
         <Rectangle Name="rectangleDraggable" Width="auto" Fill="#5A5A5A" MouseDown="rectangleDraggable_MouseDown" Grid.Row="0"/>
-        <Button  HorizontalAlignment="Right" Height="25" Margin="0,0,0,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonClose_Click" Grid.Row="0">
+        <Button  HorizontalAlignment="Right" Height="25" Margin="0,0,0,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonClose_Click" Grid.Row="0"
+                 MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
             <StackPanel>
                 <Image Source="Resources/Pictures/no.png" />
             </StackPanel>
         </Button>
-        <Button  HorizontalAlignment="Right" Height="25" Margin="0,0,25,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonCollapse_Click" Grid.Row="0">
+        <Button  HorizontalAlignment="Right" Height="25" Margin="0,0,25,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonCollapse_Click" Grid.Row="0"
+                 MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
             <StackPanel>
                 <Image Source="Resources/Pictures/collapse.png" />
             </StackPanel>
@@ -42,17 +44,20 @@
         <Grid Width="325"  HorizontalAlignment="Center" Grid.Row="1">
             <TextBox Name="textboxSongName" Background="#E1E1E1" HorizontalAlignment="Center" Height="20" Margin="0,20,0,0" TextWrapping="NoWrap" TextAlignment="Center" VerticalAlignment="Top" Width="180" BorderBrush="Transparent" Grid.Row="1" IsEnabled="False"/>
             <TextBox Name="textboxSongTime" Background="#E1E1E1" HorizontalAlignment="Center" Height="20" Margin="0,40,0,0" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Top" Width="80" BorderBrush="Transparent" Grid.Row="1" IsEnabled="False"/>
-            <Button  HorizontalAlignment="Right" Height="25" Margin="0,12,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonMenu_Click" Grid.Row="1">
+            <Button  HorizontalAlignment="Right" Height="25" Margin="0,12,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonMenu_Click" Grid.Row="1"
+                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                 <StackPanel>
-                    <Image Name="MenuButtonImage" Source="Resources/Pictures/menu.png" />
+                    <Image Name="MenuButtonImage" Source="Resources/Pictures/menu.png"  />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Right" Height="25" Margin="0,40,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonSettings_Click" Grid.Row="1">
+            <Button HorizontalAlignment="Right" Height="25" Margin="0,40,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonSettings_Click" Grid.Row="1"
+                    MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                 <StackPanel>
                     <Image Name="imageSettings" Source="Resources/Pictures/settings.png" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Left" Height="35" Margin="15,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="1">
+            <Button HorizontalAlignment="Left" Height="35" Margin="15,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="1"
+                    MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                 <StackPanel>
                     <Image Name="imageDownloadOne" Source="Resources/Pictures/download.png" />
                 </StackPanel>
@@ -67,27 +72,32 @@
                    RadiusY="2"/>
                     <Ellipse Name="circleProgressBar" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Visibility="Hidden" Fill="#F8F4F5" Width="8" Height="8" Stroke="#F59184" StrokeThickness="1"/>
                 </Grid>
-                <Button HorizontalAlignment="Center" Height="35" Margin="-180,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPrev_Click" Grid.Row="2">
+                <Button HorizontalAlignment="Center" Height="35" Margin="-180,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPrev_Click" Grid.Row="2"
+                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                     <StackPanel>
                         <Image Name="imagePrev" Source="Resources/Pictures/prev.png" />
                     </StackPanel>
                 </Button>
-                <Button HorizontalAlignment="Center" Height="35" Margin="-90,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPause_Click" Grid.Row="2">
+                <Button HorizontalAlignment="Center" Height="35" Margin="-90,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPause_Click" Grid.Row="2"
+                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                     <StackPanel>
                         <Image Name="imagePause" Source="Resources/Pictures/pause.png" />
                     </StackPanel>
                 </Button>
-                <Button HorizontalAlignment="Center" Height="35" Margin="0,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPlay_Click" Grid.Row="2">
+                <Button HorizontalAlignment="Center" Height="35" Margin="0,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPlay_Click" Grid.Row="2"
+                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                     <StackPanel>
                         <Image Name="imagePlay" Source="Resources/Pictures/play.png" />
                     </StackPanel>
                 </Button>
-                <Button HorizontalAlignment="Center" Height="35" Margin="90,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonStop_Click" Grid.Row="2">
+                <Button HorizontalAlignment="Center" Height="35" Margin="90,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonStop_Click" Grid.Row="2"
+                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                     <StackPanel>
                         <Image Name="imageStop" Source="Resources/Pictures/stop.png" />
                     </StackPanel>
                 </Button>
-                <Button HorizontalAlignment="Center" Height="35" Margin="180,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonNext_Click" Grid.Row="2">
+                <Button HorizontalAlignment="Center" Height="35" Margin="180,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonNext_Click" Grid.Row="2"
+                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                     <StackPanel>
                         <Image Name="imageNext" Source="Resources/Pictures/next.png" />
                     </StackPanel>
@@ -96,7 +106,8 @@
         </Grid>
         <Grid Background="#5A5A5A" Grid.Row="4"/>
         <Grid Width="325"  HorizontalAlignment="Center" Grid.Row="4">
-            <Button x:Name="buttonDownload" HorizontalAlignment="Left" Height="35" Margin="10,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="4">
+            <Button x:Name="buttonDownload" HorizontalAlignment="Left" Height="35" Margin="10,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="4"
+                    MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                 <StackPanel>
                     <Image Name="imageDownload" Source="Resources/Pictures/download.png" />
                 </StackPanel>
@@ -104,22 +115,26 @@
             <TextBox Name="textboxSearch" HorizontalAlignment="Left" Height="21" Margin="55,9,0,0" TextWrapping="Wrap" Padding="6,0,0,0" Text="Search" VerticalAlignment="Top"  Width="150" GotFocus="textboxSearch_GotFocus" LostFocus="textboxSearch_LostFocus" TextChanged="textboxSearch_TextChanged" Grid.Row="4" KeyDown="textboxSearch_KeyDown"/>
             <Border CornerRadius="10" BorderThickness="5" Height="28"  Width="155" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Row="4" BorderBrush="#5A5A5A" Margin="51,6,0,0"/>
             <Ellipse HorizontalAlignment="Left" Margin="185,2,0,0" VerticalAlignment="Center" Fill="#5A5A5A" Width="30" Height="30" Grid.Row="4"/>
-            <Button HorizontalAlignment="Left" Height="35" Margin="180,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonSearch_Click" Grid.Row="4">
+            <Button HorizontalAlignment="Left" Height="35" Margin="180,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonSearch_Click" Grid.Row="4"
+                    MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                 <StackPanel>
                     <Image Name="imageSearch" Source="Resources/Pictures/search.png" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Left" Height="35" Margin="220,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonRepeat_Click" Grid.Row="4">
+            <Button HorizontalAlignment="Left" Height="35" Margin="220,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonRepeat_Click" Grid.Row="4"
+                    MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                 <StackPanel>
                     <Image Name="imageRepeat" Source="Resources/Pictures/repeat_grey.png"/>
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Left" Height="35" Margin="255,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonMix_Click" Grid.Row="4">
+            <Button HorizontalAlignment="Left" Height="35" Margin="255,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonMix_Click" Grid.Row="4"
+                    MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                 <StackPanel>
                     <Image Name="imageMix" Source="Resources/Pictures/mix.png" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Left" Height="35" Margin="290,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonSort_Click" Grid.Row="4">
+            <Button HorizontalAlignment="Left" Height="35" Margin="290,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonSort_Click" Grid.Row="4"
+                    MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                 <StackPanel>
                     <Image Name="imageSort" Source="Resources/Pictures/sort.png" />
                 </StackPanel>
@@ -135,7 +150,8 @@
                         <StackPanel Orientation="Horizontal">
                             <Grid Margin="0,0,10,0">
                                 <DesignInControl:CircularProgressBar x:Name ="progressBar" HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{Binding Path=Percentage}" SegmentColor="#F59184" StrokeThickness="2" Radius="9"/>
-                                <Button HorizontalAlignment="Center" Height="25" VerticalAlignment="Center" Width="25" Tag="{Binding}" Style="{StaticResource ClearButton}" Click="buttonOk_Click">
+                                <Button HorizontalAlignment="Center" Height="25" VerticalAlignment="Center" Width="25" Tag="{Binding}" Style="{StaticResource ClearButton}" Click="buttonOk_Click"
+                                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                                     <StackPanel>
                                         <Image Source="{Binding Path=Image}" />
                                     </StackPanel>

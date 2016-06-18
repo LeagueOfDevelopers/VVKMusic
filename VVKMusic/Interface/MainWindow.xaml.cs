@@ -16,6 +16,7 @@ using System.ComponentModel;
 using System.Windows.Media;
 using System.Threading.Tasks;
 using System.Collections;
+using System.Windows.Media.Effects;
 
 namespace Interface
 {
@@ -135,6 +136,7 @@ namespace Interface
             if (user.SongList.Count > 0)
             {
                 _CurrentSong = 0;
+                Downloader1.CheckIfDownloaded(user.SongList[_CurrentSong]);
                 Player1.SetSource(user.SongList[_CurrentSong]);
                 RenderPlaylist(user.SongList);
                 RenderNameAndSelectedSong();
@@ -172,7 +174,7 @@ namespace Interface
                 if (!song.Downloaded)
                     song.Image = @"Resources/Pictures/ok_lightgrey.png";
                 else
-                    song.Image = @"Resources/Pictures/ok_small.png";
+                    Downloader1.CheckIfDownloaded(song);
             }
             if (Downloader1.DownloadSong(listToDownload, ProgressChanged, DownloadSongCallback) == Common.Common.Status.Error)
                 MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);
@@ -259,6 +261,7 @@ namespace Interface
                 {
                     _CurrentSong = SongList.Count - 1;
                 }
+            Downloader1.CheckIfDownloaded(SongList[_CurrentSong]);
             Player1.SetSource(SongList[_CurrentSong]);
             Player1.PlayAndStartTimer();
             RenderNameAndSelectedSong();
@@ -284,6 +287,7 @@ namespace Interface
                 {
                     _CurrentSong = 0;
                 }
+            Downloader1.CheckIfDownloaded(SongList[_CurrentSong]);
             Player1.SetSource(SongList[_CurrentSong]);
             Player1.PlayAndStartTimer();
             if (!_repeat)
@@ -350,12 +354,12 @@ namespace Interface
 
         private void buttonSettings_Click(object sender, RoutedEventArgs e)
         {
-            HoverEffect(imageSettings,"Resources/Pictures/settings.png");
+            HoverEffect(imageSettings, "Resources/Pictures/settings.png");
         }
 
         private void buttonSort_Click(object sender, RoutedEventArgs e)
         {
-            HoverEffect(imageSort,"Resources/Pictures/sort.png");
+            HoverEffect(imageSort, "Resources/Pictures/sort.png");
             Playlist1.SortByDownloaded();
             RenderPlaylist(Playlist1.GetList());
         }
@@ -386,8 +390,7 @@ namespace Interface
         private void RenderPlaylist(List<Song> SongList)
         {
             foreach (Song song in SongList)
-                if (song.Downloaded)
-                    song.Image = @"Resources/Pictures/ok_.png";
+                Downloader1.CheckIfDownloaded(song);
             listboxPlaylist.ItemsSource = SongList;
             listboxPlaylist.AlternationCount = SongList.Count;
             Binding binding = new Binding();
@@ -411,6 +414,7 @@ namespace Interface
                 RenderNameAndSelectedSong();
                 Player1.StopAndStopTimer();
                 List<Song> SongList = Playlist1.GetList();
+                Downloader1.CheckIfDownloaded(SongList[0]);
                 Player1.SetSource(SongList[0]);
                 Player1.PlayAndStartTimer();
             }
@@ -422,8 +426,8 @@ namespace Interface
             {
                 for (int j = i; j > i - current; j--)
                 {
-                    Song song = Playlist1.GetList()[j-1];
-                    Playlist1.GetList()[j-1] = Playlist1.GetList()[j];
+                    Song song = Playlist1.GetList()[j - 1];
+                    Playlist1.GetList()[j - 1] = Playlist1.GetList()[j];
                     Playlist1.GetList()[j] = song;
                 }
             }
@@ -580,6 +584,24 @@ namespace Interface
             }
         }
         //#endregion
+        private void Button_MouseEnter(object sender, MouseEventArgs e)
+        {
+            Button button = (Button)sender;
+            DropShadowEffect dse = new DropShadowEffect()
+            {
+                Opacity = 1,
+                ShadowDepth = 0,
+                Color = Colors.Orange
+            };
+            button.Effect = dse;
+        }
+
+        private void Button_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Button button = (Button)sender;
+            DropShadowEffect dse = new DropShadowEffect() { Opacity = 0 };
+            button.Effect = dse;
+        }
     }
 
     public class SongNumberConverter : IValueConverter
