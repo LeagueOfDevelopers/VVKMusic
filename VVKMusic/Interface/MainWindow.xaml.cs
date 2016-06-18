@@ -406,7 +406,7 @@ namespace Interface
                 RenderPlaylist(Playlist1.GetList());
             }
         }
-        private void listboxPlaylist_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        private void listboxPlaylist_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (listboxPlaylist.SelectedIndex != -1 && _CurrentSong != listboxPlaylist.SelectedIndex)
             {
@@ -520,70 +520,69 @@ namespace Interface
 
         #endregion
 
-        #region DragNDrop
+        #region DragAndDrop
+        ListBox dragSource = null;
+        private Point startPoint;
+
+        private void listboxPlaylist_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ListBox parent = (ListBox)sender;
+            startPoint = e.GetPosition(parent);
+            dragSource = parent;
+            object data = GetDataFromListBox(dragSource, e.GetPosition(parent));
+
+            if (data != null)
+            {
+                DragDrop.DoDragDrop(parent, data, DragDropEffects.Move);
+            }
+        }
+
         private void listboxPlaylist_Drop(object sender, DragEventArgs e)
         {
-            if (e.Data.GetDataPresent("myFormat"))
+            try
             {
-                Object data = e.Data.GetData("myFormat");
-                ListView listView = sender as ListView;
-                listView.Items.Add(data);
+                ListBox parent = (ListBox)sender;
+                object data = e.Data.GetData(typeof(Song));
+                ((IList)dragSource.ItemsSource).Remove(data);
+                if (GetDataFromListBox(parent, e.GetPosition(parent)) != null)
+                    ((IList)dragSource.ItemsSource).Insert(parent.Items.IndexOf(GetDataFromListBox(parent, e.GetPosition(parent))), data);
+                else
+                    ((IList)parent.ItemsSource).Add(data);
+                listboxPlaylist.Items.Refresh();
             }
+            catch { }
         }
 
-        private void listboxPlaylist_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        #region GetDataFromListBox(ListBox,Point)
+        private static object GetDataFromListBox(ListBox source, Point point)
         {
-            _startPoint = e.GetPosition(null);
-
-        }
-
-        private void listboxPlaylist_MouseMove(object sender, MouseEventArgs e)
-        {
-            // Get the current mouse position
-            Point mousePos = e.GetPosition(null);
-            Vector diff = _startPoint - mousePos;
-
-            if (e.LeftButton == MouseButtonState.Pressed &&
-                Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
+            UIElement element = source.InputHitTest(point) as UIElement;
+            if (element != null)
             {
-                // Get the dragged ListViewItem
-                ListView listView = sender as ListView;
-                ListViewItem listViewItem =
-                    FindAnchestor<ListViewItem>((DependencyObject)e.OriginalSource);
-
-                // Find the data behind the ListViewItem
-                Object data = listView.ItemContainerGenerator.
-                    ItemFromContainer(listViewItem);
-
-                // Initialize the drag & drop operation
-                DataObject dragData = new DataObject("myFormat", data);
-                DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
-            }
-        }
-
-        private static T FindAnchestor<T>(DependencyObject current) where T : DependencyObject
-        {
-            do
-            {
-                if (current is T)
+                object data = DependencyProperty.UnsetValue;
+                while (data == DependencyProperty.UnsetValue)
                 {
-                    return (T)current;
+                    data = source.ItemContainerGenerator.ItemFromContainer(element);
+                    if (data == DependencyProperty.UnsetValue)
+                    {
+                        element = VisualTreeHelper.GetParent(element) as UIElement;
+                    }
+                    if (element == source)
+                    {
+                        return null;
+                    }
                 }
-                current = VisualTreeHelper.GetParent(current);
+                if (data != DependencyProperty.UnsetValue)
+                {
+                    return data;
+                }
             }
-            while (current != null);
             return null;
         }
+        #endregion
 
-        private void listboxPlaylist_DragEnter(object sender, DragEventArgs e)
-        {
-            if (!e.Data.GetDataPresent("myFormat") || sender == e.Source)
-            {
-                e.Effects = DragDropEffects.None;
-            }
-        }
-        //#endregion
+        #endregion
+
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
             Button button = (Button)sender;
@@ -602,6 +601,7 @@ namespace Interface
             DropShadowEffect dse = new DropShadowEffect() { Opacity = 0 };
             button.Effect = dse;
         }
+        
     }
 
     public class SongNumberConverter : IValueConverter
