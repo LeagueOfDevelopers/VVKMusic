@@ -134,6 +134,7 @@ namespace Interface
             if (user.SongList.Count > 0)
             {
                 _CurrentSong = 0;
+                Downloader1.CheckIfDownloaded(user.SongList[_CurrentSong]);
                 Player1.SetSource(user.SongList[_CurrentSong]);
                 RenderPlaylist(user.SongList);
                 RenderNameAndSelectedSong();
@@ -171,7 +172,7 @@ namespace Interface
                 if (!song.Downloaded)
                     song.Image = @"Resources/Pictures/ok_lightgrey.png";
                 else
-                    song.Image = @"Resources/Pictures/ok_small.png";
+                    Downloader1.CheckIfDownloaded(song);
             }
             if (Downloader1.DownloadSong(listToDownload, ProgressChanged, DownloadSongCallback) == Common.Common.Status.Error)
                 MessageBox.Show("Ошибка скачивания", "", MessageBoxButton.OK);
@@ -258,6 +259,7 @@ namespace Interface
                 {
                     _CurrentSong = SongList.Count - 1;
                 }
+            Downloader1.CheckIfDownloaded(SongList[_CurrentSong]);
             Player1.SetSource(SongList[_CurrentSong]);
             Player1.PlayAndStartTimer();
             RenderNameAndSelectedSong();
@@ -283,6 +285,7 @@ namespace Interface
                 {
                     _CurrentSong = 0;
                 }
+            Downloader1.CheckIfDownloaded(SongList[_CurrentSong]);
             Player1.SetSource(SongList[_CurrentSong]);
             Player1.PlayAndStartTimer();
             if (!_repeat)
@@ -385,8 +388,7 @@ namespace Interface
         private void RenderPlaylist(List<Song> SongList)
         {
             foreach (Song song in SongList)
-                if (song.Downloaded)
-                    song.Image = @"Resources/Pictures/ok_.png";
+                Downloader1.CheckIfDownloaded(song);
             listboxPlaylist.ItemsSource = SongList;
             listboxPlaylist.AlternationCount = SongList.Count;
             Binding binding = new Binding();
@@ -410,6 +412,7 @@ namespace Interface
                 RenderNameAndSelectedSong();
                 Player1.StopAndStopTimer();
                 List<Song> SongList = Playlist1.GetList();
+                Downloader1.CheckIfDownloaded(SongList[0]);
                 Player1.SetSource(SongList[0]);
                 Player1.PlayAndStartTimer();
             }
