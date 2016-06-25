@@ -38,7 +38,6 @@ namespace Interface
         private int _updateInterval = 50;
         private int _tickCounter = 0;
         private bool _repeat = false;
-        private Point _startPoint;
 
         public MainWindow()
         {
@@ -135,13 +134,9 @@ namespace Interface
             }
             if (user.SongList.Count > 0)
             {
-                _CurrentSong = 0;
-                Downloader1.CheckIfDownloaded(user.SongList[_CurrentSong]);
-                Player1.SetSource(user.SongList[_CurrentSong]);
+                _CurrentSong = -1;
                 RenderPlaylist(user.SongList);
-                RenderNameAndSelectedSong();
                 Player1.SetTimer(_updateInterval, timerUpdate_Tick);
-                Player1.PlayAndStartTimer();
             }
             else
             {

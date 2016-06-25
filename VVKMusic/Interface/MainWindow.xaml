@@ -67,10 +67,10 @@
             <Grid Margin="20,0" HorizontalAlignment ="Center" Grid.Row="2">
                 <Grid Height="8" Margin="8,5,4,0" VerticalAlignment="Top" Grid.Row="2" MouseUp="rectangleProgressBarMain_MouseUp">
                     <Rectangle Name="rectangleProgressBarMain" Height="8" VerticalAlignment="Center" Fill="#F59184" HorizontalAlignment="Center" RadiusX="5"
-                   RadiusY="5" Width="298"/>
-                    <Rectangle Name="rectangleProgressBarElapsed" Height="4" Margin="2,0,0,0"  VerticalAlignment="Center" Fill="#F8F4F5" HorizontalAlignment="Left" Width="0" RadiusX="2"
+                   RadiusY="5" Width="298" Cursor="Hand"/>
+                    <Rectangle Cursor="Hand" Name="rectangleProgressBarElapsed" Height="4" Margin="2,0,0,0"  VerticalAlignment="Center" Fill="#F8F4F5" HorizontalAlignment="Left" Width="0" RadiusX="2"
                    RadiusY="2"/>
-                    <Ellipse Name="circleProgressBar" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Visibility="Hidden" Fill="#F8F4F5" Width="8" Height="8" Stroke="#F59184" StrokeThickness="1"/>
+                    <Ellipse Name="circleProgressBar" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Visibility="Hidden" Fill="#F8F4F5" Width="8" Height="8" Stroke="#F59184" StrokeThickness="1" Cursor="Hand"/>
                 </Grid>
                 <Button HorizontalAlignment="Center" Height="35" Margin="-180,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPrev_Click" Grid.Row="2"
                         MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
