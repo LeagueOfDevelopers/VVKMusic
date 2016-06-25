@@ -298,12 +298,22 @@ namespace Interface
         private void buttonPlay_Click(object sender, RoutedEventArgs e)
         {
             HoverEffect(imagePlay, @"Resources/Pictures/play.png");
+            List<Song> SongList = Playlist1.GetList();
+            if (SongList.Count > 0)
+                _CurrentSong = 0;
+            Player1.SetSource(SongList[_CurrentSong]);
+            RenderNameAndSelectedSong();
             Player1.PlayAndStartTimer();
         }
         private void buttonStop_Click(object sender, RoutedEventArgs e)
         {
             HoverEffect(imageStop, @"Resources/Pictures/stop.png");
-            Player1.StopAndStopTimer();        
+            Player1.StopAndStopTimer();
+            List<Song> SongList = Playlist1.GetList();
+            _CurrentSong = -1;
+            DrawPosition(0, 0);
+            Player1.SetTimer(_updateInterval, timerUpdate_Tick);
+            RenderNameAndSelectedSong();               
         }
         private void buttonSearch_Click(object sender, RoutedEventArgs e)
         {
@@ -375,11 +385,21 @@ namespace Interface
         private void RenderNameAndSelectedSong()
         {
             List<Song> SongList = Playlist1.GetList();
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                   textboxSongName.Text = SongList[_CurrentSong].ToString()));
-            if (listboxPlaylist.Items != null)
+            if (_CurrentSong == -1)
+            {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                   listboxPlaylist.SelectedItem = (Song)listboxPlaylist.Items[_CurrentSong]));
+                   textboxSongName.Text = ""));
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                textboxSongTime.Text = ""));
+            }
+            else
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                       textboxSongName.Text = SongList[_CurrentSong].ToString()));
+                if (listboxPlaylist.Items != null)
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                       listboxPlaylist.SelectedItem = (Song)listboxPlaylist.Items[_CurrentSong]));
+            }
         }
 
         private void RenderPlaylist(List<Song> SongList)
