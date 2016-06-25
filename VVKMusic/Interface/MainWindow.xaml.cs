@@ -117,6 +117,7 @@ namespace Interface
             if (!wasAlreadyEnteringThroughThisApp)
             {
                 UserManager1.AddUser(user);
+                Playlist1.SetBaseList(user.SongList);
                 Playlist1.UpdateList(user.SongList);
                 Infrastructure1.SaveListOfUsers(UserManager1.GetListOfUsers());
             }
@@ -124,6 +125,7 @@ namespace Interface
             {
                 List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(user.ID, user.AccessToken));
                 UserManager1.UpdateUserListOfSongs(user.ID, SongList);
+                Playlist1.SetBaseList(SongList);
                 Playlist1.UpdateList(SongList);
                 MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
                 listboxMenu.Visibility = Visibility.Hidden;
@@ -244,7 +246,7 @@ namespace Interface
 
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {
-            HoverEffect(imagePrev,@"Resources/Pictures/prev.png");
+            HoverEffect(imagePrev, @"Resources/Pictures/prev.png");
             Player1.StopAndStopTimer();
             List<Song> SongList = Playlist1.GetList();
             if (SongList.Count > 0)
@@ -298,11 +300,14 @@ namespace Interface
         private void buttonPlay_Click(object sender, RoutedEventArgs e)
         {
             HoverEffect(imagePlay, @"Resources/Pictures/play.png");
-            List<Song> SongList = Playlist1.GetList();
-            if (SongList.Count > 0)
-                _CurrentSong = 0;
-            Player1.SetSource(SongList[_CurrentSong]);
-            RenderNameAndSelectedSong();
+            if (_CurrentSong == -1)
+            {
+                List<Song> SongList = Playlist1.GetList();
+                if (SongList.Count > 0)
+                    _CurrentSong = 0;
+                Player1.SetSource(SongList[_CurrentSong]);
+                RenderNameAndSelectedSong();
+            }
             Player1.PlayAndStartTimer();
         }
         private void buttonStop_Click(object sender, RoutedEventArgs e)
@@ -313,12 +318,7 @@ namespace Interface
             _CurrentSong = -1;
             DrawPosition(0, 0);
             Player1.SetTimer(_updateInterval, timerUpdate_Tick);
-            RenderNameAndSelectedSong();               
-        }
-        private void buttonSearch_Click(object sender, RoutedEventArgs e)
-        {
-            HoverEffect(imageSearch, @"Resources/Pictures/search.png");
-            //RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+            RenderNameAndSelectedSong();
         }
         private void textboxSearch_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -329,12 +329,22 @@ namespace Interface
             if (textboxSearch.Text == "")
                 textboxSearch.Text = "Search";
         }
+        private void buttonSearch_Click(object sender, RoutedEventArgs e)
+        {
+            HoverEffect(imageSearch, @"Resources/Pictures/search.png");
+            Search();
+        }
         private void textboxSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-            {
-                //RenderPlaylist(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
-            }
+                Search();
+        }
+        private void Search()
+        {
+            Playlist1.UpdateListToBase();
+            if (textboxSearch.Text.ToLower() != "")
+                Playlist1.UpdateList(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+            RenderPlaylist(Playlist1.GetList());
         }
         private void buttonMix_Click(object sender, RoutedEventArgs e)
         {
@@ -423,7 +433,7 @@ namespace Interface
         }
         private void listboxPlaylist_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (listboxPlaylist.SelectedIndex != -1 && _CurrentSong != listboxPlaylist.SelectedIndex)
+            if (listboxPlaylist.SelectedIndex != -1)
             {
                 ListboxPullOver(listboxPlaylist.SelectedIndex);
                 RenderNameAndSelectedSong();

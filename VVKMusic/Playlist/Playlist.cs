@@ -10,6 +10,8 @@ namespace Playlist
     public class Playlist : ListBox//, IPlaylist
     {
         private List<Song> _ListOfSongs = new List<Song>();
+        private List<Song> _BaseListOfSongs = new List<Song>();
+
 
         public Status MoveSong(int oldIndex, int newIndex)
         {
@@ -18,11 +20,20 @@ namespace Playlist
             _ListOfSongs.Insert(newIndex, songToMove);
             return Status.Ok;
         }
+        public Status SetBaseList(List<Song> songList)
+        {
+            _BaseListOfSongs.Clear();
+            _BaseListOfSongs = songList;
+            return Status.Ok;
+        }
         public Status UpdateList(List<Song> songList)
         {
-            _ListOfSongs.Clear();
             _ListOfSongs = songList;
             return Status.Ok;
+        }
+        public Status UpdateListToBase()
+        {
+            return UpdateList(_BaseListOfSongs);
         }
         public Status AddToList(Song[] songMas, int index)
         {
@@ -56,10 +67,9 @@ namespace Playlist
         {
             _ListOfSongs.Sort((song1,song2) => song2.Downloaded.CompareTo(song1.Downloaded));
         }
-        public void SearchSong(string pattern)
+        public List<Song> SearchSong(string pattern)
         {
-
-            _ListOfSongs.FindAll(x => (x.Artist + " - " + x.Title).ToLower().Contains(pattern));
+            return _ListOfSongs.FindAll(x => (x.Artist + " - " + x.Title).ToLower().Contains(pattern));
         }
         public List<Song> GetList()
         {
