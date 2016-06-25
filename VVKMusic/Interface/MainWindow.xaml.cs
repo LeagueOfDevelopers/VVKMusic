@@ -15,6 +15,7 @@ using System.Net;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Threading.Tasks;
+using System.Collections;
 using System.Windows.Media.Effects;
 
 namespace Interface
@@ -133,13 +134,9 @@ namespace Interface
             }
             if (user.SongList.Count > 0)
             {
-                _CurrentSong = 0;
-                Downloader1.CheckIfDownloaded(user.SongList[_CurrentSong]);
-                Player1.SetSource(user.SongList[_CurrentSong]);
+                _CurrentSong = -1;
                 RenderPlaylist(user.SongList);
-                RenderNameAndSelectedSong();
                 Player1.SetTimer(_updateInterval, timerUpdate_Tick);
-                Player1.PlayAndStartTimer();
             }
             else
             {
@@ -247,7 +244,7 @@ namespace Interface
 
         private void buttonPrev_Click(object sender, RoutedEventArgs e)
         {
-            HoverEffect(imagePrev, @"Resources/Pictures/prev.png");
+            HoverEffect(imagePrev,@"Resources/Pictures/prev.png");
             Player1.StopAndStopTimer();
             List<Song> SongList = Playlist1.GetList();
             if (SongList.Count > 0)
@@ -301,12 +298,22 @@ namespace Interface
         private void buttonPlay_Click(object sender, RoutedEventArgs e)
         {
             HoverEffect(imagePlay, @"Resources/Pictures/play.png");
+            List<Song> SongList = Playlist1.GetList();
+            if (SongList.Count > 0)
+                _CurrentSong = 0;
+            Player1.SetSource(SongList[_CurrentSong]);
+            RenderNameAndSelectedSong();
             Player1.PlayAndStartTimer();
         }
         private void buttonStop_Click(object sender, RoutedEventArgs e)
         {
             HoverEffect(imageStop, @"Resources/Pictures/stop.png");
-            Player1.StopAndStopTimer();        
+            Player1.StopAndStopTimer();
+            List<Song> SongList = Playlist1.GetList();
+            _CurrentSong = -1;
+            DrawPosition(0, 0);
+            Player1.SetTimer(_updateInterval, timerUpdate_Tick);
+            RenderNameAndSelectedSong();               
         }
         private void buttonSearch_Click(object sender, RoutedEventArgs e)
         {
@@ -378,11 +385,21 @@ namespace Interface
         private void RenderNameAndSelectedSong()
         {
             List<Song> SongList = Playlist1.GetList();
-            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                   textboxSongName.Text = SongList[_CurrentSong].ToString()));
-            if (listboxPlaylist.Items != null)
+            if (_CurrentSong == -1)
+            {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                   listboxPlaylist.SelectedItem = (Song)listboxPlaylist.Items[_CurrentSong]));
+                   textboxSongName.Text = ""));
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                textboxSongTime.Text = ""));
+            }
+            else
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                       textboxSongName.Text = SongList[_CurrentSong].ToString()));
+                if (listboxPlaylist.Items != null)
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                       listboxPlaylist.SelectedItem = (Song)listboxPlaylist.Items[_CurrentSong]));
+            }
         }
 
         private void RenderPlaylist(List<Song> SongList)
@@ -404,7 +421,7 @@ namespace Interface
                 RenderPlaylist(Playlist1.GetList());
             }
         }
-        private void listboxPlaylist_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        private void listboxPlaylist_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (listboxPlaylist.SelectedIndex != -1 && _CurrentSong != listboxPlaylist.SelectedIndex)
             {
@@ -430,10 +447,11 @@ namespace Interface
                 }
             }
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                  listboxPlaylist.SelectedIndex = 0));
+                   listboxPlaylist.SelectedIndex = 0));
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
-                   listboxPlaylist.Items.Refresh()));
-            _CurrentSong = 0;
+                  listboxPlaylist.Items.Refresh()));
+            
+            _CurrentSong = 0;          
         }
 
         private BitmapImage AddImage(string adress)
@@ -519,6 +537,69 @@ namespace Interface
 
         #endregion
 
+        #region DragAndDrop
+        ListBox dragSource = null;
+        private Point startPoint;
+
+        private void listboxPlaylist_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            ListBox parent = (ListBox)sender;
+            startPoint = e.GetPosition(parent);
+            dragSource = parent;
+            object data = GetDataFromListBox(dragSource, e.GetPosition(parent));
+
+            if (data != null)
+            {
+                DragDrop.DoDragDrop(parent, data, DragDropEffects.Move);
+            }
+        }
+
+        private void listboxPlaylist_Drop(object sender, DragEventArgs e)
+        {
+            try
+            {
+                ListBox parent = (ListBox)sender;
+                object data = e.Data.GetData(typeof(Song));
+                ((IList)dragSource.ItemsSource).Remove(data);
+                if (GetDataFromListBox(parent, e.GetPosition(parent)) != null)
+                    ((IList)dragSource.ItemsSource).Insert(parent.Items.IndexOf(GetDataFromListBox(parent, e.GetPosition(parent))), data);
+                else
+                    ((IList)parent.ItemsSource).Add(data);
+                listboxPlaylist.Items.Refresh();
+            }
+            catch { }
+        }
+
+        #region GetDataFromListBox(ListBox,Point)
+        private static object GetDataFromListBox(ListBox source, Point point)
+        {
+            UIElement element = source.InputHitTest(point) as UIElement;
+            if (element != null)
+            {
+                object data = DependencyProperty.UnsetValue;
+                while (data == DependencyProperty.UnsetValue)
+                {
+                    data = source.ItemContainerGenerator.ItemFromContainer(element);
+                    if (data == DependencyProperty.UnsetValue)
+                    {
+                        element = VisualTreeHelper.GetParent(element) as UIElement;
+                    }
+                    if (element == source)
+                    {
+                        return null;
+                    }
+                }
+                if (data != DependencyProperty.UnsetValue)
+                {
+                    return data;
+                }
+            }
+            return null;
+        }
+        #endregion
+
+        #endregion
+
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
             Button button = (Button)sender;
@@ -537,6 +618,7 @@ namespace Interface
             DropShadowEffect dse = new DropShadowEffect() { Opacity = 0 };
             button.Effect = dse;
         }
+        
     }
 
     public class SongNumberConverter : IValueConverter
