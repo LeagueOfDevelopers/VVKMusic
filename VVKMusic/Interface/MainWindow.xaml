@@ -20,12 +20,12 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
-            <RowDefinition Height="78" />
-            <RowDefinition Height="53" />
+            <RowDefinition Height="79" />
+            <RowDefinition Height="57" />
             <RowDefinition Height="0" />
             <RowDefinition Height="36" />
             <RowDefinition Height="268*" />
-            <RowDefinition MaxHeight="20" />
+            <RowDefinition Height="20" />
         </Grid.RowDefinitions>
         <Rectangle Name="rectangleDraggable" Width="auto" Fill="#5A5A5A" MouseDown="rectangleDraggable_MouseDown" Grid.Row="0"/>
         <Button  HorizontalAlignment="Right" Height="25" Margin="0,0,0,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonClose_Click" Grid.Row="0"
@@ -56,8 +56,8 @@
                     <Image Name="imageSettings" Source="Resources/Pictures/settings.png" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Left" Height="35" Margin="15,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="1"
-                    MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
+            <Button Height="35" Margin="-6,20,0,0" VerticalAlignment="Top" Style="{StaticResource ClearButton}" Click="buttonDownload_Click"
+                    MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand" HorizontalAlignment="Left" Width="35">
                 <StackPanel>
                     <Image Name="imageDownloadOne" Source="Resources/Pictures/download.png" />
                 </StackPanel>
@@ -106,7 +106,7 @@
         </Grid>
         <Grid Background="#5A5A5A" Grid.Row="4"/>
         <Grid Width="325"  HorizontalAlignment="Center" Grid.Row="4">
-            <Button x:Name="buttonDownload" HorizontalAlignment="Left" Height="35" Margin="10,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="4"
+            <Button x:Name="buttonDownload" HorizontalAlignment="Left" Height="35" Margin="-6,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="4"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                 <StackPanel>
                     <Image Name="imageDownload" Source="Resources/Pictures/download.png" />
@@ -145,10 +145,10 @@
                            Drop="listboxPlaylist_Drop" PreviewMouseRightButtonDown="listboxPlaylist_PreviewMouseRightButtonDown" AllowDrop="True" >
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="0, 0, 0, 1" BorderBrush="#FFD1D3DA" Padding="5,5,5,5">
+                    <Border Name="border" BorderThickness="0, 0, 0, 1" BorderBrush="{Binding Path=BorderBrush}" Padding="5,5,5,5">
                         <StackPanel Orientation="Horizontal">
                             <Grid Margin="0,0,10,0">
-                                <DesignInControl:CircularProgressBar x:Name ="progressBar" HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{Binding Path=Percentage}" SegmentColor="#F59184" StrokeThickness="2" Radius="9"/>
+                                <DesignInControl:CircularProgressBar Name ="progressBar" HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{Binding Path=Percentage}" SegmentColor="#F59184" StrokeThickness="2" Radius="9"/>
                                 <Button HorizontalAlignment="Center" Height="25" VerticalAlignment="Center" Width="25" Tag="{Binding}" Style="{StaticResource ClearButton}" Click="buttonOk_Click"
                                         MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                                     <StackPanel>
@@ -158,18 +158,24 @@
                             </Grid>
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex), Converter={StaticResource songNumberConverter}}"/>
                             <TextBlock Margin="0,5,0,5" HorizontalAlignment="Center" VerticalAlignment="Center" Text="."/>
-                            <TextBlock Padding="5" HorizontalAlignment="Center" Width="240"  VerticalAlignment="Center" Text="{Binding}"/>
+                            <TextBlock Padding="5" HorizontalAlignment="Center" Width="230"  VerticalAlignment="Center" Text="{Binding}"/>
                             <TextBlock Padding="5" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="{Binding Path=Duration, Converter={StaticResource durationConverter}}"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </playlist:Playlist>
-        <ListBox Name="listboxMenu" HorizontalAlignment="Right" Margin="0,15,28,0" VerticalAlignment="Top" Width="119" Visibility="Hidden" PreviewMouseUp="listboxMenu_PreviewMouseUp" Grid.Row="1">
+        <ListBox Name="listboxMenu" HorizontalAlignment="Right" Margin="0,19,38,0" VerticalAlignment="Top" Width="119" Visibility="Hidden" PreviewMouseUp="listboxMenu_PreviewMouseUp" Grid.Row="1">
             <ListBoxItem>New Login</ListBoxItem>
             <ListBoxItem>Login as...</ListBoxItem>
         </ListBox>
         <ListBox Name="listboxLoginAs" HorizontalAlignment="Right" Margin="0,15,147,0" VerticalAlignment="Top" Width="119" Visibility="Hidden" PreviewMouseUp="listboxLoginAs_PreviewMouseUp" MouseLeave="listboxLoginAs_MouseLeave" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        </ListBox>
+        <ListBox Name="listboxSort" HorizontalAlignment="Right" Margin="0,10,38,0" VerticalAlignment="Top" Width="119" Visibility="Hidden" PreviewMouseUp="listboxSort_PreviewMouseUp" Grid.Row="4" Grid.RowSpan="2">
+            <ListBoxItem>By downloaded</ListBoxItem>
+            <ListBoxItem>By duration</ListBoxItem>
+            <ListBoxItem>By artist</ListBoxItem>
+            <ListBoxItem>By song title</ListBoxItem>
         </ListBox>
         <Grid Background="#5A5A5A" Grid.Row="6" Height="20" VerticalAlignment="Bottom"></Grid>
     </Grid>
