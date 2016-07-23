@@ -378,8 +378,80 @@ namespace Interface
         private void buttonSort_Click(object sender, RoutedEventArgs e)
         {
             HoverEffect(imageSort, "Resources/Pictures/sort.png");
-            Playlist1.SortByDownloaded();
-            RenderPlaylist(Playlist1.GetList());
+            if (listboxSort.Visibility == Visibility.Hidden)
+            {
+                listboxSort.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                listboxSort.Visibility = Visibility.Hidden;
+                listboxSort.UnselectAll();             
+            }
+        }
+        private void listboxSort_PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            ListBoxItem item = (ListBoxItem)listboxSort.SelectedValue;
+            BorderPaintOff();
+            if (item != null)
+            {
+                switch (item.Content.ToString())
+                {
+                    case "By downloaded":
+                        Playlist1.SortByDownloaded();
+                        BorderPaintDownloaded();
+                        break;
+                    case "By duration":
+                        Playlist1.SortByDuration();
+                        break;
+                    case "By artist":
+                        Playlist1.SortByArtist();
+                        BorderPaintArtist();
+                        break;
+                    case "By song title":
+                        Playlist1.SortByTitle();
+                        break;
+                }
+                RenderPlaylist(Playlist1.GetList());
+                listboxSort.Visibility = Visibility.Hidden;
+                listboxSort.UnselectAll();
+            }
+        }
+        private void BorderPaintDownloaded()
+        {
+            List<Song> playlist = Playlist1.GetList();
+            if (playlist.Count > 1)
+            {
+                for (int i = 0; i < playlist.Count - 1; i++)
+                {
+                    if (playlist[i].Downloaded != playlist[i + 1].Downloaded)
+                    {
+                        playlist[i].BorderBrush = (Brush)new BrushConverter().ConvertFrom("#F59184");
+                    }
+                }
+            }
+            listboxPlaylist.Items.Refresh();
+        }
+        private void BorderPaintArtist()
+        {
+            List<Song> playlist = Playlist1.GetList();
+            if (playlist.Count > 1)
+            {
+                for (int i = 0; i < playlist.Count - 1; i++)
+                {
+                    if (playlist[i].Artist != playlist[i + 1].Artist)
+                    {
+                        playlist[i].BorderBrush = (Brush)new BrushConverter().ConvertFrom("#F59184");
+                    }
+                }
+            }
+            listboxPlaylist.Items.Refresh();
+        }
+        private void BorderPaintOff()
+        {
+            List<Song> playlist = Playlist1.GetList();
+            foreach (Song song in playlist)
+                song.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFD1D3DA");
+            listboxPlaylist.Items.Refresh();
         }
         private void buttonClose_Click(object sender, RoutedEventArgs e)
         {
@@ -450,6 +522,7 @@ namespace Interface
 
         private void ListboxPullOver(Int32 current)
         {
+            if (listboxPlaylist.SelectedIndex != 0) BorderPaintOff();
             for (int i = current; i < Playlist1.GetList().Count; i++)
             {
                 for (int j = i; j > i - current; j--)
@@ -569,6 +642,7 @@ namespace Interface
 
         private void listboxPlaylist_Drop(object sender, DragEventArgs e)
         {
+            BorderPaintOff();
             try
             {
                 ListBox parent = (ListBox)sender;

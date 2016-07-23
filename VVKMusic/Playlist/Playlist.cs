@@ -1,7 +1,9 @@
 ﻿using Common;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Xaml;
 using Status = Common.Common.Status;
 
@@ -65,6 +67,20 @@ namespace Playlist
         public void SortByDownloaded()
         {
             _ListOfSongs.Sort((song1, song2) => song2.Downloaded.CompareTo(song1.Downloaded));
+        }
+        public List<Song> SearchSong(string pattern)
+        {
+        public void SortByDuration()
+        {
+            _ListOfSongs.Sort((song1, song2) => song1.Duration.CompareTo(song2.Duration));
+        }
+        public void SortByArtist()
+        {
+            _ListOfSongs.Sort((song1, song2) => song1.Artist.CompareTo(song2.Artist));
+        }
+        public void SortByTitle()
+        {
+            _ListOfSongs.Sort((song1, song2) => song1.Title.CompareTo(song2.Title));
         }
         public List<Song> SearchSong(string pattern)
         {

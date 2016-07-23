@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using System.Windows.Media;
 
 namespace Common
 {
@@ -12,6 +13,7 @@ namespace Common
             this.ID = id;
             this.Percentage = 0;
             this.Image = @"Resources/Pictures/ok_lightgrey.png";
+            this.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFD1D3DA");
         }
 
         [JsonProperty("aid")]
@@ -34,6 +36,7 @@ namespace Common
         public bool Downloaded { get; set; }
         public int Percentage { get; set; }
         public string Image { get; set; }
+        public Brush BorderBrush { get; set; }
 
         public override string ToString()
         {
