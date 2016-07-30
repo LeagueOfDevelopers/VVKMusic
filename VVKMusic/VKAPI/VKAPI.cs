@@ -1,6 +1,7 @@
 ﻿using Common;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -88,7 +89,7 @@ namespace VKAPI
 
         public Song[] SearchAudio(string text, string token)
         {
-            string GetAudioRequest = String.Format("https://api.vk.com/method/audio.search?&q={0}&count=30&access_token={1}", text, token);
+            string GetAudioRequest = String.Format("https://api.vk.com/method/audio.search?&q={0}&auto_complete=1&sort=2&count=300&access_token={1}", text, token);
             WebRequest AudioRequest = WebRequest.Create(GetAudioRequest);
             WebResponse AudioAnswer = AudioRequest.GetResponse();
             Stream dataStream = AudioAnswer.GetResponseStream();

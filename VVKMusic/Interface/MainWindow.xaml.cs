@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Windows.Media.Effects;
+using System.Linq;
 
 namespace Interface
 {
@@ -347,8 +348,9 @@ namespace Interface
             if (textboxSearch.Text != "")
             {
                 List<Song> SongList = new List<Song>(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
-                SongList[SongList.Count-1].BorderBrush = (Brush)new BrushConverter().ConvertFrom("#F59184");
-                SongList.AddRange(VKAPI1.SearchAudio(textboxSearch.Text, _CurrentUser.AccessToken));
+                SongList.AddRange(VKAPI1.SearchAudio(textboxSearch.Text.ToLower(), _CurrentUser.AccessToken));
+                SongList = SongList.Distinct(new SongComparer()).ToList<Song>();
+                if (Playlist1.SearchSong(textboxSearch.Text.ToLower()).Count > 0) SongList[Playlist1.SearchSong(textboxSearch.Text.ToLower()).Count-1].BorderBrush = (Brush)new BrushConverter().ConvertFrom("#F59184");
                 Playlist1.UpdateList(SongList);
             }
             RenderPlaylist(Playlist1.GetList());

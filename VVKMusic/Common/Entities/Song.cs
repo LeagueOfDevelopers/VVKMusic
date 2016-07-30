@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using System.Windows.Media;
+using System.Collections.Generic;
 
 namespace Common
 {
@@ -46,6 +47,21 @@ namespace Common
         public override string ToString()
         {
             return String.Format("{0} - {1}", this.Artist, this.Title);
+        }
+    }
+    public class SongComparer : IEqualityComparer<Song>
+    {
+        public bool Equals(Song song, Song song2)
+        {
+            if (song.Uri != song2.Uri && song.Artist.ToLower() == song2.Artist.ToLower() && song.Title.ToLower() == song2.Title.ToLower() && (song.Duration >= song2.Duration - 2 && song.Duration <= song2.Duration + 2))
+                return true;
+            else
+                return false;
+        }
+
+        public int GetHashCode(Song obj)
+        {
+            return 0;
         }
     }
 }
