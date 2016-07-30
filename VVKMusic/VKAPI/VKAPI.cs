@@ -85,5 +85,31 @@ namespace VKAPI
             }
             return Songs;
         }
+
+        public Song[] SearchAudio(string text, string token)
+        {
+            string GetAudioRequest = String.Format("https://api.vk.com/method/audio.search?&q={0}&count=30&access_token={1}", text, token);
+            WebRequest AudioRequest = WebRequest.Create(GetAudioRequest);
+            WebResponse AudioAnswer = AudioRequest.GetResponse();
+            Stream dataStream = AudioAnswer.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responeFromServer = reader.ReadToEnd();
+
+            reader.Close();
+            dataStream.Close();
+            responeFromServer = HttpUtility.HtmlDecode(responeFromServer);
+
+            JObject obj = JObject.Parse(responeFromServer);
+            Song[] Songs;
+            try
+            {
+                Songs = obj["response"].Children().Skip(1).Select(c => c.ToObject<Song>()).ToArray();
+            }
+            catch (NullReferenceException)
+            {
+                Songs = new Song[0];
+            }
+            return Songs;
+        }
     }
 }

@@ -96,7 +96,6 @@ namespace Interface
         {
             List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(e.UserID.ToString(), e.AccessToken));
             SetUser(new User(e.Name, e.AccessToken, e.UserID.ToString(), SongList), false);
-
         }
         private void listboxLoginAs_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -346,7 +345,12 @@ namespace Interface
             Playlist1.UpdateListToBase();
             _CurrentSong = -1;
             if (textboxSearch.Text != "")
-                Playlist1.UpdateList(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+            {
+                List<Song> SongList = new List<Song>(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+                SongList[SongList.Count-1].BorderBrush = (Brush)new BrushConverter().ConvertFrom("#F59184");
+                SongList.AddRange(VKAPI1.SearchAudio(textboxSearch.Text, _CurrentUser.AccessToken));
+                Playlist1.UpdateList(SongList);
+            }
             RenderPlaylist(Playlist1.GetList());
         }
         private void buttonMix_Click(object sender, RoutedEventArgs e)
