@@ -4,8 +4,8 @@ using System.Windows.Media;
 
 namespace Common
 {
-
-    [Serializable()][JsonObject(MemberSerialization.OptIn)]
+    [Serializable()]
+    [JsonObject(MemberSerialization.OptIn)]
     public class Song
     {
         public Song(int id)
@@ -36,8 +36,13 @@ namespace Common
         public bool Downloaded { get; set; }
         public int Percentage { get; set; }
         public string Image { get; set; }
-        public Brush BorderBrush { get; set; }
-
+        [NonSerialized]
+        public Brush _borderBrush;
+        public Brush BorderBrush
+        {
+            get { return _borderBrush; }
+            set { _borderBrush = value; }
+        }
         public override string ToString()
         {
             return String.Format("{0} - {1}", this.Artist, this.Title);

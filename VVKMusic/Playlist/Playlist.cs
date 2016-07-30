@@ -68,8 +68,7 @@ namespace Playlist
         {
             _ListOfSongs.Sort((song1, song2) => song2.Downloaded.CompareTo(song1.Downloaded));
         }
-        public List<Song> SearchSong(string pattern)
-        {
+        
         public void SortByDuration()
         {
             _ListOfSongs.Sort((song1, song2) => song1.Duration.CompareTo(song2.Duration));
