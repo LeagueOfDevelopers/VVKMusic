@@ -15,7 +15,8 @@ namespace Playlist
         private List<Song> _BaseListOfSongs = new List<Song>();
         private Boolean _SortedByTitle = false;
         private Boolean _SortedByArtist = false;
-        private Boolean _SortedByDuration= false;
+        private Boolean _SortedByDuration = false;
+        private Boolean _SortedByDownloaded = false;
 
         public Status MoveSong(int oldIndex, int newIndex)
         {
@@ -69,7 +70,17 @@ namespace Playlist
         }
         public void SortByDownloaded()
         {
-            _ListOfSongs.Sort((song1, song2) => song2.Downloaded.CompareTo(song1.Downloaded));
+            if (_SortedByDownloaded)
+            {
+                LostSort();
+                _ListOfSongs.Sort((song1, song2) => song1.Downloaded.CompareTo(song2.Downloaded));
+            }
+            else
+            {
+                LostSort();
+                _ListOfSongs.Sort((song1, song2) => song2.Downloaded.CompareTo(song1.Downloaded));
+                _SortedByDownloaded = true;
+            }
         }
 
         public void SortByDuration()
@@ -116,7 +127,7 @@ namespace Playlist
         }
         public void LostSort()
         {
-            _SortedByArtist = _SortedByDuration = _SortedByTitle = false;
+            _SortedByArtist = _SortedByDuration = _SortedByTitle =_SortedByDownloaded= false;
         }
         public List<Song> SearchSong(string pattern)
         {

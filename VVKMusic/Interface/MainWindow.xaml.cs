@@ -640,16 +640,13 @@ namespace Interface
         #endregion
 
         #region DragAndDrop
-        ListBox dragSource = null;
         private Point startPoint;
 
-        private void listboxPlaylist_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void listboxPlaylist_Drag(object sender, MouseButtonEventArgs e)
         {
             ListBox parent = (ListBox)sender;
             startPoint = e.GetPosition(parent);
-            dragSource = parent;
-            object data = GetDataFromListBox(dragSource, e.GetPosition(parent));
-
+            object data = GetDataFromListBox(parent, e.GetPosition(parent));
             if (data != null)
             {
                 DragDrop.DoDragDrop(parent, data, DragDropEffects.Move);
@@ -663,12 +660,19 @@ namespace Interface
             try
             {
                 ListBox parent = (ListBox)sender;
-                object data = e.Data.GetData(typeof(Song));
-                ((IList)dragSource.ItemsSource).Remove(data);
-                if (GetDataFromListBox(parent, e.GetPosition(parent)) != null)
-                    ((IList)dragSource.ItemsSource).Insert(parent.Items.IndexOf(GetDataFromListBox(parent, e.GetPosition(parent))), data);
+                Song data = (Song)e.Data.GetData(typeof(Song));
+                Song data2 = (Song)GetDataFromListBox(parent, e.GetPosition(parent));
+                Int32 index = parent.Items.IndexOf(data2);
+                if (data2 != null)
+                {
+                    ((IList)parent.ItemsSource).Remove(data);
+                    ((IList)parent.ItemsSource).Insert(index, data);
+                }
                 else
+                {
+                    ((IList)parent.ItemsSource).Remove(data);
                     ((IList)parent.ItemsSource).Add(data);
+                }
                 listboxPlaylist.Items.Refresh();
             }
             catch { }
@@ -722,7 +726,11 @@ namespace Interface
             DropShadowEffect dse = new DropShadowEffect() { Opacity = 0 };
             button.Effect = dse;
         }
-        
+
+        private void listboxPlaylist_Drag(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
     public class SongNumberConverter : IValueConverter
