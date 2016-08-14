@@ -56,7 +56,7 @@
                     <Image Name="imageSettings" Source="Resources/Pictures/settings.png" />
                 </StackPanel>
             </Button>
-            <Button Height="35" Margin="-6,20,0,0" VerticalAlignment="Top" Style="{StaticResource ClearButton}" Click="buttonDownload_Click"
+            <Button Height="35" Margin="-1,20,0,0" VerticalAlignment="Top" Style="{StaticResource ClearButton}" Click="buttonDownload_Click"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand" HorizontalAlignment="Left" Width="35">
                 <StackPanel>
                     <Image Name="imageDownloadOne" Source="Resources/Pictures/download.png" />
@@ -106,7 +106,7 @@
         </Grid>
         <Grid Background="#5A5A5A" Grid.Row="4"/>
         <Grid Width="325"  HorizontalAlignment="Center" Grid.Row="4">
-            <Button x:Name="buttonDownload" HorizontalAlignment="Left" Height="35" Margin="-6,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="4"
+            <Button x:Name="buttonDownload" HorizontalAlignment="Left" Height="35" Margin="-1,2,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonDownload_Click" Grid.Row="4"
                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                 <StackPanel>
                     <Image Name="imageDownload" Source="Resources/Pictures/download.png" />
@@ -141,8 +141,8 @@
             </Button>
         </Grid>
         <playlist:Playlist Name="listboxPlaylist" HorizontalAlignment="Center" MinHeight="268" Height="auto" Margin="0,0,0,0" Padding="0,0,0,0" VerticalAlignment="Top" BorderThickness="0" MinWidth="325" Width="auto" Grid.Row="5" 
-                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="listboxPlaylist_MouseDoubleClick" PreviewMouseUp="listboxPlaylist_MouseDoubleClick"
-                           Drop="listboxPlaylist_Drop" PreviewMouseRightButtonDown="listboxPlaylist_PreviewMouseRightButtonDown" AllowDrop="True" >
+                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="listboxPlaylist_MouseDoubleClick"
+                           Drop="listboxPlaylist_Drop" PreviewMouseRightButtonDown="listboxPlaylist_PreviewMouseRightButtonDown" AllowDrop="True">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Border Name="border" BorderThickness="0, 0, 0, 1" BorderBrush="{Binding Path=BorderBrush}" Padding="5,5,5,5">
@@ -156,10 +156,10 @@
                                     </StackPanel>
                                 </Button>
                             </Grid>
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex), Converter={StaticResource songNumberConverter}}"/>
-                            <TextBlock Margin="0,5,0,5" HorizontalAlignment="Center" VerticalAlignment="Center" Text="."/>
-                            <TextBlock Padding="5" HorizontalAlignment="Center" Width="230"  VerticalAlignment="Center" Text="{Binding}"/>
-                            <TextBlock Padding="5" HorizontalAlignment="Center"  VerticalAlignment="Center" Text="{Binding Path=Duration, Converter={StaticResource durationConverter}}"/>
+                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex), Converter={StaticResource songNumberConverter}}"/>
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="."/>
+                            <TextBlock Padding="5" HorizontalAlignment="Right" Width="215" VerticalAlignment="Center" Text="{Binding}" ToolTip="{Binding}"/>
+                            <TextBlock Padding="5" HorizontalAlignment="Right" Width="30" VerticalAlignment="Center" Text="{Binding Path=Duration, Converter={StaticResource durationConverter}}"/>
                         </StackPanel>
                     </Border>
                 </DataTemplate>

@@ -286,10 +286,10 @@ namespace Interface
                 }
             Downloader1.CheckIfDownloaded(SongList[_CurrentSong]);
             Player1.SetSource(SongList[_CurrentSong]);
+            ListboxPullOver(_CurrentSong);
             Player1.PlayAndStartTimer();
             if (!_repeat)
                 RenderNameAndSelectedSong();
-            ListboxPullOver(_CurrentSong);
         }
 
         private void buttonPause_Click(object sender, RoutedEventArgs e)
@@ -350,10 +350,12 @@ namespace Interface
                 List<Song> SongList = new List<Song>(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
                 SongList.AddRange(VKAPI1.SearchAudio(textboxSearch.Text.ToLower(), _CurrentUser.AccessToken));
                 SongList = SongList.Distinct(new SongComparer()).ToList<Song>();
-                if (Playlist1.SearchSong(textboxSearch.Text.ToLower()).Count > 0) SongList[Playlist1.SearchSong(textboxSearch.Text.ToLower()).Count-1].BorderBrush = (Brush)new BrushConverter().ConvertFrom("#F59184");
+                // if (Playlist1.SearchSong(textboxSearch.Text.ToLower()).Count > 0) SongList[Playlist1.SearchSong(textboxSearch.Text.ToLower()).Count-1].BorderBrush = (Brush)new BrushConverter().ConvertFrom("#F59184");
                 Playlist1.UpdateList(SongList);
             }
             RenderPlaylist(Playlist1.GetList());
+            BorderPaintOff();
+            Playlist1.LostSort();
         }
         private void buttonMix_Click(object sender, RoutedEventArgs e)
         {
@@ -457,7 +459,8 @@ namespace Interface
             List<Song> playlist = Playlist1.GetList();
             foreach (Song song in playlist)
                 song.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFD1D3DA");
-            listboxPlaylist.Items.Refresh();
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                      listboxPlaylist.Items.Refresh()));
         }
         private void buttonClose_Click(object sender, RoutedEventArgs e)
         {
@@ -528,7 +531,14 @@ namespace Interface
 
         private void ListboxPullOver(Int32 current)
         {
-            if (listboxPlaylist.SelectedIndex != 0) BorderPaintOff();
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+            {
+                if (listboxPlaylist.SelectedIndex != 0)
+                {
+                    BorderPaintOff();
+                    Playlist1.LostSort();
+                }
+            }));
             for (int i = current; i < Playlist1.GetList().Count; i++)
             {
                 for (int j = i; j > i - current; j--)
@@ -542,8 +552,8 @@ namespace Interface
                    listboxPlaylist.SelectedIndex = 0));
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                   listboxPlaylist.Items.Refresh()));
-            
-            _CurrentSong = 0;          
+
+            _CurrentSong = 0;
         }
 
         private BitmapImage AddImage(string adress)
@@ -649,6 +659,7 @@ namespace Interface
         private void listboxPlaylist_Drop(object sender, DragEventArgs e)
         {
             BorderPaintOff();
+            Playlist1.LostSort();
             try
             {
                 ListBox parent = (ListBox)sender;

@@ -13,6 +13,9 @@ namespace Playlist
     {
         private List<Song> _ListOfSongs = new List<Song>();
         private List<Song> _BaseListOfSongs = new List<Song>();
+        private Boolean _SortedByTitle = false;
+        private Boolean _SortedByArtist = false;
+        private Boolean _SortedByDuration= false;
 
         public Status MoveSong(int oldIndex, int newIndex)
         {
@@ -68,18 +71,52 @@ namespace Playlist
         {
             _ListOfSongs.Sort((song1, song2) => song2.Downloaded.CompareTo(song1.Downloaded));
         }
-        
+
         public void SortByDuration()
         {
-            _ListOfSongs.Sort((song1, song2) => song1.Duration.CompareTo(song2.Duration));
+            if (_SortedByDuration)
+            {
+                LostSort();
+                _ListOfSongs.Sort((song1, song2) => song2.Duration.CompareTo(song1.Duration));
+            }
+            else
+            {
+                LostSort();
+                _ListOfSongs.Sort((song1, song2) => song1.Duration.CompareTo(song2.Duration));
+                _SortedByDuration = true;
+            }
         }
         public void SortByArtist()
         {
-            _ListOfSongs.Sort((song1, song2) => song1.Artist.CompareTo(song2.Artist));
+            if (_SortedByArtist)
+            {
+                LostSort();
+                _ListOfSongs.Sort((song1, song2) => song2.Artist.CompareTo(song1.Artist));
+            }
+            else
+            {
+                LostSort();
+                _ListOfSongs.Sort((song1, song2) => song1.Artist.CompareTo(song2.Artist));
+                _SortedByArtist = true;
+            }
         }
         public void SortByTitle()
         {
-            _ListOfSongs.Sort((song1, song2) => song1.Title.CompareTo(song2.Title));
+            if (_SortedByTitle)
+            {
+                LostSort();
+                _ListOfSongs.Sort((song1, song2) => song2.Title.CompareTo(song1.Title));
+            }
+            else
+            {
+                LostSort();
+                _ListOfSongs.Sort((song1, song2) => song1.Title.CompareTo(song2.Title));
+                _SortedByTitle = true;
+            }
+        }
+        public void LostSort()
+        {
+            _SortedByArtist = _SortedByDuration = _SortedByTitle = false;
         }
         public List<Song> SearchSong(string pattern)
         {

@@ -53,7 +53,7 @@ namespace Common
     {
         public bool Equals(Song song, Song song2)
         {
-            if (song.Uri != song2.Uri && song.Artist.ToLower() == song2.Artist.ToLower() && song.Title.ToLower() == song2.Title.ToLower() && (song.Duration >= song2.Duration - 2 && song.Duration <= song2.Duration + 2))
+            if (song.Uri != song2.Uri && song.Artist.ToLower() == song2.Artist.ToLower() && song.Title.ToLower() == song2.Title.ToLower() && (song.Duration >= song2.Duration - 5 && song.Duration <= song2.Duration + 5))
                 return true;
             else
                 return false;
@@ -61,7 +61,7 @@ namespace Common
 
         public int GetHashCode(Song obj)
         {
-            return 0;
+            return obj.GetHashCode();
         }
     }
 }
