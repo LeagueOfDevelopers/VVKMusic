@@ -59,7 +59,8 @@ namespace Interface
         {
             int AppID = 5114224;
             string Scope = "audio";
-            (webbrowserWebLogin.Child as System.Windows.Forms.WebBrowser).Navigate(String.Format("http://api.vkontakte.ru/oauth/authorize?client_id={0}&scope={1}&display=popup&response_type=token&revoke=1", AppID, Scope));
+            Uri RedirectUri = new Uri(@"https://oauth.vk.com/blank.html");
+            (webbrowserWebLogin.Child as System.Windows.Forms.WebBrowser).Navigate(String.Format("http://api.vkontakte.ru/oauth/authorize?client_id={0}&redirect_uri={1}&scope={2}&display=popup&response_type=token&revoke=1", AppID, RedirectUri, Scope));
         }
         private void webbrowserWebLogin_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
