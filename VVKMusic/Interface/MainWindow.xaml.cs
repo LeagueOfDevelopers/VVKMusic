@@ -117,7 +117,7 @@ namespace Interface
             if (!wasAlreadyEnteringThroughThisApp)
             {
                 UserManager1.AddUser(user);
-                Playlist1.SetBaseList(user.SongList);
+                Playlist1.SetBaseList(new ObservableCollection<Song>(user.SongList));
                 Playlist1.UpdateListToBase();
                 Infrastructure1.SaveListOfUsers(UserManager1.GetListOfUsers());
             }
@@ -125,7 +125,7 @@ namespace Interface
             {
                 List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(user.ID, user.AccessToken));
                 UserManager1.UpdateUserListOfSongs(user.ID, SongList);
-                Playlist1.SetBaseList(SongList);
+                Playlist1.SetBaseList(new ObservableCollection<Song>(SongList));
                 Playlist1.UpdateListToBase();
                 MenuButtonImage.Source = new BitmapImage(new Uri("/Resources/Pictures/menu.png", UriKind.Relative));
                 listboxMenu.Visibility = Visibility.Hidden;
@@ -137,7 +137,7 @@ namespace Interface
             if (user.SongList.Count > 0)
             {
                 _CurrentSong = -1;
-                RenderPlaylist(user.SongList);
+                RenderPlaylist(new ObservableCollection<Song> (user.SongList));
                 Player1.SetTimer(_updateInterval, timerUpdate_Tick);
             }
             else
@@ -248,7 +248,7 @@ namespace Interface
         {
             HoverEffect(imagePrev, @"Resources/Pictures/prev.png");
             Player1.StopAndStopTimer();
-            List<Song> SongList = Playlist1.GetList();
+            ObservableCollection<Song> SongList = Playlist1.GetList();
             if (SongList.Count > 0)
                 if (_CurrentSong > 0)
                 {
@@ -273,7 +273,7 @@ namespace Interface
         private void NextSongMethod()
         {
             Player1.StopAndStopTimer();
-            List<Song> SongList = Playlist1.GetList();
+            ObservableCollection<Song> SongList = Playlist1.GetList();
             if (SongList.Count > 0)
                 if (_CurrentSong < SongList.Count - 1)
                 {
@@ -302,7 +302,7 @@ namespace Interface
             HoverEffect(imagePlay, @"Resources/Pictures/play.png");
             if (_CurrentSong == -1)
             {
-                List<Song> SongList = Playlist1.GetList();
+                ObservableCollection<Song> SongList = Playlist1.GetList();
                 if (SongList.Count > 0)
                     _CurrentSong = 0;
                 Player1.SetSource(SongList[_CurrentSong]);
@@ -314,7 +314,7 @@ namespace Interface
         {
             HoverEffect(imageStop, @"Resources/Pictures/stop.png");
             Player1.StopAndStopTimer();
-            List<Song> SongList = Playlist1.GetList();
+            ObservableCollection<Song> SongList = Playlist1.GetList();
             _CurrentSong = -1;
             DrawPosition(0, 0);
             Player1.SetTimer(_updateInterval, timerUpdate_Tick);
@@ -347,11 +347,11 @@ namespace Interface
             _CurrentSong = -1;
             if (textboxSearch.Text != "")
             {
-                List<Song> SongList = new List<Song>(Playlist1.SearchSong(textboxSearch.Text.ToLower()));
+                List<Song> SongList = new List<Song>((List<Song>)Playlist1.SearchSong(textboxSearch.Text.ToLower()));
                 SongList.AddRange(VKAPI1.SearchAudio(textboxSearch.Text.ToLower(), _CurrentUser.AccessToken));
                 SongList = SongList.Distinct(new SongComparer()).ToList<Song>();
                 // if (Playlist1.SearchSong(textboxSearch.Text.ToLower()).Count > 0) SongList[Playlist1.SearchSong(textboxSearch.Text.ToLower()).Count-1].BorderBrush = (Brush)new BrushConverter().ConvertFrom("#F59184");
-                Playlist1.UpdateList(SongList);
+                Playlist1.UpdateList(new ObservableCollection<Song>(SongList));
             }
             RenderPlaylist(Playlist1.GetList());
             BorderPaintOff();
@@ -426,7 +426,7 @@ namespace Interface
         }
         private void BorderPaintDownloaded()
         {
-            List<Song> playlist = Playlist1.GetList();
+            ObservableCollection<Song> playlist = Playlist1.GetList();
             if (playlist.Count > 1)
             {
                 for (int i = 0; i < playlist.Count - 1; i++)
@@ -441,7 +441,7 @@ namespace Interface
         }
         private void BorderPaintArtist()
         {
-            List<Song> playlist = Playlist1.GetList();
+            ObservableCollection<Song> playlist = Playlist1.GetList();
             if (playlist.Count > 1)
             {
                 for (int i = 0; i < playlist.Count - 1; i++)
@@ -456,7 +456,7 @@ namespace Interface
         }
         private void BorderPaintOff()
         {
-            List<Song> playlist = Playlist1.GetList();
+            ObservableCollection<Song> playlist = Playlist1.GetList();
             foreach (Song song in playlist)
                 song.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFD1D3DA");
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
@@ -478,7 +478,7 @@ namespace Interface
 
         private void RenderNameAndSelectedSong()
         {
-            List<Song> SongList = Playlist1.GetList();
+            ObservableCollection<Song> SongList = Playlist1.GetList();
             if (_CurrentSong == -1)
             {
                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
@@ -496,15 +496,16 @@ namespace Interface
             }
         }
 
-        private void RenderPlaylist(List<Song> SongList)
+        private void RenderPlaylist(ObservableCollection<Song> oSongs)
         {
-            foreach (Song song in SongList)
+            foreach (Song song in oSongs)
                 Downloader1.CheckIfDownloaded(song);
-            listboxPlaylist.ItemsSource = SongList;
-            listboxPlaylist.AlternationCount = SongList.Count;
+            listboxPlaylist.DataContext = oSongs;
+            listboxPlaylist.AlternationCount = oSongs.Count;
             Binding binding = new Binding();
-            binding.Source = SongList;
+            binding.Source = oSongs;
             listboxPlaylist.SetBinding(ListBox.ItemsSourceProperty, binding);
+
 
             listboxPlaylist.Items.Refresh();
         }
@@ -517,12 +518,13 @@ namespace Interface
         }
         private void listboxPlaylist_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            RenderPlaylist(Playlist1.GetList());
             if (listboxPlaylist.SelectedIndex != -1 && _CurrentSong != listboxPlaylist.SelectedIndex)
             {
                 ListboxPullOver(listboxPlaylist.SelectedIndex);
                 RenderNameAndSelectedSong();
                 Player1.StopAndStopTimer();
-                List<Song> SongList = Playlist1.GetList();
+                ObservableCollection<Song> SongList = Playlist1.GetList();
                 Downloader1.CheckIfDownloaded(SongList[0]);
                 Player1.SetSource(SongList[0]);
                 Player1.PlayAndStartTimer();
@@ -578,8 +580,11 @@ namespace Interface
             { }
             else
             {
-                DrawPosition(-1, -1);
-                NextSongMethod();
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                {
+                    DrawPosition(-1, -1);
+                    NextSongMethod();
+                }));
                 return;
             }
             _tickCounter++;

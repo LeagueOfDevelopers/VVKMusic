@@ -1,6 +1,7 @@
 ﻿using Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Tests
 {
@@ -13,7 +14,7 @@ namespace Tests
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();
             songList.AddRange(new Song[] { new Song(1), new Song(2), new Song(3), new Song(4) });
-            playlist.UpdateList(songList);
+            playlist.UpdateList(new ObservableCollection<Song>(songList));
             Assert.AreEqual(1, playlist.GetList()[0].ID);
             Assert.AreEqual(4, playlist.GetList()[3].ID);
         }
@@ -23,7 +24,7 @@ namespace Tests
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();
             songList.AddRange(new Song[] { new Song(1), new Song(2), new Song(3), new Song(4) });
-            playlist.UpdateList(songList);
+            playlist.UpdateList(new ObservableCollection<Song>(songList));
             playlist.MoveSong(0, 2);
             Assert.AreEqual(1, playlist.GetList()[2].ID);
         }
@@ -33,7 +34,7 @@ namespace Tests
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();
             songList.AddRange(new Song[] { new Song(1), new Song(2), new Song(3), new Song(4) });
-            playlist.UpdateList(songList);
+            playlist.UpdateList(new ObservableCollection<Song>(songList));
             Song insertedSong = new Song(8);
             playlist.AddToList(insertedSong, 0);
             Assert.AreEqual(insertedSong.ID, playlist.GetList()[0].ID);
@@ -48,7 +49,7 @@ namespace Tests
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();
             songList.AddRange(new Song[] { new Song(1), new Song(2), new Song(3), new Song(4) });
-            playlist.UpdateList(songList);
+            playlist.UpdateList(new ObservableCollection<Song>(songList));
             Song[] insertedArrayOfSongs = new Song[] { new Song(9), new Song(8), new Song(7) };
             playlist.AddToList(insertedArrayOfSongs, 4);
             Assert.AreEqual(insertedArrayOfSongs[0].ID, playlist.GetList()[4].ID);
@@ -59,7 +60,7 @@ namespace Tests
             Playlist.Playlist playlist = new Playlist.Playlist();
             List<Song> songList = new List<Song>();
             songList.AddRange(new Song[] { new Song(1), new Song(2), new Song(3), new Song(4) });
-            playlist.UpdateList(songList);
+            playlist.UpdateList(new ObservableCollection<Song>(songList));
             playlist.RemoveFromList(2);
             Assert.AreEqual(4, playlist.GetList()[2].ID);
             playlist.RemoveFromList(0);
@@ -73,7 +74,7 @@ namespace Tests
             songList.AddRange(new Song[] { new Song(1), new Song(2), new Song(3), new Song(4) });
             songList[1].Downloaded = true;
             songList[3].Downloaded = true;
-            playlist.UpdateList(songList);
+            playlist.UpdateList(new ObservableCollection<Song>(songList));
             playlist.SortByDownloaded();
             Assert.AreEqual(true, playlist.GetList()[0].Downloaded);
             Assert.AreEqual(true, playlist.GetList()[1].Downloaded);
@@ -88,7 +89,7 @@ namespace Tests
             songList[1].Title = "foo";
             songList[2].Title = "foobar";
             songList[3].Title = "baz";
-            playlist.UpdateList(songList);
+            playlist.UpdateList(new ObservableCollection<Song>(songList));
             //TODO: rewrite tests
             //Assert.AreEqual(playlist.SearchSong("foo")[0].ID, 2);
         }

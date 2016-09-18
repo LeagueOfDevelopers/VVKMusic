@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Common
 {
@@ -13,7 +14,7 @@ namespace Common
             this.AccessToken = accessToken;
             this.Settings = new global::Common.Settings();
             this.SoundSettings = new global::Common.SoundSettings();
-            this.SongList = songList;
+            this.SongList = new List<Song>(songList);
         }
         public User(string name, string accessToken, string userID, List<Song> songList)
         {
@@ -22,7 +23,7 @@ namespace Common
             this.AccessToken = accessToken;
             this.Settings = new global::Common.Settings();
             this.SoundSettings = new global::Common.SoundSettings();
-            this.SongList = songList;
+            this.SongList = new List<Song>(songList);
         }
         public User(string userID)
         {

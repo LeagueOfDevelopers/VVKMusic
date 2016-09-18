@@ -1,6 +1,8 @@
 ﻿using Common;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -11,8 +13,8 @@ namespace Playlist
 {
     public class Playlist : ListBox//, IPlaylist
     {
-        private List<Song> _ListOfSongs = new List<Song>();
-        private List<Song> _BaseListOfSongs = new List<Song>();
+        private ObservableCollection<Song> _ListOfSongs = new ObservableCollection<Song>();
+        private ObservableCollection<Song> _BaseListOfSongs = new ObservableCollection<Song>();
         private Boolean _SortedByTitle = false;
         private Boolean _SortedByArtist = false;
         private Boolean _SortedByDuration = false;
@@ -25,13 +27,13 @@ namespace Playlist
             _ListOfSongs.Insert(newIndex, songToMove);
             return Status.Ok;
         }
-        public Status SetBaseList(List<Song> songList)
+        public Status SetBaseList(ObservableCollection<Song> songList)
         {
             _BaseListOfSongs.Clear();
             _BaseListOfSongs = songList;
             return Status.Ok;
         }
-        public Status UpdateList(List<Song> songList)
+        public Status UpdateList(ObservableCollection<Song> songList)
         {
             _ListOfSongs = songList;
             return Status.Ok;
@@ -42,7 +44,12 @@ namespace Playlist
         }
         public Status AddToList(Song[] songMas, int index)
         {
-            _ListOfSongs.InsertRange(index, songMas);
+            //_ListOfSongs.InsertRange(index, songMas);
+            songMas.Reverse();
+            foreach (Song song in songMas)
+            {
+                _ListOfSongs.Insert(index, song);
+            }
             return Status.Ok;
         }
         public Status AddToList(Song song, int index)
@@ -73,12 +80,12 @@ namespace Playlist
             if (_SortedByDownloaded)
             {
                 LostSort();
-                _ListOfSongs.Sort((song1, song2) => song1.Downloaded.CompareTo(song2.Downloaded));
+                _ListOfSongs = new ObservableCollection<Song>(_ListOfSongs.OrderBy((song => song.Downloaded)));
             }
             else
             {
                 LostSort();
-                _ListOfSongs.Sort((song1, song2) => song2.Downloaded.CompareTo(song1.Downloaded));
+                _ListOfSongs = new ObservableCollection<Song>(_ListOfSongs.OrderByDescending((song => song.Downloaded)));
                 _SortedByDownloaded = true;
             }
         }
@@ -88,12 +95,12 @@ namespace Playlist
             if (_SortedByDuration)
             {
                 LostSort();
-                _ListOfSongs.Sort((song1, song2) => song2.Duration.CompareTo(song1.Duration));
+                _ListOfSongs = new ObservableCollection<Song>(_ListOfSongs.OrderBy((song => song.Duration)));
             }
             else
             {
                 LostSort();
-                _ListOfSongs.Sort((song1, song2) => song1.Duration.CompareTo(song2.Duration));
+                _ListOfSongs = new ObservableCollection<Song>(_ListOfSongs.OrderByDescending((song => song.Duration)));
                 _SortedByDuration = true;
             }
         }
@@ -102,12 +109,13 @@ namespace Playlist
             if (_SortedByArtist)
             {
                 LostSort();
-                _ListOfSongs.Sort((song1, song2) => song2.Artist.CompareTo(song1.Artist));
+                _ListOfSongs = new ObservableCollection<Song>(_ListOfSongs.OrderByDescending((song => song.Artist)));
+
             }
             else
             {
                 LostSort();
-                _ListOfSongs.Sort((song1, song2) => song1.Artist.CompareTo(song2.Artist));
+                _ListOfSongs = new ObservableCollection<Song>(_ListOfSongs.OrderBy((song => song.Artist)));
                 _SortedByArtist = true;
             }
         }
@@ -116,12 +124,12 @@ namespace Playlist
             if (_SortedByTitle)
             {
                 LostSort();
-                _ListOfSongs.Sort((song1, song2) => song2.Title.CompareTo(song1.Title));
+                _ListOfSongs = new ObservableCollection<Song>(_ListOfSongs.OrderByDescending((song => song.Title)));
             }
             else
             {
                 LostSort();
-                _ListOfSongs.Sort((song1, song2) => song1.Title.CompareTo(song2.Title));
+                _ListOfSongs = new ObservableCollection<Song>(_ListOfSongs.OrderBy((song => song.Title)));
                 _SortedByTitle = true;
             }
         }
@@ -131,9 +139,9 @@ namespace Playlist
         }
         public List<Song> SearchSong(string pattern)
         {
-            return _ListOfSongs.FindAll(x => (x.Artist + " - " + x.Title).ToLower().Contains(pattern));
+            return _ListOfSongs.Where(x => (x.Artist + " - " + x.Title).ToLower().Contains(pattern)).Select(x => x).ToList<Song>();
         }
-        public List<Song> GetList()
+        public ObservableCollection<Song> GetList()
         {
             return _ListOfSongs;
         }

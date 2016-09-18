@@ -1,5 +1,6 @@
 ﻿using Common;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Status = Common.Common.Status;
 
 namespace UserManager
@@ -74,11 +75,11 @@ namespace UserManager
             _ListOfUsers = listOfUsers;
             return Status.Ok;
         }
-        public List<Song> GetUserListOfSongs(string userID)
+        public ObservableCollection<Song> GetUserListOfSongs(string userID)
         {
             if (_ListOfUsers.Exists(x => x.ID == userID))
             {
-                return _ListOfUsers[_ListOfUsers.FindIndex(x => x.ID == userID)].SongList;
+                return new ObservableCollection<Song>(_ListOfUsers[_ListOfUsers.FindIndex(x => x.ID == userID)].SongList);
             }
             else
             {

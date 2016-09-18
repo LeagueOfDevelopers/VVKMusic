@@ -1,5 +1,6 @@
 ﻿using Common;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Status = Common.Common.Status;
 
 namespace UserManager
@@ -11,7 +12,7 @@ namespace UserManager
         Status UpdateUserSoundSettings(string userID, SoundSettings soundSettings);
         Status UpdateUserListOfSongs(string userID, List<Song> songList);
         Status RemoveUser(string userID);
-        List<Song> GetUserListOfSongs(string userID);
+        ObservableCollection<Song> GetUserListOfSongs(string userID);
         List<User> GetListOfUsers();
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Player", "Player\Player.csproj", "{B3E1602D-6BFE-4889-A93C-B406A725CF48}"
 EndProject
@@ -26,6 +26,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interface", "Interface\Interface.csproj", "{A3D0E16C-23D3-4659-B7A7-7A87C91712B6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DesignInControl", "Circular\DesignInControl.csproj", "{988E3D2E-502F-4D3D-89F7-F69B47C9884F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListViewDragDropManagerDemo", "ListViewDragDropManager\ListViewDragDropManagerDemo\ListViewDragDropManagerDemo.csproj", "{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,6 +139,18 @@ Global
 		{988E3D2E-502F-4D3D-89F7-F69B47C9884F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{988E3D2E-502F-4D3D-89F7-F69B47C9884F}.Release|x86.ActiveCfg = Release|Any CPU
 		{988E3D2E-502F-4D3D-89F7-F69B47C9884F}.Release|x86.Build.0 = Release|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Debug|x86.Build.0 = Debug|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Release|x86.ActiveCfg = Release|Any CPU
+		{04B22AD9-2D48-4E0E-86A5-3F11CA45F2C0}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
