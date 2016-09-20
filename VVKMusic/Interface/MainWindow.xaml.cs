@@ -362,6 +362,7 @@ namespace Interface
             HoverEffect(imageMix, @"Resources/Pictures/mix.png");
             Playlist1.MixPlaylist();
             RenderPlaylist(Playlist1.GetList());
+            _CurrentSong = -1;
         }
 
         private void buttonRepeat_Click(object sender, RoutedEventArgs e)
@@ -400,6 +401,7 @@ namespace Interface
         {
             ListBoxItem item = (ListBoxItem)listboxSort.SelectedValue;
             BorderPaintOff();
+            _CurrentSong = -1;
             if (item != null)
             {
                 switch (item.Content.ToString())
