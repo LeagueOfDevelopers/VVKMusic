@@ -151,6 +151,10 @@
       <Project>{14d74ed4-cf0f-42f5-a49f-9f02dcc57fbc}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ListViewDragDropManager\ListViewDragDropManagerDemo\ListViewDragDropManagerDemo.csproj">
+      <Project>{04b22ad9-2d48-4e0e-86a5-3f11ca45f2c0}</Project>
+      <Name>ListViewDragDropManagerDemo</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Player\Player.csproj">
       <Project>{b3e1602d-6bfe-4889-a93c-b406a725cf48}</Project>
       <Name>Player</Name>

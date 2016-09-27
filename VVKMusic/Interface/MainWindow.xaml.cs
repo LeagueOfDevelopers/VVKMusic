@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using System.Windows.Media.Effects;
 using System.Linq;
+using WPF.JoshSmith.ServiceProviders.UI;
 
 namespace Interface
 {
@@ -33,6 +34,7 @@ namespace Interface
         private Infrastructure.Infrastructure Infrastructure1 = new Infrastructure.Infrastructure();
         private Downloader.Downloader Downloader1 = new Downloader.Downloader();
         private List<Song> ListToDownload1 = new List<Song>();
+        private ListViewDragDropManager<Song> dragMgr;
 
         private User _CurrentUser = null;
         private int _CurrentSong = 0;
@@ -46,8 +48,23 @@ namespace Interface
             if (Infrastructure1.LoadListOfUsers() != null)
             {
                 UserManager1.UpdateUserList(Infrastructure1.LoadListOfUsers());
+                this.Loaded += MainWindow_Loaded;
             }
         }
+        #region MainWindow_Loaded
+
+        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.dragMgr = new ListViewDragDropManager<Song>(this.listboxPlaylist);
+            this.dragMgr.ListView = this.listboxPlaylist;
+            this.dragMgr.ShowDragAdorner = true;
+            this.dragMgr.DragAdornerOpacity = 0.7;
+            this.dragMgr.ProcessDrop += dragMgr_ProcessDrop;
+            this.listboxPlaylist.DragEnter += OnListViewDragEnter;
+            this.listboxPlaylist.Drop += OnListViewDrop;
+        }
+
+        #endregion // MainWindow_Loaded
         private void buttonMenu_Click(object sender, RoutedEventArgs e)
         {
             if (listboxMenu.Visibility == Visibility.Hidden)
@@ -362,6 +379,7 @@ namespace Interface
             HoverEffect(imageMix, @"Resources/Pictures/mix.png");
             Playlist1.MixPlaylist();
             RenderPlaylist(Playlist1.GetList());
+            _CurrentSong = -1;
         }
 
         private void buttonRepeat_Click(object sender, RoutedEventArgs e)
@@ -400,6 +418,7 @@ namespace Interface
         {
             ListBoxItem item = (ListBoxItem)listboxSort.SelectedValue;
             BorderPaintOff();
+            _CurrentSong = -1;
             if (item != null)
             {
                 switch (item.Content.ToString())
@@ -644,74 +663,145 @@ namespace Interface
 
         #endregion
 
-        #region DragAndDrop
-        private Point startPoint;
+        #region dragMgr_ProcessDrop
 
-        private void listboxPlaylist_Drag(object sender, MouseButtonEventArgs e)
+        // Performs custom drop logic for the top ListView.
+        void dragMgr_ProcessDrop(object sender, ProcessDropEventArgs<Song> e)
         {
-            ListBox parent = (ListBox)sender;
-            startPoint = e.GetPosition(parent);
-            object data = GetDataFromListBox(parent, e.GetPosition(parent));
-            if (data != null)
+            // This shows how to customize the behavior of a drop.
+            // Here we perform a swap, instead of just moving the dropped item.
+
+            int higherIdx = Math.Max(e.OldIndex, e.NewIndex);
+            int lowerIdx = Math.Min(e.OldIndex, e.NewIndex);
+
+            if (lowerIdx < 0)
             {
-                DragDrop.DoDragDrop(parent, data, DragDropEffects.Move);
+                // The item came from the lower ListView
+                // so just insert it.
+                e.ItemsSource.Insert(higherIdx, e.DataItem);
+            }
+            else
+            {
+                // null values will cause an error when calling Move.
+                // It looks like a bug in ObservableCollection to me.
+                if (e.ItemsSource[lowerIdx] == null ||
+                    e.ItemsSource[higherIdx] == null)
+                    return;
+
+                // The item came from the ListView into which
+                // it was dropped, so swap it with the item
+                // at the target index.
+                e.ItemsSource.Move(lowerIdx, higherIdx);
+                e.ItemsSource.Move(higherIdx - 1, lowerIdx);
+            }
+
+            // Set this to 'Move' so that the OnListViewDrop knows to 
+            // remove the item from the other ListView.
+            e.Effects = DragDropEffects.Move;
+        }
+
+        #endregion // dragMgr_ProcessDrop
+
+        #region OnListViewDragEnter
+
+        // Handles the DragEnter event for both ListViews.
+        void OnListViewDragEnter(object sender, DragEventArgs e)
+        {
+            e.Effects = DragDropEffects.Move;
+        }
+
+        #endregion // OnListViewDragEnter
+
+        #region OnListViewDrop
+
+        // Handles the Drop event for both ListViews.
+        void OnListViewDrop(object sender, DragEventArgs e)
+        {
+            if (e.Effects == DragDropEffects.None)
+                return;
+
+            Task task = e.Data.GetData(typeof(Task)) as Task;
+            if (sender == this.listboxPlaylist)
+            {
+                if (this.dragMgr.IsDragInProgress)
+                    return;
+
+                // An item was dragged from the bottom ListView into the top ListView
+                // so remove that item from the bottom ListView.
+                (this.listboxPlaylist.ItemsSource as ObservableCollection<Task>).Remove(task);
             }
         }
 
-        private void listboxPlaylist_Drop(object sender, DragEventArgs e)
-        {
-            BorderPaintOff();
-            Playlist1.LostSort();
-            try
-            {
-                ListBox parent = (ListBox)sender;
-                Song data = (Song)e.Data.GetData(typeof(Song));
-                Song data2 = (Song)GetDataFromListBox(parent, e.GetPosition(parent));
-                Int32 index = parent.Items.IndexOf(data2);
-                if (data2 != null)
-                {
-                    ((IList)parent.ItemsSource).Remove(data);
-                    ((IList)parent.ItemsSource).Insert(index, data);
-                }
-                else
-                {
-                    ((IList)parent.ItemsSource).Remove(data);
-                    ((IList)parent.ItemsSource).Add(data);
-                }
-                listboxPlaylist.Items.Refresh();
-            }
-            catch { }
-        }
+        #endregion // OnListViewDrop
 
-        #region GetDataFromListBox(ListBox,Point)
-        private static object GetDataFromListBox(ListBox source, Point point)
-        {
-            UIElement element = source.InputHitTest(point) as UIElement;
-            if (element != null)
-            {
-                object data = DependencyProperty.UnsetValue;
-                while (data == DependencyProperty.UnsetValue)
-                {
-                    data = source.ItemContainerGenerator.ItemFromContainer(element);
-                    if (data == DependencyProperty.UnsetValue)
-                    {
-                        element = VisualTreeHelper.GetParent(element) as UIElement;
-                    }
-                    if (element == source)
-                    {
-                        return null;
-                    }
-                }
-                if (data != DependencyProperty.UnsetValue)
-                {
-                    return data;
-                }
-            }
-            return null;
-        }
-        #endregion
+        //#region DragAndDrop
+        //private Point startPoint;
 
-        #endregion
+        //private void listboxPlaylist_Drag(object sender, MouseButtonEventArgs e)
+        //{
+        //    ListBox parent = (ListBox)sender;
+        //    startPoint = e.GetPosition(parent);
+        //    object data = GetDataFromListBox(parent, e.GetPosition(parent));
+        //    if (data != null)
+        //    {
+        //        DragDrop.DoDragDrop(parent, data, DragDropEffects.Move);
+        //    }
+        //}
+
+        //private void listboxPlaylist_Drop(object sender, DragEventArgs e)
+        //{
+        //    BorderPaintOff();
+        //    Playlist1.LostSort();
+        //    try
+        //    {
+        //        ListBox parent = (ListBox)sender;
+        //        Song data = (Song)e.Data.GetData(typeof(Song));
+        //        Song data2 = (Song)GetDataFromListBox(parent, e.GetPosition(parent));
+        //        Int32 index = parent.Items.IndexOf(data2);
+        //        if (data2 != null)
+        //        {
+        //            ((IList)parent.ItemsSource).Remove(data);
+        //            ((IList)parent.ItemsSource).Insert(index, data);
+        //        }
+        //        else
+        //        {
+        //            ((IList)parent.ItemsSource).Remove(data);
+        //            ((IList)parent.ItemsSource).Add(data);
+        //        }
+        //        listboxPlaylist.Items.Refresh();
+        //    }
+        //    catch { }
+        //}
+
+        //#region GetDataFromListBox(ListBox,Point)
+        //private static object GetDataFromListBox(ListBox source, Point point)
+        //{
+        //    UIElement element = source.InputHitTest(point) as UIElement;
+        //    if (element != null)
+        //    {
+        //        object data = DependencyProperty.UnsetValue;
+        //        while (data == DependencyProperty.UnsetValue)
+        //        {
+        //            data = source.ItemContainerGenerator.ItemFromContainer(element);
+        //            if (data == DependencyProperty.UnsetValue)
+        //            {
+        //                element = VisualTreeHelper.GetParent(element) as UIElement;
+        //            }
+        //            if (element == source)
+        //            {
+        //                return null;
+        //            }
+        //        }
+        //        if (data != DependencyProperty.UnsetValue)
+        //        {
+        //            return data;
+        //        }
+        //    }
+        //    return null;
+        //}
+        //#endregion
+
+        //#endregion
 
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
