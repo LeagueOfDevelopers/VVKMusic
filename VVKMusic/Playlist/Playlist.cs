@@ -11,7 +11,7 @@ using Status = Common.Common.Status;
 
 namespace Playlist
 {
-    public class Playlist : ListBox//, IPlaylist
+    public class Playlist : ListView//, IPlaylist
     {
         private ObservableCollection<Song> _ListOfSongs = new ObservableCollection<Song>();
         private ObservableCollection<Song> _BaseListOfSongs = new ObservableCollection<Song>();
