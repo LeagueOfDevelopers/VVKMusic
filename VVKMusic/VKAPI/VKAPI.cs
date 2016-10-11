@@ -61,6 +61,32 @@ namespace VKAPI
             return Songs;
         }
 
+        public void AddAudio(int audioId, string userID, string token)
+        {
+            string GetAudioRequest = String.Format("https://api.vk.com/method/audio.add?audio_id={0}&owner_id={1}&access_token={2}&redirect_uri=https://oauth.vk.com/blank.html", audioId, userID, token);
+            WebRequest AudioRequest = WebRequest.Create(GetAudioRequest);
+            WebResponse AudioAnswer = AudioRequest.GetResponse();
+            Stream dataStream = AudioAnswer.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responeFromServer = reader.ReadToEnd();
+
+            reader.Close();
+            dataStream.Close();
+        }
+
+        public void DeleteAudio(int audioId, string userID, string token)
+        {
+            string GetAudioRequest = String.Format("https://api.vk.com/method/audio.delete?audio_id={0}&owner_id={1}&access_token={2}", audioId, userID, token);
+            WebRequest AudioRequest = WebRequest.Create(GetAudioRequest);
+            WebResponse AudioAnswer = AudioRequest.GetResponse();
+            Stream dataStream = AudioAnswer.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream);
+            string responeFromServer = reader.ReadToEnd();
+
+            reader.Close();
+            dataStream.Close();
+        }
+
         public Song[] GetAudioExternal(string userID, string token)
         {
             string GetAudioRequest = String.Format("https://api.vk.com/method/audio.get?owner_id={0}&access_token={1}", userID, token);

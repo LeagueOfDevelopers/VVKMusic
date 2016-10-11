@@ -151,14 +151,22 @@
                                 <Button HorizontalAlignment="Center" Height="25" VerticalAlignment="Center" Width="25" Tag="{Binding}" Style="{StaticResource ClearButton}" Click="buttonOk_Click"
                                         MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                                     <StackPanel>
-                                        <Image Source="{Binding Path=Image}" />
+                                        <Image Source="{Binding Path=DownloadImage}" />
                                     </StackPanel>
                                 </Button>
                             </Grid>
                             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex), Converter={StaticResource songNumberConverter}}"/>
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="."/>
                             <TextBlock Padding="5" HorizontalAlignment="Right" Width="215" VerticalAlignment="Center" Text="{Binding}" ToolTip="{Binding}"/>
-                            <TextBlock Padding="5" HorizontalAlignment="Right" Width="30" VerticalAlignment="Center" Text="{Binding Path=Duration, Converter={StaticResource durationConverter}}"/>
+                            <Button Padding="5" HorizontalAlignment="Center" Height="25" VerticalAlignment="Center" Width="25" Tag="{Binding}" Style="{StaticResource ClearButton}" Click="buttonAddRemove_Click" 
+                                        MouseEnter="ButtonAddRemove_MouseEnter" MouseLeave="ButtonAddRemove_MouseLeave" Cursor="Hand">
+                                <StackPanel>
+                                    <Grid>
+                                        <TextBlock Name="textBlockDuration" HorizontalAlignment="Right" Width="30" VerticalAlignment="Center" Text="{Binding Path=Duration, Converter={StaticResource durationConverter}}"/>
+                                        <Image Name="imageAddRemove" Visibility="Hidden" Source="{Binding Path=AddRemoveImage}" />
+                                    </Grid>
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
                     </Border>
                 </DataTemplate>

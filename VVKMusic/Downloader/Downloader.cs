@@ -71,12 +71,12 @@ namespace Downloader
             if (File.Exists(path))
             {
                 song.Downloaded = true;
-                song.Image = @"Resources/Pictures/ok_small.png";
+                song.DownloadImage = @"Resources/Pictures/ok_small.png";
             }
             else
             {
                 song.Downloaded = false;
-                song.Image = @"Resources/Pictures/ok_lightgrey.png";
+                song.DownloadImage = @"Resources/Pictures/ok_lightgrey.png";
             }
         }
 

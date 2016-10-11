@@ -57,10 +57,33 @@ namespace Playlist
             _ListOfSongs.Insert(index, song);
             return Status.Ok;
         }
+
+        public Status AddToBaseList(Song song)
+        {
+            _BaseListOfSongs.Insert(0, song);
+            return Status.Ok;
+        }
+        public Status RemoveFromBaseList(Song song)
+        {
+            _BaseListOfSongs.Remove(song);
+            return Status.Ok;
+        }
         public Status RemoveFromList(int index)
         {
             _ListOfSongs.RemoveAt(index);
             return Status.Ok;
+        }
+
+        public void CheckIfBaseListOfSongsContainsSong(Song song)
+        {
+            if (_BaseListOfSongs.Contains(song))
+            {
+                song.AddRemoveImage = @"Resources/Pictures/ok_small.png";
+            }
+            else
+            {
+                song.AddRemoveImage = @"Resources/Pictures/ok_lightgrey.png";
+            }
         }
         public void MixPlaylist()
         {

@@ -13,7 +13,7 @@ namespace Common
         {
             this.ID = id;
             this.Percentage = 0;
-            this.Image = @"Resources/Pictures/ok_lightgrey.png";
+            this.DownloadImage = @"Resources/Pictures/ok_lightgrey.png";
             this.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFD1D3DA");
         }
 
@@ -36,7 +36,8 @@ namespace Common
         public int Date { get; set; }
         public bool Downloaded { get; set; }
         public int Percentage { get; set; }
-        public string Image { get; set; }
+        public string DownloadImage { get; set; }
+        public string AddRemoveImage { get; set; }
         [NonSerialized]
         public Brush _borderBrush;
         public Brush BorderBrush

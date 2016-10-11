@@ -186,7 +186,7 @@ namespace Interface
             foreach (Song song in ListToDownload1)
             {
                 if (!song.Downloaded)
-                    song.Image = @"Resources/Pictures/ok_lightgrey.png";
+                    song.DownloadImage = @"Resources/Pictures/ok_lightgrey.png";
                 else
                     Downloader1.CheckIfDownloaded(song);
             }
@@ -198,18 +198,18 @@ namespace Interface
         private void buttonOk_Click(object sender, RoutedEventArgs e)
         {
             Song song = (Song)(sender as FrameworkElement).Tag;
-            if (song.Image == @"Resources/Pictures/ok_lightgrey.png")
+            if (song.DownloadImage == @"Resources/Pictures/ok_lightgrey.png")
             {
-                song.Image = @"Resources/Pictures/ok_orangefill.png";
+                song.DownloadImage = @"Resources/Pictures/ok_orangefill.png";
                 ListToDownload1.Add(song);
             }
             else
             {
                 if (song.Downloaded)
-                    song.Image = @"Resources/Pictures/ok_small.png";
+                    song.DownloadImage = @"Resources/Pictures/ok_small.png";
                 else
                 {
-                    song.Image = @"Resources/Pictures/ok_lightgrey.png";
+                    song.DownloadImage = @"Resources/Pictures/ok_lightgrey.png";
                     ListToDownload1.Remove(song);
                 }
             }
@@ -247,7 +247,7 @@ namespace Interface
                 {
                     if (song.GetHashCode() == Downloader1.hashCodeConnection[sender.GetHashCode()])
                     {
-                        song.Image = @"Resources/Pictures/ok_small.png";
+                        song.DownloadImage = @"Resources/Pictures/ok_small.png";
                         song.Percentage = 0;
                         song.Downloaded = true;
                         listboxPlaylist.Items.Refresh();
@@ -365,7 +365,7 @@ namespace Interface
             if (textboxSearch.Text != "")
             {
                 List<Song> SongList = new List<Song>((List<Song>)Playlist1.SearchSong(textboxSearch.Text.ToLower()));
-                SongList.AddRange(VKAPI1.SearchAudio(textboxSearch.Text.ToLower(), _CurrentUser.AccessToken));
+                SongList.AddRange(VKAPI1.SearchAudio(textboxSearch.Text.ToLower(),_CurrentUser.AccessToken));
                 SongList = SongList.Distinct(new SongComparer()).ToList<Song>();
                 // if (Playlist1.SearchSong(textboxSearch.Text.ToLower()).Count > 0) SongList[Playlist1.SearchSong(textboxSearch.Text.ToLower()).Count-1].BorderBrush = (Brush)new BrushConverter().ConvertFrom("#F59184");
                 Playlist1.UpdateList(new ObservableCollection<Song>(SongList));
@@ -518,7 +518,10 @@ namespace Interface
         private void RenderPlaylist(ObservableCollection<Song> oSongs)
         {
             foreach (Song song in oSongs)
+            {
                 Downloader1.CheckIfDownloaded(song);
+                Playlist1.CheckIfBaseListOfSongsContainsSong(song);
+            }
             listboxPlaylist.DataContext = oSongs;
             listboxPlaylist.AlternationCount = oSongs.Count;
             Binding binding = new Binding();
@@ -803,6 +806,7 @@ namespace Interface
 
         //#endregion
 
+        #region MouseEnter MouseLeave
         private void Button_MouseEnter(object sender, MouseEventArgs e)
         {
             Button button = (Button)sender;
@@ -821,11 +825,43 @@ namespace Interface
             DropShadowEffect dse = new DropShadowEffect() { Opacity = 0 };
             button.Effect = dse;
         }
-
-        private void listboxPlaylist_Drag(object sender, RoutedEventArgs e)
+        private void ButtonAddRemove_MouseEnter(object sender, MouseEventArgs e)
         {
-
+            Button button = (Button)sender;
+            Image image = (Image)button.FindName("imageAddRemove");
+            image.Visibility = Visibility.Visible;
+            TextBlock textblock = (TextBlock)button.FindName("textBlockDuration");
+            textblock.Visibility = Visibility.Hidden;
         }
+
+        private void ButtonAddRemove_MouseLeave(object sender, MouseEventArgs e)
+        {
+            Button button = (Button)sender;
+            Image image = (Image)button.FindName("imageAddRemove");
+            image.Visibility = Visibility.Hidden;
+            TextBlock textblock = (TextBlock)button.FindName("textBlockDuration");
+            textblock.Visibility = Visibility.Visible;
+        }
+
+        #endregion //MouseEnter MouseLeave
+        private void buttonAddRemove_Click(object sender, RoutedEventArgs e)
+        {
+            Song song = (Song)(sender as FrameworkElement).Tag;
+            if (song.AddRemoveImage == @"Resources/Pictures/ok_lightgrey.png")
+            {
+                song.AddRemoveImage = @"Resources/Pictures/ok_small.png"; ;
+                VKAPI1.AddAudio(song.ID, _CurrentUser.ID, _CurrentUser.AccessToken);
+                Playlist1.AddToBaseList(song);
+            }
+            else
+            {
+                song.AddRemoveImage = @"Resources/Pictures/ok_lightgrey.png";
+                //VKAPI1.DeleteAudio(song.ID);
+                Playlist1.RemoveFromBaseList(song);
+            }
+            listboxPlaylist.Items.Refresh();
+        }
+
     }
 
     public class SongNumberConverter : IValueConverter
