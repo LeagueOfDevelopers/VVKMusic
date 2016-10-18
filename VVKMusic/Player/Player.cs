@@ -12,6 +12,7 @@ namespace Player
     {
         private int _stream;
         private BASSTimer _updateTimer = new BASSTimer(50);
+        private float volume;
 
         public Player()
         {
@@ -107,6 +108,24 @@ namespace Player
         {
             _updateTimer = new BASSTimer(updateInterval);
             _updateTimer.Tick += e;
+            return Status.Ok;
+        }
+        public Status SetVolume(long vol)
+        {
+            volume = (float)vol / 80;
+            Bass.BASS_ChannelSetAttribute(_stream, BASSAttribute.BASS_ATTRIB_VOL, volume);
+            return Status.Ok;
+        }
+        public Status IncreaseVolume()
+        {
+            volume += (float)1/8;
+            Bass.BASS_ChannelSetAttribute(_stream, BASSAttribute.BASS_ATTRIB_VOL, volume);
+            return Status.Ok;
+        }
+        public Status DecreaseVolume()
+        {
+            volume -= (float)1/8;
+            Bass.BASS_ChannelSetAttribute(_stream, BASSAttribute.BASS_ATTRIB_VOL, volume);
             return Status.Ok;
         }
         ~Player()

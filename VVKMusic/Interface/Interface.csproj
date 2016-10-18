@@ -198,6 +198,12 @@
   <ItemGroup>
     <Resource Include="Resources\Pictures\repeat_grey.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Pictures\cross.png" />
+    <Resource Include="Resources\Pictures\plus.png" />
+    <Resource Include="Resources\Pictures\volume_down.png" />
+    <Resource Include="Resources\Pictures\volume_up.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

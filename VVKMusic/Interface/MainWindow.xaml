@@ -72,24 +72,42 @@
                    RadiusY="2"/>
                     <Ellipse Name="circleProgressBar" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Visibility="Hidden" Fill="#F8F4F5" Width="8" Height="8" Stroke="#F59184" StrokeThickness="1" Cursor="Hand"/>
                 </Grid>
-                <Button HorizontalAlignment="Center" Height="35" Margin="-180,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPrev_Click" Grid.Row="2"
+                <Button HorizontalAlignment="Center" Height="35" Margin="-250,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPrev_Click" Grid.Row="2"
                         MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                     <StackPanel>
                         <Image Name="imagePrev" Source="Resources/Pictures/prev.png" />
                     </StackPanel>
                 </Button>
-                <Button HorizontalAlignment="Center" Height="35" Margin="0,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPlay_Click" Grid.Row="2"
+                <Button HorizontalAlignment="Center" Height="35" Margin="-170,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPlay_Click" Grid.Row="2"
                         MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                     <StackPanel>
                         <Image Name="imagePlayOrPause" Source="Resources/Pictures/play.png" />
                     </StackPanel>
                 </Button>
-                <Button HorizontalAlignment="Center" Height="35" Margin="180,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonNext_Click" Grid.Row="2"
+                <Button HorizontalAlignment="Center" Height="35" Margin="-90,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonNext_Click" Grid.Row="2"
                         MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                     <StackPanel>
                         <Image Name="imageNext" Source="Resources/Pictures/next.png" />
                     </StackPanel>
                 </Button>
+                <Button HorizontalAlignment="Center" Height="20" Margin="0,28,0,0" VerticalAlignment="Top" Width="20" Style="{StaticResource ClearButton}" 
+                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand" MouseLeftButtonDown="ButtonVolumeDown_Click">
+                    <StackPanel>
+                        <Image  Source="Resources/Pictures/volume_down.png" />
+                    </StackPanel>
+                </Button>
+                <Button HorizontalAlignment="Center" Height="20" Margin="260,28,0,0" VerticalAlignment="Top" Width="20" Style="{StaticResource ClearButton}" 
+                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand" MouseLeftButtonDown="ButtonVolumeUp_Click">
+                    <StackPanel>
+                        <Image  Source="Resources/Pictures/volume_up.png" />
+                    </StackPanel>
+                </Button>
+                <Grid Margin="180,19,0,0">
+                    <Rectangle Name="rectangleVolumeMain" Height="6" VerticalAlignment="Center" Fill="#F59184" RadiusX="2"
+                   RadiusY="2" Cursor="Hand" Margin="0,0,0,0" Width="80" HorizontalAlignment="Left" MouseLeftButtonUp="VolumeClick"/>
+                    <Rectangle Cursor="Hand" Name="rectangleVolume" Height="1" Margin="0,0,0,0"  VerticalAlignment="Center" Fill="#F8F4F5" HorizontalAlignment="Left" RadiusX="2"
+                   RadiusY="2" Width="80" MouseLeftButtonUp="VolumeClick"/>
+                </Grid>
             </Grid>
         </Grid>
         <Grid Background="#5A5A5A" Grid.Row="4"/>
@@ -146,12 +164,12 @@
                             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex), Converter={StaticResource songNumberConverter}}"/>
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="."/>
                             <TextBlock Padding="5" HorizontalAlignment="Right" Width="215" VerticalAlignment="Center" Text="{Binding}" ToolTip="{Binding}"/>
-                            <Button Padding="5" HorizontalAlignment="Center" Height="25" VerticalAlignment="Center" Width="25" Tag="{Binding}" Style="{StaticResource ClearButton}" Click="buttonAddRemove_Click" 
+                            <Button Padding="5" HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="30" Tag="{Binding}" Style="{StaticResource ClearButton}" Click="buttonAddRemove_Click" 
                                         MouseEnter="ButtonAddRemove_MouseEnter" MouseLeave="ButtonAddRemove_MouseLeave" Cursor="Hand">
                                 <StackPanel>
                                     <Grid>
-                                        <TextBlock Name="textBlockDuration" HorizontalAlignment="Right" Width="30" VerticalAlignment="Center" Text="{Binding Path=Duration, Converter={StaticResource durationConverter}}"/>
-                                        <Image Name="imageAddRemove" Visibility="Hidden" Source="{Binding Path=AddRemoveImage}" />
+                                        <TextBlock Name="textBlockDuration" HorizontalAlignment="Center" Width="30" VerticalAlignment="Center" Text="{Binding Path=Duration, Converter={StaticResource durationConverter}}"/>
+                                        <Image Name="imageAddRemove" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Hidden" Height="25" Width="25" Source="{Binding Path=AddRemoveImage}" />
                                     </Grid>
                                 </StackPanel>
                             </Button>

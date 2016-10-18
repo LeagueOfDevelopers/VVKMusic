@@ -869,6 +869,56 @@ namespace Interface
             listboxPlaylist.Items.Refresh();
         }
 
+        private void VolumeClick(object sender, MouseButtonEventArgs e)
+        {
+            long len = 100;
+            double multiplyer = 0;
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Render, new Action(() =>
+            {
+                multiplyer = e.GetPosition(rectangleVolumeMain).X / rectangleVolumeMain.Width;
+                long pos = (long)(multiplyer * len);
+                Player1.SetVolume(pos);
+                DrawVolumePosition(pos, len);
+            }));
+        }
+
+        private void DrawVolumePosition(long pos, long len)
+        {
+
+            if (len == 0 || pos < 0)
+            {
+                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+                {
+                    rectangleVolume.Width = 0;
+                }));
+                return;
+            }
+
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
+            {
+                double bpp = len / (double)rectangleVolumeMain.Width;  // bytes per pixel
+                int x = (int)Math.Round(pos / bpp);
+                rectangleVolume.Width = x;
+            }));
+        }
+
+        private void ButtonVolumeDown_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (rectangleVolume.Width >= 10)
+            {
+                Player1.DecreaseVolume();
+                rectangleVolume.Width -= 10;
+            }
+        }
+
+        private void ButtonVolumeUp_Click(object sender, MouseButtonEventArgs e)
+        {
+            if (rectangleVolume.Width <= 70)
+            {
+                rectangleVolume.Width += 10;
+                Player1.IncreaseVolume();
+            }
+        }
     }
 
     public class SongNumberConverter : IValueConverter
