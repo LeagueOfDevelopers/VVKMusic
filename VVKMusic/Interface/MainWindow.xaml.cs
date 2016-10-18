@@ -309,14 +309,21 @@ namespace Interface
                 RenderNameAndSelectedSong();
         }
 
-        private void buttonPause_Click(object sender, RoutedEventArgs e)
-        {
-            HoverEffect(imagePause, @"Resources/Pictures/pause.png");
-            Player1.PauseAndStopTimer();
-        }
         private void buttonPlay_Click(object sender, RoutedEventArgs e)
         {
-            HoverEffect(imagePlay, @"Resources/Pictures/play.png");
+            if (Player1.IsTimerStarted())
+            {
+                HoverEffect(imagePlayOrPause, @"Resources/Pictures/play.png");
+                Player1.PauseAndStopTimer();
+            }
+            else
+            {
+                Play();
+            }
+        }
+        private void Play()
+        {
+            HoverEffect(imagePlayOrPause, @"Resources/Pictures/pause.png");
             if (_CurrentSong == -1)
             {
                 ObservableCollection<Song> SongList = Playlist1.GetList();
@@ -327,16 +334,16 @@ namespace Interface
             }
             Player1.PlayAndStartTimer();
         }
-        private void buttonStop_Click(object sender, RoutedEventArgs e)
-        {
-            HoverEffect(imageStop, @"Resources/Pictures/stop.png");
-            Player1.StopAndStopTimer();
-            ObservableCollection<Song> SongList = Playlist1.GetList();
-            _CurrentSong = -1;
-            DrawPosition(0, 0);
-            Player1.SetTimer(_updateInterval, timerUpdate_Tick);
-            RenderNameAndSelectedSong();               
-        }
+        //private void buttonStop_Click(object sender, RoutedEventArgs e)
+        //{
+        //    HoverEffect(imageStop, @"Resources/Pictures/stop.png");
+        //    Player1.StopAndStopTimer();
+        //    ObservableCollection<Song> SongList = Playlist1.GetList();
+        //    _CurrentSong = -1;
+        //    DrawPosition(0, 0);
+        //    Player1.SetTimer(_updateInterval, timerUpdate_Tick);
+        //    RenderNameAndSelectedSong();               
+        //}
         private void textboxSearch_GotFocus(object sender, RoutedEventArgs e)
         {
             textboxSearch.Text = "";
@@ -549,7 +556,7 @@ namespace Interface
                 ObservableCollection<Song> SongList = Playlist1.GetList();
                 Downloader1.CheckIfDownloaded(SongList[0]);
                 Player1.SetSource(SongList[0]);
-                Player1.PlayAndStartTimer();
+                Play();
             }
         }
 

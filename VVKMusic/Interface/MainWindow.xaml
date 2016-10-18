@@ -78,22 +78,10 @@
                         <Image Name="imagePrev" Source="Resources/Pictures/prev.png" />
                     </StackPanel>
                 </Button>
-                <Button HorizontalAlignment="Center" Height="35" Margin="-90,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPause_Click" Grid.Row="2"
-                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
-                    <StackPanel>
-                        <Image Name="imagePause" Source="Resources/Pictures/pause.png" />
-                    </StackPanel>
-                </Button>
                 <Button HorizontalAlignment="Center" Height="35" Margin="0,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonPlay_Click" Grid.Row="2"
                         MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
                     <StackPanel>
-                        <Image Name="imagePlay" Source="Resources/Pictures/play.png" />
-                    </StackPanel>
-                </Button>
-                <Button HorizontalAlignment="Center" Height="35" Margin="90,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonStop_Click" Grid.Row="2"
-                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
-                    <StackPanel>
-                        <Image Name="imageStop" Source="Resources/Pictures/stop.png" />
+                        <Image Name="imagePlayOrPause" Source="Resources/Pictures/play.png" />
                     </StackPanel>
                 </Button>
                 <Button HorizontalAlignment="Center" Height="35" Margin="180,20,0,0" VerticalAlignment="Top" Width="35" Style="{StaticResource ClearButton}" Click="buttonNext_Click" Grid.Row="2"

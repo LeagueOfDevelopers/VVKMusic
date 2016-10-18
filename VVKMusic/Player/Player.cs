@@ -68,6 +68,13 @@ namespace Player
                 return Status.Error;
             }
         }
+        public Boolean IsTimerStarted()
+        {
+            if (_updateTimer.Enabled)
+                return true;
+            else
+                return false;
+        }
         public Status StopAndStopTimer()
         {
             _updateTimer.Stop();
