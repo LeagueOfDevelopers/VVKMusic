@@ -565,13 +565,14 @@ namespace WPF.JoshSmith.ServiceProviders.UI
             // We need to use MouseUtilities to figure out the cursor
             // coordinates because, during a drag-drop operation, the WPF
             // mechanisms for getting the coordinates behave strangely.
-            try
+            if (target != null)
             {
                 Rect bounds = VisualTreeHelper.GetDescendantBounds(target);
                 Point mousePos = MouseUtilities.GetMousePosition(target);
                 return bounds.Contains(mousePos);
             }
-            catch { return false; }
+            else
+                return false;
         }
 
         #endregion // IsMouseOver

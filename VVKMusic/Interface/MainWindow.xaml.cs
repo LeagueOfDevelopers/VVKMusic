@@ -45,15 +45,22 @@ namespace Interface
         public MainWindow()
         {
             InitializeComponent();
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             if (Infrastructure1.LoadListOfUsers() != null)
             {
                 UserManager1.UpdateUserList(Infrastructure1.LoadListOfUsers());
                 this.Loaded += MainWindow_Loaded;
             }
         }
-        #region MainWindow_Loaded
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs args)
+        {
+            System.IO.StreamWriter file = new System.IO.StreamWriter(@"exceptionOutput.txt");
+            Exception e = (Exception)args.ExceptionObject;
+            file.WriteLine(e.Message);
+        }
+    #region MainWindow_Loaded
 
-        void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             this.dragMgr = new ListViewDragDropManager<Song>(this.listboxPlaylist);
             this.dragMgr.ListView = this.listboxPlaylist;

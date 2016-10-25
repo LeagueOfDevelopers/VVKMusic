@@ -91,13 +91,13 @@
                     </StackPanel>
                 </Button>
                 <Button HorizontalAlignment="Center" Height="20" Margin="0,28,0,0" VerticalAlignment="Top" Width="20" Style="{StaticResource ClearButton}" 
-                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand" MouseLeftButtonDown="ButtonVolumeDown_Click">
+                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand" PreviewMouseDown="ButtonVolumeDown_Click">
                     <StackPanel>
                         <Image  Source="Resources/Pictures/volume_down.png" />
                     </StackPanel>
                 </Button>
                 <Button HorizontalAlignment="Center" Height="20" Margin="260,28,0,0" VerticalAlignment="Top" Width="20" Style="{StaticResource ClearButton}" 
-                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand" MouseLeftButtonDown="ButtonVolumeUp_Click">
+                        MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand" PreviewMouseDown="ButtonVolumeUp_Click">
                     <StackPanel>
                         <Image  Source="Resources/Pictures/volume_up.png" />
                     </StackPanel>
