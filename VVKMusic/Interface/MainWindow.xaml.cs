@@ -934,8 +934,8 @@ namespace Interface
         {
             ListBoxItem item = value as ListBoxItem;
             ListBox view = ItemsControl.ItemsControlFromItemContainer(item) as ListBox;
-            int index = view.ItemContainerGenerator.IndexFromContainer(item);
-            return index.ToString() + 1;
+            int index = view.ItemContainerGenerator.IndexFromContainer(item) + 1;
+            return index.ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
