@@ -161,7 +161,8 @@
                                     </StackPanel>
                                 </Button>
                             </Grid>
-                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=TemplatedParent.(ItemsControl.AlternationIndex), Converter={StaticResource songNumberConverter}}"/>
+                            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Text="{Binding RelativeSource={RelativeSource FindAncestor,
+                                AncestorType=ListBoxItem}, Converter={StaticResource songNumberConverter}}"/>
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="."/>
                             <TextBlock Padding="5" HorizontalAlignment="Right" Width="215" VerticalAlignment="Center" Text="{Binding}" ToolTip="{Binding}"/>
                             <Button Padding="5" HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="30" Tag="{Binding}" Style="{StaticResource ClearButton}" Click="buttonAddRemove_Click" 

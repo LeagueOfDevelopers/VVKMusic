@@ -1,0 +1,9 @@
+diff a/VVKMusic/Interface/MainWindow.xaml b/VVKMusic/Interface/MainWindow.xaml	(rejected hunks)
+@@ -167,6 +167,7 @@
+                                 <TextBlock.Text></TextBlock.Text>
+                             </TextBlock>
+                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="."/>
++                            <TextBlock Padding="5" HorizontalAlignment="Right" Width="215" VerticalAlignment="Center"  Text="{Binding}"/>
+                             <Button Padding="5" HorizontalAlignment="Center" Height="30" VerticalAlignment="Center" Width="30" Tag="{Binding}" Style="{StaticResource ClearButton}" Click="buttonAddRemove_Click" 
+                                         MouseEnter="ButtonAddRemove_MouseEnter" MouseLeave="ButtonAddRemove_MouseLeave" Cursor="Hand">
+                                 <StackPanel>

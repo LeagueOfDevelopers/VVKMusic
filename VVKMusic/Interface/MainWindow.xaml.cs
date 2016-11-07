@@ -932,8 +932,10 @@ namespace Interface
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int number = (int)value;
-            return ++number;
+            ListBoxItem item = value as ListBoxItem;
+            ListBox view = ItemsControl.ItemsControlFromItemContainer(item) as ListBox;
+            int index = view.ItemContainerGenerator.IndexFromContainer(item);
+            return index.ToString() + 1;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
