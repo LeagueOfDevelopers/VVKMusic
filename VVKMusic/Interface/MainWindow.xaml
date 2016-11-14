@@ -150,7 +150,7 @@
                            ScrollViewer.HorizontalScrollBarVisibility="Disabled" MouseDoubleClick="listboxPlaylist_MouseDoubleClick" AllowDrop="True">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Border Name="border" BorderThickness="0, 0, 0, 1" BorderBrush="{Binding Path=BorderBrush}" Padding="5,5,5,5">
+                    <Border Name="border" BorderThickness="{Binding Path=BorderThickness}" BorderBrush="{Binding Path=BorderBrush}" Padding="5,5,5,5">
                         <StackPanel Orientation="Horizontal">
                             <Grid Margin="0,0,10,0">
                                 <DesignInControl:CircularProgressBar Name ="progressBar" HorizontalAlignment="Center" VerticalAlignment="Center" Percentage="{Binding Path=Percentage}" SegmentColor="#F59184" StrokeThickness="2" Radius="9"/>

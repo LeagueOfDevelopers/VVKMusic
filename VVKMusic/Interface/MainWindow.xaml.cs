@@ -482,6 +482,7 @@ namespace Interface
                     if (playlist[i].Artist != playlist[i + 1].Artist)
                     {
                         playlist[i].BorderBrush = (Brush)new BrushConverter().ConvertFrom("#F59184");
+                        playlist[i].BorderThickness = new Thickness() { Bottom = 2, Top = 0, Left = 0, Right = 0 };
                     }
                 }
             }
@@ -491,7 +492,10 @@ namespace Interface
         {
             ObservableCollection<Song> playlist = Playlist1.GetList();
             foreach (Song song in playlist)
+            {
                 song.BorderBrush = (Brush)new BrushConverter().ConvertFrom("#FFD1D3DA");
+                song.BorderThickness = new Thickness() { Bottom = 1, Top = 0, Left = 0, Right = 0 };
+            }
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
                       listboxPlaylist.Items.Refresh()));
         }

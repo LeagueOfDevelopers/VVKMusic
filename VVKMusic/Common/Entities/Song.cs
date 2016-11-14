@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Windows.Media;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace Common
 {
@@ -44,6 +45,13 @@ namespace Common
         {
             get { return _borderBrush; }
             set { _borderBrush = value; }
+        }
+        [NonSerialized]
+        public Thickness _borderThickness;
+        public Thickness BorderThickness
+        {
+            get { return _borderThickness; }
+            set { _borderThickness = value; }
         }
         public override string ToString()
         {
