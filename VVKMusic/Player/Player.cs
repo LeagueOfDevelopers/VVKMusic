@@ -17,10 +17,11 @@ namespace Player
         public Player()
         {
             BassNet.Registration("xxxddr3@gmail.com", "2X441017152222");
-            if(!(Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero)))
+            if (!(Bass.BASS_Init(-1, 44100, BASSInit.BASS_DEVICE_DEFAULT, IntPtr.Zero)))
             {
                 throw new Exception("Error while initializing Player instance");
             }
+            Equalize();
         }
         public int Stream
         {
@@ -60,7 +61,7 @@ namespace Player
         public Status PlayAndStartTimer()
         {
             _updateTimer.Start();
-            if(Bass.BASS_ChannelPlay(_stream, false))
+            if (Bass.BASS_ChannelPlay(_stream, false))
             {
                 return Status.Ok;
             }
@@ -118,15 +119,42 @@ namespace Player
         }
         public Status IncreaseVolume()
         {
-            volume += (float)1/8;
+            volume += (float)1 / 8;
             Bass.BASS_ChannelSetAttribute(_stream, BASSAttribute.BASS_ATTRIB_VOL, volume);
             return Status.Ok;
         }
         public Status DecreaseVolume()
         {
-            volume -= (float)1/8;
+            volume -= (float)1 / 8;
             Bass.BASS_ChannelSetAttribute(_stream, BASSAttribute.BASS_ATTRIB_VOL, volume);
             return Status.Ok;
+        }
+
+        int[] _fxEQ = { 0, 0, 0 };
+        public void Equalize()
+        {
+            // 3-band EQ
+            BASS_DX8_PARAMEQ eq = new BASS_DX8_PARAMEQ();
+            _fxEQ[0] = Bass.BASS_ChannelSetFX(_stream, BASSFXType.BASS_FX_DX8_PARAMEQ, 0);
+            _fxEQ[1] = Bass.BASS_ChannelSetFX(_stream, BASSFXType.BASS_FX_DX8_PARAMEQ, 0);
+            _fxEQ[2] = Bass.BASS_ChannelSetFX(_stream, BASSFXType.BASS_FX_DX8_PARAMEQ, 0);
+            eq.fBandwidth = 18f;
+            eq.fCenter = 100f;
+            eq.fGain = 0f;
+            Bass.BASS_FXSetParameters(_fxEQ[0], eq);
+            eq.fCenter = 1000f;
+            Bass.BASS_FXSetParameters(_fxEQ[1], eq);
+            eq.fCenter = 8000f;
+            Bass.BASS_FXSetParameters(_fxEQ[2], eq);
+        }
+        public void UpdateEQ(int band, float gain)
+        {
+            BASS_DX8_PARAMEQ eq = new BASS_DX8_PARAMEQ();
+            //if (Bass.BASS_FXGetParameters(_fxEQ[band], eq))
+            //{
+                eq.fGain = gain*100;
+                Bass.BASS_FXSetParameters(_fxEQ[band], eq);
+            //}
         }
         ~Player()
         {

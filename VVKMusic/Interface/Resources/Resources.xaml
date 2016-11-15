@@ -94,7 +94,7 @@
         </Grid>
     </ControlTemplate>
 
-   <Style TargetType="{x:Type ScrollBar}">
-                <Setter Property="Template" Value="{StaticResource VerticalScrollBar}"/>
+    <Style TargetType="{x:Type ScrollBar}">
+        <Setter Property="Template" Value="{StaticResource VerticalScrollBar}"/>
     </Style>
 </ResourceDictionary>

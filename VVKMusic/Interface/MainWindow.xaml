@@ -42,16 +42,20 @@
         </Button>
         <Grid Background="#E1E1E1" Grid.Row="1"/>
         <Grid Width="325"  HorizontalAlignment="Center" Grid.Row="1">
-            <TextBox Name="textboxSongName" Background="#E1E1E1" HorizontalAlignment="Center" Height="20" Margin="0,20,0,0" TextWrapping="NoWrap" TextAlignment="Center" VerticalAlignment="Top" Width="180" BorderBrush="Transparent" Grid.Row="1" IsEnabled="False"/>
-            <TextBox Name="textboxSongTime" Background="#E1E1E1" HorizontalAlignment="Center" Height="20" Margin="0,40,0,0" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Top" Width="80" BorderBrush="Transparent" Grid.Row="1" IsEnabled="False"/>
-            <Button  HorizontalAlignment="Right" Height="25" Margin="0,12,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonMenu_Click" Grid.Row="1"
-                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="94*"/>
+                <ColumnDefinition Width="69*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Name="textboxSongName" Background="#E1E1E1" HorizontalAlignment="Center" Height="20" Margin="72,20,73,0" TextWrapping="NoWrap" TextAlignment="Center" VerticalAlignment="Top" Width="180" BorderBrush="Transparent" IsEnabled="False" Grid.ColumnSpan="2"/>
+            <TextBox Name="textboxSongTime" Background="#E1E1E1" HorizontalAlignment="Center" Height="20" Margin="122,40,123,0" TextWrapping="Wrap" TextAlignment="Center" VerticalAlignment="Top" Width="80" BorderBrush="Transparent" IsEnabled="False" Grid.ColumnSpan="2"/>
+            <Button  HorizontalAlignment="Right" Height="25" Margin="0,12,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonMenu_Click"
+                     MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand" Grid.Column="1">
                 <StackPanel>
                     <Image Name="MenuButtonImage" Source="Resources/Pictures/menu.png"  />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Right" Height="25" Margin="0,40,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonSettings_Click" Grid.Row="1"
-                    MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand">
+            <Button HorizontalAlignment="Right" Height="25" Margin="0,40,5,0" VerticalAlignment="Top" Width="25" Style="{StaticResource ClearButton}" Click="buttonSettings_Click"
+                    MouseEnter="Button_MouseEnter" MouseLeave="Button_MouseLeave" Cursor="Hand" Grid.Column="1">
                 <StackPanel>
                     <Image Name="imageSettings" Source="Resources/Pictures/settings.png" />
                 </StackPanel>
@@ -106,7 +110,7 @@
                     <Rectangle Name="rectangleVolumeMain" Height="6" VerticalAlignment="Center" Fill="#F59184" RadiusX="2"
                    RadiusY="2" Cursor="Hand" Margin="0,0,0,0" Width="80" HorizontalAlignment="Left" MouseLeftButtonUp="VolumeClick"/>
                     <Rectangle Cursor="Hand" Name="rectangleVolume" Height="1" Margin="0,0,0,0"  VerticalAlignment="Center" Fill="#F8F4F5" HorizontalAlignment="Left" RadiusX="2"
-                   RadiusY="2" Width="80" MouseLeftButtonUp="VolumeClick"/>
+                   RadiusY="2" Width="80"/>
                 </Grid>
             </Grid>
         </Grid>
@@ -191,6 +195,49 @@
             <ListBoxItem>By artist</ListBoxItem>
             <ListBoxItem>By song title</ListBoxItem>
         </ListBox>
+        <Grid Name="EqualizerGrid" Visibility="Hidden" Background="#5A5A5A" Height="100" Width="130" HorizontalAlignment="Right" Margin="0,30,45,0" Grid.RowSpan="3" VerticalAlignment="Top">
+            <Slider x:Name="slider3" HorizontalAlignment="Center" Maximum="100" Minimum="0" Value="0" Margin="50,0,0,0" VerticalAlignment="Center" Width="80" RenderTransformOrigin="0.5,0.5" Foreground="#FFF59184" ValueChanged="SliderValue_Changed">
+                <Slider.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90"/>
+                    </TransformGroup>
+                </Slider.RenderTransform>
+                <Slider.Resources>
+                    <SolidColorBrush x:Key="SliderSelectionBackground" Color="Green" />
+                    <SolidColorBrush x:Key="SliderSelectionBorder" Color="Green" />
+                    <SolidColorBrush x:Key="SliderThumbBackground" Color="Green" />
+                    <SolidColorBrush x:Key="SliderThumbBackgroundDisabled" Color="Green" />
+                    <SolidColorBrush x:Key="SliderThumbBackgroundDragging" Color="Green" />
+                    <SolidColorBrush x:Key="SliderThumbBackgroundHover" Color="Green" />
+                    <SolidColorBrush x:Key="SliderThumbBorder" Color="Green" />
+                    <SolidColorBrush x:Key="SliderThumbBorderDisabled" Color="Green" />
+                    <SolidColorBrush x:Key="SliderThumbBorderDragging" Color="Green" />
+                    <SolidColorBrush x:Key="SliderThumbBorderHover" Color="Green" />
+                </Slider.Resources>
+            </Slider>
+            <Slider x:Name="slider1" Maximum="100" Minimum="0" Value="0" HorizontalAlignment="Center" Margin="-50,0,0,0" VerticalAlignment="Center" Width="80" RenderTransformOrigin="0.5,0.5" Foreground="#FFF59184" ValueChanged="SliderValue_Changed">
+                <Slider.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Slider.RenderTransform>
+            </Slider>
+            <Slider x:Name="slider2" Maximum="100" Minimum="0" Value="0" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center" Width="80" RenderTransformOrigin="0.5,0.5" Foreground="#FFF59184" ValueChanged="SliderValue_Changed">
+                <Slider.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="-90"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Slider.RenderTransform>
+            </Slider>
+        </Grid>
         <Grid Background="#5A5A5A" Grid.Row="6" Height="20" VerticalAlignment="Bottom"></Grid>
     </Grid>
 

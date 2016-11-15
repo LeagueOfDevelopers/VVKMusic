@@ -413,6 +413,12 @@ namespace Interface
         private void buttonSettings_Click(object sender, RoutedEventArgs e)
         {
             HoverEffect(imageSettings, "Resources/Pictures/settings.png");
+            if (EqualizerGrid.Visibility == Visibility.Hidden)
+            {
+                EqualizerGrid.Visibility = Visibility.Visible;
+            }
+            else
+                EqualizerGrid.Visibility = Visibility.Hidden;
         }
 
         private void buttonSort_Click(object sender, RoutedEventArgs e)
@@ -929,6 +935,17 @@ namespace Interface
                 rectangleVolume.Width += 10;
                 Player1.IncreaseVolume();
             }
+        }
+        
+        private void SliderValue_Changed(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            Slider slider = (Slider)sender;
+            if(slider == slider1)
+                Player1.UpdateEQ(0, (float)e.NewValue);
+            if (slider == slider2)
+                Player1.UpdateEQ(1, (float)e.NewValue);
+            if (slider == slider3)
+                Player1.UpdateEQ(2, (float)e.NewValue);
         }
     }
 
