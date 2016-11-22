@@ -19,6 +19,7 @@ using System.Collections;
 using System.Windows.Media.Effects;
 using System.Linq;
 using WPF.JoshSmith.ServiceProviders.UI;
+using static Common.Common;
 
 namespace Interface
 {
@@ -117,9 +118,9 @@ namespace Interface
                 }
             }
         }
-        private void WebLogin1_RaiseCustomEvent(object sender, CustomEventArgs e)
+        private async void WebLogin1_RaiseCustomEvent(object sender, CustomEventArgs e)
         {
-            List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(e.UserID.ToString(), e.AccessToken));
+            List<Song> SongList = new List<Song>(await VKAPI1.GetAudioExternal(e.UserID.ToString(), e.AccessToken));
             SetUser(new User(e.Name, e.AccessToken, e.UserID.ToString(), SongList), false);
         }
         private void listboxLoginAs_PreviewMouseUp(object sender, MouseButtonEventArgs e)
@@ -134,7 +135,7 @@ namespace Interface
             listboxMenu.UnselectAll();
             listboxLoginAs.UnselectAll();
         }
-        private void SetUser(User user, bool wasAlreadyEnteringThroughThisApp)
+        private async void SetUser(User user, bool wasAlreadyEnteringThroughThisApp)
         {
             Player1.StopAndStopTimer();
             _CurrentUser = user;
@@ -147,7 +148,7 @@ namespace Interface
             }
             else
             {
-                List<Song> SongList = new List<Song>(VKAPI1.GetAudioExternal(user.ID, user.AccessToken));
+                List<Song> SongList = await VKAPI1.GetAudioExternal(user.ID, user.AccessToken);
                 UserManager1.UpdateUserListOfSongs(user.ID, SongList);
                 Playlist1.SetBaseList(new ObservableCollection<Song>(SongList));
                 Playlist1.UpdateListToBase();

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 
 
@@ -87,7 +88,7 @@ namespace VKAPI
             dataStream.Close();
         }
 
-        public Song[] GetAudioExternal(string userID, string token)
+        public Task<List<Song>> GetAudioExternal(string userID, string token)
         {
             string GetAudioRequest = String.Format("https://api.vk.com/method/audio.get?owner_id={0}&access_token={1}", userID, token);
             WebRequest AudioRequest = WebRequest.Create(GetAudioRequest);
@@ -110,7 +111,7 @@ namespace VKAPI
             {
                 Songs = new Song[0];
             }
-            return Songs;
+            return Task.Run (() => new List<Song>(Songs));
         }
 
         public Song[] SearchAudio(string text, string token)
