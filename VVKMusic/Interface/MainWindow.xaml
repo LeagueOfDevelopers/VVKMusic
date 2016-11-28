@@ -204,18 +204,6 @@
                         <RotateTransform Angle="-90"/>
                     </TransformGroup>
                 </Slider.RenderTransform>
-                <Slider.Resources>
-                    <SolidColorBrush x:Key="SliderSelectionBackground" Color="Green" />
-                    <SolidColorBrush x:Key="SliderSelectionBorder" Color="Green" />
-                    <SolidColorBrush x:Key="SliderThumbBackground" Color="Green" />
-                    <SolidColorBrush x:Key="SliderThumbBackgroundDisabled" Color="Green" />
-                    <SolidColorBrush x:Key="SliderThumbBackgroundDragging" Color="Green" />
-                    <SolidColorBrush x:Key="SliderThumbBackgroundHover" Color="Green" />
-                    <SolidColorBrush x:Key="SliderThumbBorder" Color="Green" />
-                    <SolidColorBrush x:Key="SliderThumbBorderDisabled" Color="Green" />
-                    <SolidColorBrush x:Key="SliderThumbBorderDragging" Color="Green" />
-                    <SolidColorBrush x:Key="SliderThumbBorderHover" Color="Green" />
-                </Slider.Resources>
             </Slider>
             <Slider x:Name="slider1" Maximum="100" Minimum="0" Value="0" HorizontalAlignment="Center" Margin="-50,0,0,0" VerticalAlignment="Center" Width="80" RenderTransformOrigin="0.5,0.5" Foreground="#FFF59184" ValueChanged="SliderValue_Changed">
                 <Slider.RenderTransform>
